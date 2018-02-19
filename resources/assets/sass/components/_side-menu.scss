@@ -1,0 +1,11 @@
+aside.sidebar {
+    @apply .bg-grey-lightest .border-grey .border .w-64 ;
+    .menu {
+        &:not(:last-child) {
+            @apply .mb-4 .py-1 .border-b ;
+        }
+        > .menu-heading {
+            @apply .text-sm .uppercase .mb-2 .tracking-wide .font-semibold .text-grey-darker ;
+        }
+    }
+}

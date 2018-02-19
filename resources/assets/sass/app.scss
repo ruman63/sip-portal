@@ -1,0 +1,13 @@
+@tailwind preflight;
+
+@import '~font-awesome/scss/font-awesome';
+
+@import 'tweaks';
+
+@import 'components/buttons';
+@import 'components/side-menu';
+@import 'components/form';
+
+@tailwind utilities;
+
+@import 'utilities';

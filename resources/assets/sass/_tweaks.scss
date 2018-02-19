@@ -1,0 +1,9 @@
+select {
+    appearance: none;
+}
+a {
+    @apply .text-black .no-underline ;
+    &:hover {
+        @apply .font-semibold ;
+    }
+}
