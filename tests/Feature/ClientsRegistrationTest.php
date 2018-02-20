@@ -6,25 +6,25 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
+use App\Client;
 
-class CreateClientsTest extends TestCase
+class ClientsRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function an_admin_can_register_new_clients() {
-        
-        $this->signInAdmin();
-
-        $client = make('App\Client')->toArray() 
-                + [
-                    'password' => 'secret',
-                    'password_confirmation' => 'secret',
-                ];
-
-        $this->post(route('clients.store'), $client);
+    public function any_user_can_register_new_clients() 
+    {
+        $this->post(
+            route('register'), 
+            $client = make('App\Client')->toArray() + [
+                'password' => 'secret',
+                'password_confirmation' => 'secret',
+            ]
+        );
 
         $this->assertEquals(1, \App\Client::count(), 'No clients were created in database');
+
         $this->assertDatabaseHas('clients', [
             'id' => 1,
             'first_name' => $client['first_name'],
@@ -44,7 +44,7 @@ class CreateClientsTest extends TestCase
                 'password_confirmation' => 'secret2',
             ];
 
-        $this->post(route('clients.store'), $client)
+        $this->post(route('register'), $client)
             ->assertSessionHasErrors('password');
 
     }
@@ -58,11 +58,27 @@ class CreateClientsTest extends TestCase
         $client = make('App\Client', ['email' => $client1->email])->toArray() 
             + [
                 'password' => 'secret',
-                'password_confirmation' => 'secret2',
+                'password_confirmation' => 'secret',
             ];
 
-        $this->post(route('clients.store'), $client)
+        $this->post(route('register'), $client)
             ->assertSessionHasErrors('email');
 
+    }
+
+    /** @test */
+    public function makes_sure_password_is_hashed()
+    {
+        $this->signInAdmin();
+        
+        $client = make('App\Client');
+            
+
+        $this->post(route('register'), $client->toArray() + [
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
+        ]);
+
+        $this->assertTrue(\Hash::check('secret', Client::find(1)->password));
     }
 }

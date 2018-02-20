@@ -15,12 +15,8 @@
 </head>
 <body class="font-sans">
     <div id="app">
-        {{--  Todo: navbar here  --}}
-        <nav class="py-4 bg-teal">
-            <div class="container mx-auto">
-                <h1 class="text-2xl text-white">SIP Wealth</h1>
-            </div>
-        </nav>
+        
+        @include('layouts.nav')
         
         <main class="py-4">
             @yield('content')
