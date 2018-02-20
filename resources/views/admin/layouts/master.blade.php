@@ -17,11 +17,11 @@
     <div id="app">
         {{--  Todo: navbar here  --}}
         @include('admin.layouts.nav')
-
+        
         <div class="container mx-auto flex min-h-screen">
             
             @if(Auth::guard('cpanel')->check())
-                @include('admin.layouts.side-menu')
+            @include('admin.layouts.side-menu')
             @endif
             
             <main class="py-4 px-6 flex-1">
@@ -29,6 +29,7 @@
             </main>
         </div>
         
+        @include('flash::message')
         @include('modals.index')
     </div>
     <!-- Scripts -->

@@ -17,6 +17,7 @@ class ClientsController extends Controller
     public function index()
     {
         $clients =  Client::all();
+
         if(request()->wantsJson()) {
             return $clients;
         }
@@ -54,7 +55,7 @@ class ClientsController extends Controller
         
         $client = Client::create($data);
 
-        \Session::flash('success', 'Client Created Successfully');
+        flash('Client Created Successfully')->success();
         
         return redirect()->route('clients.index');
     }

@@ -21,6 +21,7 @@ window.Vue.use(VModal);
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('logout', require('./components/Logout.vue'));
 Vue.component('clock', require('./components/Clock.vue'));
+Vue.component('flash', require('./components/Flash.vue'));
 
 const app = new Vue({
     el: '#app'
