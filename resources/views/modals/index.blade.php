@@ -1,1 +1,1 @@
-@include('modals.client-create')
+@include('modals.register')

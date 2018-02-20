@@ -13,8 +13,8 @@
     <section class="px-2">
         <div class="flex border-b pb-1 mb-4">
             <h2 class="flex items-center flex-grow text-blue-darkest tracking-wide font-semibold uppercase">Manage Clients</h2>
-            <button class="btn is-blue" @click="$modal.show('client-create')"> 
-                <i class="fa fa-user-plus mr-1"></i> New Client
+            <button class="btn is-blue" @click="$modal.show('register')"> 
+                <i class="fa fa-user-plus mr-1"></i> Register Client
             </button>
         </div>
         <div class="flex flex-row-reverse px-2">

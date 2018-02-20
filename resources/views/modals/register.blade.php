@@ -1,5 +1,5 @@
-<modal name="client-create" height="auto">
-    <form method="POST" action="{{ route('clients.store') }}" class="px-6 py-8">
+<modal name="register" height="auto">
+    <form method="POST" action="{{ route('register') }}" class="px-6 py-8">
         {{ csrf_field() }}
 
         <h3 class="text-lg uppercase tracking-wide font-semibold mb-6">Register New Client</h3>
@@ -53,7 +53,7 @@
         </div>
         <div class="flex flex-row-reverse mb-2">
             <button type="submit" class="btn text-sm uppercase is-blue mx-1">Submit</button>
-            <button type="button" class="btn text-sm uppercase mx-1" @click="$modal.hide('client-create')">Cancel</button>
+            <button type="button" class="btn text-sm uppercase mx-1" @click="$modal.hide('register')">Cancel</button>
         </div>
 
     </form>
