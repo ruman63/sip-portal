@@ -53,7 +53,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td class="text-center">No Clients found.</td></tr>
+                        <td colspan="6" class="text-center">No Clients found.</td>
                     @endforelse
                 </tbody>
             </table>
