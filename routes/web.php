@@ -27,6 +27,7 @@ Route::group([
             Route::get('/', 'DashboardController@index')->name('admin.dashboard');
             Route::get('clients/create', 'ClientsController@create')->name('clients.create');
             Route::post('clients', 'ClientsController@store')->name('clients.store');
+            Route::get('clients', 'ClientsController@index')->name('clients.index');
             Route::post('logout', 'LoginController@logout')->name('admin.logout');
         });
     }

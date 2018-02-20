@@ -1,6 +1,10 @@
 .btn {
-    @apply .py-1 .px-2 .bg-grey-light .font-semibold ;
+    @apply .py-2 .px-3 .bg-grey-light .font-semibold ;
     
+    &:hover {
+        @apply .bg-blue .text-white ;
+    }
+
     &.is-teal {
         @apply .bg-teal .text-white ;
         &:hover {
@@ -14,8 +18,9 @@
             @apply .bg-blue-darker ;
         }
     }
-    
-    &:hover {
-        @apply .bg-blue .text-white ;
+
+
+    &.is-lg {
+        @apply .text-lg .py-2 .px-4 ;
     }
 }

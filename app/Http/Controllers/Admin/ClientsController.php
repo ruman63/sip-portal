@@ -16,7 +16,12 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        //
+        $clients =  Client::all();
+        if(request()->wantsJson()) {
+            return $clients;
+        }
+
+        return view('admin.clients.index', compact('clients'));
     }
 
     /**

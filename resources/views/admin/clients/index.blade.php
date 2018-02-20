@@ -8,71 +8,57 @@
         <li class="px-1 py-1 text-grey-dark">
             <i class="fa fa-arrow-right"></i>
         </li>
-        <li class="px-2 py-1 text-grey-dark">
-            <a href="">Clients</a>
-        </li>
-        <li class="px-1 py-1 text-grey-dark">
-            <i class="fa fa-arrow-right"></i>
-        </li>
-        <li class="px-2 py-1 text-grey-dark">
-            New Client
-        </li>
+        <li class="px-2 py-1 text-grey-dark"> Clients </li>
     </ul>
-
-    <div>
-        <form method="POST" action="{{ route('clients.store') }}" class="px-2 py-4">
-            {{ csrf_field() }}
-            <section class="mb-3 lg:w-4/5 mx-auto border p-6 rounded shadow-md">
-                <div class="flex flex-wrap">
-                    <div class="field w-1/2 px-1">
-                        <label for="first_name" class="control">First Name</label>
-                        <input type="text" name="first_name" id="first_name" class="control" value="{{ old('first_name') }}" required>
-                    </div>
-                    <div class="field w-1/2 px-1">
-                        <label for="last_name" class="control">Last Name</label>
-                        <input type="text" name="last_name" id="last_name" class="control" value="{{ old('last_name') }}" required>
-                    </div>
-                    <div class="field w-full px-1">
-                        <label for="email" class="control">Email</label>
-                        <input type="email" name="email" id="email" class="control" value="{{ old('email') }}" required>
-                    </div>
-                    <div class="field w-1/2 px-1">
-                        <label for="mobile" class="control">Phone</label>
-                        <div class="flex">
-                            <span class="bg-grey-lighter border-l border-t border-b px-3 py-1 flex items-center">+91</span>
-                            <input type="text" name="mobile" id="mobile" class="control flex-grow" value="{{ old('mobile') }}" required>
-                        </div>
-                    </div>
-                    <div class="field w-full px-1">
-                        <label for="password" class="control">Password</label>
-                        <input type="password" name="password" id="password" class="control" required>
-                    </div>
-                    <div class="field w-full px-1">
-                        <label for="password_confirmation" class="control">Confirm Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="control" required>
-                    </div>
-                    <div class="field w-1/2 px-1">
-                        <label for="dob" class="control">Birthdate</label>
-                        <input type="date" name="dob" id="dob" class="control" value="{{ old('dob') }}" required>
-                    </div>
-                    <div class="field w-1/2 px-1">
-                        <label for="gender" class="control">Gender</label>
-                        <select name="gender" id="gender" class="control" required>
-                            <option disabled {{ old('gender') == null ? 'selected' : '' }}> Gender </option>
-                            <option {{ old('gender') == 'm' ? 'selected' : '' }} value="m"> Male </option>
-                            <option {{ old('gender') == 'f' ? 'selected' : '' }} value="f"> Female </option>
-                        </select>
-                    </div>
+    <section class="px-2">
+        <div class="flex border-b pb-1 mb-4">
+            <h2 class="flex items-center flex-grow text-blue-darkest tracking-wide font-semibold uppercase">Manage Clients</h2>
+            <button class="btn is-blue" @click="$modal.show('client-create')"> 
+                <i class="fa fa-user-plus mr-1"></i> New Client
+            </button>
+        </div>
+        <div class="flex flex-row-reverse px-2">
+            <form action="" method="GET" class="text-sm mb-2">
+                <div class="flex items-strech text-xs">
+                    <input type="text" class="flex-grow border-t border-b border-l py-2 px-2 focus:border-blue-darker" placeholder="Search Clients">
+                    <button type="submit" class="px-3 bg-blue-darker text-white">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-                @forelse($errors->all() as $error)
-                    <li class="text-red">{{ $error }}</li>
-                @empty
-                @endforelse
-                <div class="flex flex-row-reverse mb-2">
-                    <button class="btn text-sm uppercase is-blue mx-1">Submit</button>
-                    <button class="btn text-sm uppercase mx-1">Cancel</button>
-                </div>
-            </section>
+            </form>
+        </div>
+        <div class="p-3 w-full overflow-x-scroll">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Member Since</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($clients as $client)
+                        <tr>
+                            <td>{{ $client->id }}</td>
+                            <td>{{ $client->first_name }} {{ $client->last_name }}</td>
+                            <td>{{ $client->email }}</td>
+                            <td>{{ $client->mobile }}</td>
+                            <td>{{ $client->created_at->diffForHumans() }}</td>
+                            <td>
+                                <button class="btn is-blue" title="Login"><i class="fa fa-sign-in"></i></button>
+                                <button class="btn is-blue" title="Fill Details"> <i class="fa fa-pencil-square-o"></i> </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td class="text-center">No Clients found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
             {{--  <section class="mb-6">
                 <h3 class="text-sm uppercase tracking-wide text-grey-darker font-semibold px-1 mb-4"> Personal Information </h3>
                 <div class="flex flex-wrap mb-2">
@@ -286,7 +272,5 @@
             </section>  --}}
 
             
-        </form>
-    </div>
 
 @endsection

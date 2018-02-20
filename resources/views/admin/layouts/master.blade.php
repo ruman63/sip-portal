@@ -28,8 +28,9 @@
                 @yield('content')
             </main>
         </div>
+        
+        @include('modals.index')
     </div>
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

@@ -1,0 +1,13 @@
+table {
+    border-collapse: collapse;
+    @apply .border .text-sm ;
+    td, th {
+        @apply .px-2 .py-1 ;
+    }
+    th {
+        @apply .border-b-2 .py-2 .uppercase .font-semibold .text-left .tracking-wide ;
+    }
+    td {
+        @apply .border-b ;
+    }
+}
