@@ -26,6 +26,6 @@ class ClientDashboardTests extends TestCase
         $this->withExceptionHandling();
         
         $this->get(route('dashboard'))
-            ->assertRedirect(route('login'));
+            ->assertRedirect(route('index'));
     }
 }

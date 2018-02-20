@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
                     ? response()->json(['message' => $exception->getMessage()], 401)
                     : ( in_array('cpanel', $exception->guards()) 
                         ? redirect()->guest(route('admin.login')) 
-                        : redirect()->guest(route('login')) 
+                        : redirect()->guest(route('index')) 
                     );
     }
 }
