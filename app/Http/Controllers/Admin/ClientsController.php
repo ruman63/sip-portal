@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateClientRequest;
+use App\Client;
 
 class ClientsController extends Controller
 {
@@ -31,16 +32,26 @@ class ClientsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Requests\CreateClientRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateClientRequest $request)
+    public function store(Request $request)
     {
-        $password = $request->persist();
+        $data = request()->validate([
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'dob' => 'required|date',
+            'gender' => 'required|in:m,f,M,F',
+            'email' => 'required|email|unique:clients,email',
+            'mobile' => 'required|digits:10',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
         
-        session()->flash('password', $password);
+        $client = Client::create($data);
+
+        \Session::flash('success', 'Client Created Successfully');
         
-        return redirect()->back();
+        return redirect()->route('admin.dashboard');
     }
 
     /**

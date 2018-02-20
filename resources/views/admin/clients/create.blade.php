@@ -22,7 +22,58 @@
     <div>
         <form method="POST" action="{{ route('clients.store') }}" class="px-2 py-4">
             {{ csrf_field() }}
-            <section class="mb-6">
+            <section class="mb-3 lg:w-4/5 mx-auto border p-6 rounded shadow-md">
+                <div class="flex flex-wrap">
+                    <div class="field w-1/2 px-1">
+                        <label for="first_name" class="control">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="control" value="{{ old('first_name') }}" required>
+                    </div>
+                    <div class="field w-1/2 px-1">
+                        <label for="last_name" class="control">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" class="control" value="{{ old('last_name') }}" required>
+                    </div>
+                    <div class="field w-full px-1">
+                        <label for="email" class="control">Email</label>
+                        <input type="email" name="email" id="email" class="control" value="{{ old('email') }}" required>
+                    </div>
+                    <div class="field w-1/2 px-1">
+                        <label for="mobile" class="control">Phone</label>
+                        <div class="flex">
+                            <span class="bg-grey-lighter border-l border-t border-b px-3 py-1 flex items-center">+91</span>
+                            <input type="text" name="mobile" id="mobile" class="control flex-grow" value="{{ old('mobile') }}" required>
+                        </div>
+                    </div>
+                    <div class="field w-full px-1">
+                        <label for="password" class="control">Password</label>
+                        <input type="password" name="password" id="password" class="control" required>
+                    </div>
+                    <div class="field w-full px-1">
+                        <label for="password_confirmation" class="control">Confirm Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="control" required>
+                    </div>
+                    <div class="field w-1/2 px-1">
+                        <label for="dob" class="control">Birthdate</label>
+                        <input type="date" name="dob" id="dob" class="control" value="{{ old('dob') }}" required>
+                    </div>
+                    <div class="field w-1/2 px-1">
+                        <label for="gender" class="control">Gender</label>
+                        <select name="gender" id="gender" class="control" required>
+                            <option disabled {{ old('gender') == null ? 'selected' : '' }}> Gender </option>
+                            <option {{ old('gender') == 'm' ? 'selected' : '' }} value="m"> Male </option>
+                            <option {{ old('gender') == 'f' ? 'selected' : '' }} value="f"> Female </option>
+                        </select>
+                    </div>
+                </div>
+                @forelse($errors->all() as $error)
+                    <li class="text-red">{{ $error }}</li>
+                @empty
+                @endforelse
+                <div class="flex flex-row-reverse mb-2">
+                    <button class="btn text-sm uppercase is-blue mx-1">Submit</button>
+                    <button class="btn text-sm uppercase mx-1">Cancel</button>
+                </div>
+            </section>
+            {{--  <section class="mb-6">
                 <h3 class="text-sm uppercase tracking-wide text-grey-darker font-semibold px-1 mb-4"> Personal Information </h3>
                 <div class="flex flex-wrap mb-2">
                     <div class="field w-1/2 px-1">
@@ -232,12 +283,8 @@
                         <input name="bank_account[micr]" type="text" class="control" placeholder="Bank's MICR code">
                     </div>
                 </div>
-            </section>
+            </section>  --}}
 
-            <div class="flex flex-row-reverse mb-2">
-                <button class="btn text-sm uppercase is-blue mx-1">Submit</button>
-                <button class="btn text-sm uppercase mx-1">Cancel</button>
-            </div>
             
         </form>
     </div>
