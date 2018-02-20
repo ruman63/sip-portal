@@ -29,7 +29,18 @@ class ClientsRegistrationTest extends TestCase
             'id' => 1,
             'first_name' => $client['first_name'],
         ]);
-        
+    }
+
+    /** @test */
+    public function when_a_client_registers_himself_he_is_logged_in_to_clients_dashboard() 
+    {
+        $this->post( route('register'), 
+            $client = make('App\Client')->toArray() + [
+                'password' => 'secret',
+                'password_confirmation' => 'secret',
+            ])->assertRedirect(route('dashboard'));
+
+        $this->assertTrue(\Auth::check(), 'User is not logged in');
     }
 
     /** @test */

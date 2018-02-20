@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
             flash('Client Created Successfully')->success();
             return redirect()->route('clients.index');
         }
-
+        Auth::login($client);
         return redirect()->route('dashboard');
     }
 }
