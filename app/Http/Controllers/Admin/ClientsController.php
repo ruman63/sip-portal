@@ -56,7 +56,7 @@ class ClientsController extends Controller
 
         \Session::flash('success', 'Client Created Successfully');
         
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('clients.index');
     }
 
     /**
