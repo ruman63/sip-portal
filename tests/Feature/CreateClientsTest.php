@@ -22,8 +22,7 @@ class CreateClientsTest extends TestCase
                     'password_confirmation' => 'secret',
                 ];
 
-        $this->post(route('clients.store'), $client)
-            ->assertSessionHas('success');
+        $this->post(route('clients.store'), $client);
 
         $this->assertEquals(1, \App\Client::count(), 'No clients were created in database');
         $this->assertDatabaseHas('clients', [
