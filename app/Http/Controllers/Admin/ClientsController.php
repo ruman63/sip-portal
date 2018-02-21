@@ -35,15 +35,15 @@ class ClientsController extends Controller
         return view('admin.clients.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function loginAs(Client $client)
     {
+        auth()->guard('web')->login($client);
+
+        if(request()->wantsJson()) {
+            return response()->json(['redirectUrl' => route('dashboard')]);
+        }
         
+        return redirect()->route('dashboard');
     }
 
     /**
