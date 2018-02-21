@@ -11,18 +11,21 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="font-sans">
     <div id="app">
         
         @include('layouts.nav')
         
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
 
+        @include('flash::message')
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

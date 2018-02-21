@@ -2,7 +2,9 @@
     <div class="container mx-auto flex">
         <div class="flex flex-1 items-center">
             
-            <h1 class="text-xl font-normal text-white ml-2">SIP Wealth</h1>
+            <h1 class="flex">
+                <a href="/" class="text-xl font-normal text-white ml-2 no-underline">SIP Wealth</a>
+            </h1>
             
         </div>
         <div class="flex flex-1 flex-row-reverse items-center">

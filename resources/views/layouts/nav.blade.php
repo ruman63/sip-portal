@@ -21,7 +21,9 @@
     <div class="container mx-auto flex">
         <div class="flex flex-1 items-center">
             
-            <h1 class="text-xl font-normal text-white ml-2 py-3">SIP Wealth</h1>
+            <h1 class="flex">
+                <a href="/" class="text-xl font-normal text-white ml-2 py-3 no-underline">SIP Wealth</a>
+            </h1>
             
         </div>
         <ul class="flex list-reset flex-1 flex-row-reverse items-center">
@@ -45,13 +47,6 @@
                     </template>
                 </dropdown>
             </li>
-            @else
-                <li class="flex">
-                    <a href="#" class="py-3 px-3 text-white hover:bg-teal-darker" @click="$modal.show('register')">Register</a>
-                </li>
-                <li class="flex">
-                    <a href="#" class="py-3 px-3 text-white hover:bg-teal-darker" @click="$modal.show('login')">Login</a>
-                </li>
             @endif
             <li>
                 <clock class="mx-2 px-4"></clock>
