@@ -28,6 +28,7 @@ Route::group([
             Route::get('/', 'DashboardController@index')->name('admin.dashboard');
             Route::get('clients', 'ClientsController@index')->name('clients.index');
             Route::post('clients/{client}/login', 'ClientsController@loginAs')->name('clients.login-as');
+            Route::post('clients/logout', 'ClientsController@logout')->name('clients.logout');
             Route::post('logout', 'LoginController@logout')->name('admin.logout');
         });
     }

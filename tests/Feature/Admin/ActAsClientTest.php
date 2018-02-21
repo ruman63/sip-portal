@@ -38,16 +38,17 @@ class ActAsClientTest extends TestCase
     }
 
     /** @test */
-    public function when_admin_logs_in_as_client_and_logout_client_admin_remains_logged_in()
+    public function admin_can_stop_acting_as_client_while_keep_working()
     {
         $this->signInAdmin();
 
         $this->post(route('clients.login-as', $client = create('App\Client')));
 
-        $this->post(route('logout'));
+        $this->post(route('clients.logout'));
 
         $this->assertFalse(auth()->guard('web')->check());
 
         $this->assertTrue(auth()->guard('cpanel')->check());
     }
+
 }

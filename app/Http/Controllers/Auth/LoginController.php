@@ -37,18 +37,6 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function logout()
-    {
-        $this->guard()->logout();
-
-        if(auth()->guard('cpanel')->guest()) {
-            session()->invalidate();
-            dd('session invalidated');
-        }
-
-        return redirect('/');
-    }
-
     public function guard()
     {
         return auth()->guard('web');

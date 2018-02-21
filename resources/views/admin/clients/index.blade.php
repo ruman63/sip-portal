@@ -48,10 +48,15 @@
                             <td>{{ $client->mobile }}</td>
                             <td>{{ $client->created_at->diffForHumans() }}</td>
                             <td>
-                                <login-as class="btn is-blue" title="Login" path="{{ route('clients.login-as', $client) }}">
-                                    <template slot="token">{{ csrf_field() }}</template>
-                                    <i class="fa fa-sign-in"></i>
-                                </login-as>
+                                <form class="inline-block" 
+                                target="_blank"
+                                action="{{ route('clients.login-as', $client) }}"
+                                method="POST">
+                                    {{ csrf_field() }}
+                                    <button type="submit" title="Login" class="btn is-blue">
+                                        <i class="fa fa-sign-in"></i>
+                                    </button>
+                                </form>
                                 <button class="btn is-blue" title="Fill Details"> <i class="fa fa-pencil-square-o"></i> </button>
                             </td>
                         </tr>

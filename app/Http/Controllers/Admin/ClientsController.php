@@ -46,6 +46,17 @@ class ClientsController extends Controller
         return redirect()->route('dashboard');
     }
 
+
+    public function logout()
+    {
+        auth()->guard('web')->logout();
+
+        if(request()->wantsJson()) {
+            return response()->json(['redirectUrl' => route('index')]);
+        }
+        
+        return redirect()->route('index');
+    }
     /**
      * Display the specified resource.
      *
