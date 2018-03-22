@@ -6,4 +6,7 @@ a {
     &:hover {
         @apply .font-semibold ;
     }
+    &:focus {
+        outline: none;
+    }
 }
