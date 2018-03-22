@@ -1,4 +1,13 @@
-<aside class="sidebar">
+<aside class="sidebar flex flex-col justify-between py-4">
+    <div class="flex flex-col px-2">
+        <div class="flex">
+            <img src="{{ asset('storage/avatars/default.png') }}" alt="User Avatar" class="rounded-full w-24 h-24">
+            <div class="flex-1 flex flex-col justify-center pl-2">
+                <div class="text-center text-lg">Super Admin</div>
+                <div class="text-grey-dark text-sm italic font-thin text-center">Superadmin</div>
+            </div>
+        </div>
+    </div>
     <div class="py-8 px-4">
         <ul class="menu">
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
@@ -23,5 +32,8 @@
                 </template>
             </expandable-list-item>
         </ul>
+    </div>
+    <div class="flex">
+        
     </div>
 </aside>

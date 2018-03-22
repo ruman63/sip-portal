@@ -18,13 +18,13 @@
         {{--  Todo: navbar here  --}}
         @include('admin.layouts.nav')
         
-        <div class="container mx-auto flex min-h-screen">
+        <div class="container mx-auto flex h-screen-with-nav">
             
             @if(Auth::guard('cpanel')->check())
-            @include('admin.layouts.side-menu')
+                @include('admin.layouts.side-menu')
             @endif
             
-            <main class="py-4 px-6 flex-1">
+            <main class="py-4 px-6 flex-1 h-full w-full overflow-auto">
                 @yield('content')
             </main>
         </div>
