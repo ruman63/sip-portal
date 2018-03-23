@@ -193,6 +193,7 @@ module.exports = {
   */
 
   fonts: {
+    'fontawesome': "FontAwesome",
     'sans': [
       'system-ui',
       'BlinkMacSystemFont',

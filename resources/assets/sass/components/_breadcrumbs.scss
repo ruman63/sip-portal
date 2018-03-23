@@ -1,0 +1,15 @@
+ul.breadcrumbs {
+    @apply .list-reset .text-xs .flex .py-1 ;
+    > li {
+        @apply .px-1 .py-1 .text-grey-dark ;
+        &:after {
+            content: '\f061';
+            @apply .font-fontawesome .ml-2 .text-grey-dark ;
+        }
+        &:last-of-type{
+            &:after {
+                content: none;
+            }
+        }
+    }
+}

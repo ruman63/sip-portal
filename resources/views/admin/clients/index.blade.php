@@ -1,14 +1,9 @@
 @extends('admin.layouts.master')
 @section('content')
 
-    <ul class="list-reset text-xs flex mb-6">
-        <li class="px-2 py-1 text-grey-dark">
-            <a href="{{ route('admin.dashboard') }}">Home</a>
-        </li>
-        <li class="px-1 py-1 text-grey-dark">
-            <i class="fa fa-arrow-right"></i>
-        </li>
-        <li class="px-2 py-1 text-grey-dark"> Clients </li>
+    <ul class="breadcrumbs mb-6">
+        <li><a href="{{ route('admin.dashboard') }}"><i class="text-sm fa fa-home"></i></a></li>
+        <li> Clients </li>
     </ul>
     <section class="px-2">
         <div class="flex border-b pb-1 mb-4">
