@@ -518,6 +518,7 @@ module.exports = {
     'full': '100%',
     'screen': '100vh',
     'screen-with-nav': 'calc(100vh - 48px)',
+    'screen-with-nav-and-footer': 'calc(100vh - 48px - 24.1px)',
   },
 
 

@@ -17,7 +17,7 @@
         </div>
     </nav>
 @endif
-<nav class="bg-teal-dark text-white">
+<nav class="bg-blue-darker text-white">
     <div class="container mx-auto flex">
         <div class="flex flex-1 items-center">
             
@@ -48,9 +48,6 @@
                 </dropdown>
             </li>
             @endif
-            <li>
-                <clock class="mx-2 px-4"></clock>
-            </li>
 
         </ul>
     </div>

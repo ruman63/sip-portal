@@ -18,10 +18,14 @@
         
         @include('layouts.nav')
         
-        <main>
-            @yield('content')
-        </main>
+        <div class="container mx-auto flex h-screen-with-nav-and-footer">
+            <main class="flex-1 h-full w-full overflow-auto">
+                @yield('content')
+            </main>
+        </div>
 
+        @include('layouts.footer')
+        
         @include('flash::message')
     </div>
 
