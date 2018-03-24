@@ -13,7 +13,7 @@ class ClientsRegistrationTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function any_user_can_register_new_clients() 
+    public function a_guest_can_register_as_client() 
     {
         $this->post(
             route('register'), 
