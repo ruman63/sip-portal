@@ -7,7 +7,7 @@ $factory->define(App\Client::class, function (Faker $faker) {
         //personal
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
-        // 'pan' => $faker->bothify('??????####?'),
+        'pan' => strtoupper($faker->bothify('??????####?')),
         // 'mapin' => $faker->numerify('########'),
         'dob' => $faker->date,
         'gender' => $faker->randomElement(['M','F']),

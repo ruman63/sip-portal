@@ -32,6 +32,41 @@ class ClientsRegistrationTest extends TestCase
     }
 
     /** @test */
+    public function a_client_requires_pan_no()
+    {
+        $this->withExceptionHandling();
+
+        $this->postJson(
+            route('register'),
+            $client = make('App\Client', [ 'pan' => '' ])->toArray() + [
+                'password' => 'secret',
+                'password_confirmation' => 'secret',
+            ]
+        )->assertStatus(422);
+    }
+
+    /** @test */
+    public function a_client_requires_a_valid_formatted_pan_no()
+    {
+        $this->withExceptionHandling();
+        $this->postJson(
+            route('register'),
+            make('App\Client', [ 'pan' => 'dasfddfa' ])->toArray() + [
+                'password' => 'secret',
+                'password_confirmation' => 'secret',
+            ]
+        )->assertStatus(422);
+
+        $this->post(
+            route('register'),
+            make('App\Client', [ 'pan' => 'ABCDE1234X' ])->toArray() + [
+                'password' => 'secret',
+                'password_confirmation' => 'secret',
+            ]
+        )->assertRedirect();
+    }
+
+    /** @test */
     public function when_a_client_registers_himself_he_is_logged_in_to_clients_dashboard() 
     {
         $this->post( route('register'), 

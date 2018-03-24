@@ -20,6 +20,11 @@
                 <span class="text-red text-xs mt-1">{{ $errors->first('email') }}</span>
             </div>
             <div class="field w-1/2 px-1">
+                <label for="pan" class="control">PAN Number</label>
+                <input type="text" name="pan" id="pan" class="control" value="{{ old('pan') }}" required>
+                <span class="text-red text-xs mt-1">{{ $errors->first('pan') }}</span>
+            </div>
+            <div class="field w-1/2 px-1">
                 <label for="mobile" class="control">Phone</label>
                 <div class="flex">
                     <span class="bg-grey-lighter border-l border-t border-b px-2 text-sm flex items-center">+91</span>

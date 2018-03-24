@@ -13,30 +13,13 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        /*  
-            
-            //contact
-            'address_hno' => 'required',
-            'address_area' => 'required',
-            'city' => 'required',
-            'pincode' => 'required',
-            'mobile' => 'required',
-            'email' => 'required',
-            'communication_mode' => 'required',
-    
-            //account
-            'account_type' => 'required',
-            'pay_mode' => 'required',
-            'nominee_name' => 'required',
-            'nominee_relation' => 'required', 
-        */
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('first_name', 50);
             $table->string('last_name', 50);
             $table->string('email')->unique();
-            // $table->string('pan', 15);
+            $table->string('pan', 15);
             // $table->string('mapin', 30);
             $table->date('dob');
             $table->char('gender', 1);
