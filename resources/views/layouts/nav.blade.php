@@ -19,15 +19,22 @@
 @endif
 <nav class="bg-blue-darker text-white">
     <div class="container mx-auto flex">
-        <div class="flex flex-1 items-center">
+        <div class="flex flex-1 mr-6 items-center">
             
             <h1 class="flex">
                 <a href="/" class="text-xl font-normal text-white ml-2 py-3 no-underline">SIP Wealth</a>
             </h1>
             
+            <ul class="list-reset flex flex-1 items-center justify-end">
+                <li class="flex">
+                    <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
+                        href="{{ route('folios.create') }}">
+                        Folio Entry
+                    </a>
+                </li>
+            </ul>
         </div>
-        <ul class="flex list-reset flex-1 flex-row-reverse items-center">
-
+        <ul class="flex list-reset justify-end items-center">
             @if(Auth::check())
             <li>
                 <dropdown heading="Hello! {{ Auth::user()->first_name }}">

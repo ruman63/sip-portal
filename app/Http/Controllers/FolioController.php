@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class FolioController extends Controller
 {
+    public function create() 
+    {
+        return view('folios.create');
+    }
+    
     public function store(Request $request)
     {
         $data = $request->validate([
