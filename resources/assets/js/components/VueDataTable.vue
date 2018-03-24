@@ -1,6 +1,6 @@
 <template>
-    <div class="p-3 w-full overflow-x-scroll">
-        <table class="min-w-full">
+    <div class="w-full overflow-x-scroll">
+        <table class="max-w-full">
             <thead>
                 <tr>
                     <th class="cursor-pointer" v-for="(column,index) in columns" :key="index+1" @click="sort(column)">

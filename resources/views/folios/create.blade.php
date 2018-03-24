@@ -46,7 +46,7 @@
     </section>
 
     <section class="py-4">
-        <h2>Your Folio</h2>
+        <h2 class="mb-4">Your Folio</h2>
         <v-data-table
             :names="['folio_no', 'client_id', 'scheme_code', 'purchase_price', 'amount']"
             url="{{ route('folios.index') }}"
