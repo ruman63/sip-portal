@@ -14,15 +14,15 @@
                 <label for="last_name" class="control">Last Name</label>
                 <input type="text" name="last_name" id="last_name" class="control" value="{{ old('last_name') }}" required>
             </div>
+            <div class="field w-full px-1">
+                <label for="pan" class="control">PAN Number</label>
+                <input type="text" name="pan" id="pan" class="control" value="{{ old('pan') }}" required>
+                <span class="text-red text-xs mt-1">{{ $errors->first('pan') }}</span>
+            </div>
             <div class="field w-1/2 px-1">
                 <label for="email" class="control">Email</label>
                 <input type="email" name="email" id="email" class="control" value="{{ old('email') }}" required>
                 <span class="text-red text-xs mt-1">{{ $errors->first('email') }}</span>
-            </div>
-            <div class="field w-1/2 px-1">
-                <label for="pan" class="control">PAN Number</label>
-                <input type="text" name="pan" id="pan" class="control" value="{{ old('pan') }}" required>
-                <span class="text-red text-xs mt-1">{{ $errors->first('pan') }}</span>
             </div>
             <div class="field w-1/2 px-1">
                 <label for="mobile" class="control">Phone</label>
