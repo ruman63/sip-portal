@@ -14,7 +14,7 @@ class CreateFolioTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->postJson(route('folio.store'))->assertStatus(401);
+        $this->postJson(route('folios.store'))->assertStatus(401);
     }
 
     /** @test */
@@ -24,8 +24,8 @@ class CreateFolioTest extends TestCase
             $client = create('App\Client')
         );
 
-        $this->postJson(route('folio.store'), [
-            'id' => $folioId = '12312432',
+        $this->postJson(route('folios.store'), [
+            'folio_no' => $folioId = '12312432',
             'scheme_code' => 'LT-17',
             'trade_date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
             'purchase_price' => 120.53,
@@ -33,7 +33,7 @@ class CreateFolioTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('folios', [
-            'id' => $folioId,
+            'folio_no' => $folioId,
             'client_id' => $client->id
         ]);
     }

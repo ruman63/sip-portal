@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class FolioController extends Controller
 {
+    public function index() 
+    {
+        return Folio::where('client_id', auth()->guard('web')->id())->get();
+    }
+    
     public function create() 
     {
         return view('folios.create');
@@ -15,7 +20,7 @@ class FolioController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'id' => 'required',
+            'folio_no' => 'required',
             'scheme_code' => 'required',
             'trade_date' => 'required',
             'purchase_price' => 'required',
