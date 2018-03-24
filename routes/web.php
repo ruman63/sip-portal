@@ -15,6 +15,8 @@ Route::get('/', "PagesController@index")->name('index');
 Route::get('/nav', "NavController@index")->name('nav');
 Route::get('/dashboard', "DashboardController@index")->name('dashboard');
 
+Route::post('/folio', "FolioController@store")->name('folio.store')->middleware('auth');
+
 Auth::routes();
 
 Route::group([
