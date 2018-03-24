@@ -9,7 +9,9 @@ class FolioController extends Controller
 {
     public function index() 
     {
-        return Folio::where('client_id', auth()->guard('web')->id())->get();
+        return Folio::with('client')
+            ->where('client_id', auth()->guard('web')->id())
+            ->get();
     }
     
     public function create() 

@@ -16,6 +16,8 @@ class Client extends Authenticatable
      */
     protected $guarded = [];
 
+    protected $appends = ['name'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -24,4 +26,9 @@ class Client extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
