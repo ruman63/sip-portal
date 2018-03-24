@@ -20,7 +20,7 @@
                         <span v-if="column === '__actions'">
                             <slot name="actions"></slot>
                         </span>
-                        <span v-else>{{ item[column] }}</span>
+                        <span v-else>{{ value(item,column) }}</span>
                     </td>
                 </tr>           
             </tbody>
@@ -71,6 +71,17 @@ export default {
                     return 0;
                 }
             });
+        },
+        value(obj, name) {
+            let nest = name.split('.');
+            var value = obj;
+            for(let i in nest) {
+                if(!value) {
+                    return null;
+                } 
+                value = value[nest[i]];
+            }
+            return value;
         }
     },
     mounted() {
@@ -80,7 +91,6 @@ export default {
             this.rows = this.data;
             this.requesting = false;
         }
-        
 
         this.columns = this.names;
     }
