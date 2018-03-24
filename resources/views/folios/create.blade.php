@@ -18,9 +18,9 @@
                     <span class="text-red text-xs mt-1">{{ $errors->first('scheme_code') }}</span>
                 </div>
                 <div class="field w-1/4 px-1">
-                    <label for="folio" class="control">Folio Number</label>
-                    <input type="text" name="id" id="id" class="control" value="{{ old('id') }}" required>
-                    <span class="text-red text-xs mt-1">{{ $errors->first('id') }}</span>
+                    <label for="folio_no" class="control">Folio Number</label>
+                    <input type="text" name="folio_no" id="folio_no" class="control" value="{{ old('folio_no') }}" required>
+                    <span class="text-red text-xs mt-1">{{ $errors->first('folio_no') }}</span>
                 </div>
                 <div class="field w-1/4 px-1">
                     <label for="trade_date" class="control">Date of Trade</label>
