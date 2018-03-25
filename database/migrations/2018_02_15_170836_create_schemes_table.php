@@ -14,20 +14,19 @@ class CreateSchemesTable extends Migration
     public function up()
     {
         Schema::create('schemes', function (Blueprint $table) {
-            $table->string('scode')->primary();
-            $table->unsignedInteger('company_id')->index();
-            $table->unsignedInteger('scheme_category_id')->index();
-            $table->string('payout')->nullable();
-            $table->string('reinvestment')->nullable();
-            $table->string('name');
-            $table->double('net_value')->nullable();
-            $table->double('repurchase_price')->nullable();
-            $table->double('sale_price')->nullable();
-            $table->timestamp('date');
+            $table->string('unique_no', 5);
+            $table->string('scheme_code', 20);
+            $table->string('rta_scheme_code', 10);
+            $table->string('amc_scheme_code', 10);
+            $table->string('isin', 12);
+            $table->string('amc_code', 50);
+            $table->string('scheme_type', 20);
+            $table->string('scheme_plan', 10);
+            $table->string('scheme_name', 200);
+            $table->string('purchase_allowed', 20);
+            $table->string('start_date', 15)->nullable();
+            $table->string('end_date', 15)->nullable();
             $table->timestamps();
-
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('scheme_category_id')->references('id')->on('scheme_categories');
         });
     }
 
