@@ -12,4 +12,9 @@ class Folio extends Model
     {
         return $this->belongsTo('App\Client', 'client_id');
     }
+
+    public function scheme()
+    {
+        return $this->belongsTo('App\Scheme', 'scheme_code', 'scheme_code');
+    }
 }

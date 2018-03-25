@@ -14,8 +14,8 @@ class CreateSchemesTable extends Migration
     public function up()
     {
         Schema::create('schemes', function (Blueprint $table) {
+            $table->string('scheme_code', 20)->primary();
             $table->string('unique_no', 5);
-            $table->string('scheme_code', 20);
             $table->string('rta_scheme_code', 10);
             $table->string('amc_scheme_code', 10);
             $table->string('isin', 12);
