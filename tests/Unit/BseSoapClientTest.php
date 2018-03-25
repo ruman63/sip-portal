@@ -14,7 +14,7 @@ class BseSoapClientTest extends TestCase
         parent::setUp();
         $this->credentials = [
             'UserId' => '1821101',
-            'Password' => '@123456',
+            'Password' => '123@456',
         ];
         $this->client = new BseSoapClient();
     }
