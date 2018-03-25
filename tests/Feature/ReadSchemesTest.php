@@ -22,9 +22,10 @@ class ReadSchemesTest extends TestCase
     {
         $this->signIn();
         $this->withExceptionHandling();
-        create('App\Scheme', [], 5);
-        $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
 
+        create('App\Scheme', [], 5);
+
+        $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
         $this->assertCount(5, $response);
     }
     
@@ -33,8 +34,10 @@ class ReadSchemesTest extends TestCase
     {
         $this->signIn();
         $this->withExceptionHandling();
+        
         create('App\Scheme', ['scheme_name' => 'Aditya Birla Sun Life'], 2);
         create('App\Scheme', [], 2);
+        
         $response = $this->getJson(route('schemes.index').'?s=aditya')->json();
 
         $this->assertCount(2, $response);
