@@ -9,7 +9,7 @@ class FolioController extends Controller
 {
     public function index() 
     {
-        return Folio::with('client')
+        return Folio::with(['client', 'scheme'])
             ->where('client_id', auth()->guard('web')->id())
             ->get();
     }

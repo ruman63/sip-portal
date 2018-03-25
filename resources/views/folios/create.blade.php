@@ -48,8 +48,8 @@
     <section class="py-4">
         <h2 class="mb-4">Your Folio</h2>
         <v-data-table
-            :names="['folio_no', 'client.name', 'scheme_code', 'purchase_price', 'amount']"
-            :labels="['Folio', 'Client', 'Scheme', 'Price', 'Amount']"
+            :names="['folio_no', 'client.name', 'scheme.scheme_name', 'scheme.scheme_type', 'purchase_price', 'amount']"
+            :labels="['Folio', 'Client', 'Scheme', 'Scheme Type', 'Price', 'Amount']"
             url="{{ route('folios.index') }}"
         ></v-data-table>
     </section>
