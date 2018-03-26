@@ -19,6 +19,8 @@ Route::get('/folios', "FolioController@index")->name('folios.index')->middleware
 Route::post('/folios', "FolioController@store")->name('folios.store')->middleware('auth');
 Route::get('/folios/create', "FolioController@create")->name('folios.create')->middleware('auth');
 
+Route::get('/allocations', "AllocationController@index")->name('allocations.index')->middleware('auth');
+
 Route::get('/schemes', "SchemeController@index")->name('schemes.index')->middleware('auth');
 
 Auth::routes();

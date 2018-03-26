@@ -28,6 +28,12 @@
             <ul class="list-reset flex flex-1 items-center justify-end">
                 <li class="flex">
                     <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
+                        href="{{ route('allocations.index') }}">
+                        Allocations
+                    </a>
+                </li>
+                <li class="flex">
+                    <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
                         href="{{ route('folios.create') }}">
                         Folio Entry
                     </a>
