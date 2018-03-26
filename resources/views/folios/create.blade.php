@@ -14,7 +14,8 @@
             <div class="flex flex-wrap mb-2">
                 <div class="field w-full px-1">
                     <label for="scheme_code" class="control">Scheme Code</label>
-                    <input type="text" name="scheme_code" placeholder="e.g. LT-17" id="scheme_code" class="control" required>
+                    <v-typeahead class="w-full" name="scheme_code" url="{{ route('schemes.index') }}"></v-typeahead>
+                    {{--  <input type="text" name="scheme_code" placeholder="e.g. LT-17" id="scheme_code" class="control" required>  --}}
                     <span class="text-red text-xs mt-1">{{ $errors->first('scheme_code') }}</span>
                 </div>
                 <div class="field w-1/4 px-1">

@@ -1,0 +1,107 @@
+<template>
+  <div>
+    <!-- optional indicators -->
+    <!-- <i class="absolute  fa fa-spinner fa-spin" v-if="loading"></i> -->
+
+    <!-- the input field -->
+    <input type="text"
+           class="control"
+           placeholder="Search Schemes..."
+           autocomplete="off"
+           v-model="query"
+           @keydown.down="down"
+           @keydown.up="up"
+           @keydown.enter.prevent="hit"
+           @keydown.esc="reset"
+           @blur="blur"
+           @focus="focus"
+           @input="update"/>
+
+    <input type="hidden" :name="name" v-model="data.value">
+
+    <!-- the list -->
+    <div v-show="show" class="relative">
+        <ul v-if="hasItems" 
+        class="absolute pin-t pin-x list-reset p-1 bg-white border mt-1 border-solid border-grey">
+        <!-- for vue@1.0 use: ($item, item) -->
+            <li v-for="(item, $item) in items" 
+                :key="item.unique_no"
+                :class="activeClass($item)" 
+                class="py-1 px-3 rounded"
+                @mousedown="hit" 
+                @mousemove="setActive($item)">
+                    <span v-text="item.name"></span>
+            </li>
+        </ul>
+        <div v-else 
+            v-text="empty"
+            class="absolute pin-t pin-x p-1 bg-white border mt-1 border-solid border-grey">
+            
+        </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import VueTypeahead from '../mixins/Typeahead';
+export default {
+  extends: VueTypeahead, // vue@1.0.22+
+  // mixins: [VueTypeahead], // vue@1.0.21-
+  props: ['url', 'name'],
+  data () {
+    return {
+      // The source url
+      // (required)
+      src: this.url,
+
+      // The data that would be sent by request
+      // (optional)
+      data: {},
+
+      // Limit the number of items which is shown at the list
+      // (optional)
+      limit: 5,
+
+      // The minimum character length needed before triggering
+      // (optional)
+      minChars: 3,
+
+      time: 300,
+
+      // Highlight the first item in the list
+      // (optional)
+      selectFirst: false,
+
+      // Override the default value (`q`) of query parameter name
+      // Use a falsy value for RESTful query
+      // (optional)
+      queryParamName: 's'
+    }
+  },
+
+  methods: {
+    // The callback function which is triggered when the user hits on an item
+    // (required)
+    onHit (item) {
+      this.data = item;
+      this.query = item.name;
+    },
+
+    // The callback function which is triggered when the response data are received
+    // (optional)
+    prepareResponseData (data) {
+      // data = ...
+      return data.map((item) => {
+          let name = item.scheme_code + ' - ' + item.scheme_name ;
+          let value = item.scheme_code;
+          return {name, value};
+      }); 
+    },
+
+    activeClass(index) {
+        return index === this.current ? 'bg-blue-darkest text-white' : 'text-black';
+    }
+  }
+}
+</script>
+
