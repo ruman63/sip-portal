@@ -19,14 +19,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/dashboard';
-
+    
     /**
      * Create a new controller instance.
      *
@@ -37,7 +30,16 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function guard()
+    /**
+     * Where to redirect users after login.
+     *
+     * @return string Path
+     */
+    protected function redirectPath() {
+        return route('dashboard');
+    }
+
+    protected function guard()
     {
         return auth()->guard('web');
     }
