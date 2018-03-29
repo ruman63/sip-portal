@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return $guard === 'cpanel' ? redirect(route('admin.dashboard')) :  redirect('/');
+            return $guard === 'cpanel' ? redirect(route('admin.dashboard')) :  redirect(route('dashboard'));
         }
 
         return $next($request);
