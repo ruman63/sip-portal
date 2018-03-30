@@ -12,18 +12,21 @@
 */
 
 Route::get('/', "PagesController@index")->name('index');
-Route::get('/nav', "NavController@index")->name('nav');
-Route::get('/dashboard', "DashboardController@index")->name('dashboard');
-
-Route::get('/folios', "FolioController@index")->name('folios.index')->middleware('auth');
-Route::post('/folios', "FolioController@store")->name('folios.store')->middleware('auth');
-Route::get('/folios/create', "FolioController@create")->name('folios.create')->middleware('auth');
-
-Route::get('/allocations', "AllocationController@index")->name('allocations.index')->middleware('auth');
-
-Route::get('/schemes', "SchemeController@index")->name('schemes.index')->middleware('auth');
-
 Auth::routes();
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/dashboard', "DashboardController@index")->name('dashboard');
+    
+    Route::get('/folios', "FolioController@index")->name('folios.index');
+    Route::post('/folios', "FolioController@store")->name('folios.store');
+    Route::get('/folios/create', "FolioController@create")->name('folios.create');
+    
+    Route::get('/allocations', "AllocationController@index")->name('allocations.index');
+    Route::get('/portfolio', "PortfolioController@index")->name('portfolios.index');
+    
+    Route::get('/schemes', "SchemeController@index")->name('schemes.index');
+    
+});
 
 Route::group([
         'prefix'=> 'admin', 

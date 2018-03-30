@@ -21,11 +21,23 @@ class FolioTests extends TestCase
     /** @test */
     public function a_folio_has_a_associated_scheme()
     {
-        (new BSEParser())->parse()->save(1);
-        $scheme = \App\Scheme::first();
+        $scheme = create('App\Scheme');
         
         $folio = create('App\Folio', ['scheme_code' => $scheme->scheme_code]);
 
         $this->assertInstanceOf('App\Scheme', $folio->scheme);
+    }
+
+    /** @test */
+    public function a_folio_knows_the_no_of_units_purchased()
+    {
+        
+        $folio = create('App\Folio', [
+            'purchase_price' => 120,
+            'amount' => 5000
+        ]);
+
+        $this->assertEquals(5000/120, $folio->units);
+        $this->assertArrayHasKey('units', $folio->toArray());
     }
 }
