@@ -39,6 +39,11 @@ class LoginController extends Controller
         return route('dashboard');
     }
 
+    /**
+     * Guard to use for Authentication
+     *
+     * @return Illuminate\Auth\SessionGuard 
+     */
     protected function guard()
     {
         return auth()->guard('web');
