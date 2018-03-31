@@ -44,7 +44,7 @@
                                 {{ number_format($folio->amount, 2) }} &#x20B9;
                             </td>
                             <td class="text-right">
-                                {{ $folio->current_value = number_format($folio->units * $folio->scheme->nav, 2) }} &#x20B9;
+                                {{ number_format($folio->current_value = ($folio->units * $folio->scheme->nav), 2) }} &#x20B9;
                             </td>
                             <td class="text-right">
                                 {{ number_format($folio->current_value - $folio->amount) }} &#x20B9;

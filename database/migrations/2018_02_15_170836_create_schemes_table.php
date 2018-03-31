@@ -24,6 +24,8 @@ class CreateSchemesTable extends Migration
             $table->string('scheme_plan', 10);
             $table->string('scheme_name', 200);
             $table->string('purchase_allowed', 20);
+            $table->float('nav')->nullable();
+            $table->string('nav_date', 15)->nullable();
             $table->string('start_date', 15)->nullable();
             $table->string('end_date', 15)->nullable();
             $table->timestamps();
