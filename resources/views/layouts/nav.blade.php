@@ -26,26 +26,28 @@
             </h1>
             
             <ul class="list-reset flex flex-1 items-center justify-end">
-                <li class="flex has-menu">
-                    <span class="px-2 py-2 text-xs tracking-wide uppercase text-white">
-                        Portfolio <i class="ml-1 fa fa-caret-down"></i>
-                    </span>
-                    <ul class="sub-menu">
-                        <li><a class="py-1 px-3 hover:bg-blue-dark hover:text-white block" href="{{ route('portfolios.index') }}">Summary</a></li>
-                    </ul>
-                </li>
-                <li class="flex">
-                    <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
-                        href="{{ route('allocations.index') }}">
-                        Allocations
-                    </a>
-                </li>
-                <li class="flex">
-                    <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
-                        href="{{ route('folios.create') }}">
-                        Folio Entry
-                    </a>
-                </li>
+                @if(Auth::guard('web')->check())
+                    <li class="flex has-menu">
+                        <span class="px-2 py-2 text-xs tracking-wide uppercase text-white">
+                            Portfolio <i class="ml-1 fa fa-caret-down"></i>
+                        </span>
+                        <ul class="sub-menu">
+                            <li><a class="py-1 px-3 hover:bg-blue-dark hover:text-white block" href="{{ route('portfolios.index') }}">Summary</a></li>
+                        </ul>
+                    </li>
+                    <li class="flex">
+                        <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
+                            href="{{ route('allocations.index') }}">
+                            Allocations
+                        </a>
+                    </li>
+                    <li class="flex">
+                        <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
+                            href="{{ route('folios.create') }}">
+                            Folio Entry
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
         <ul class="flex list-reset justify-end items-center">
