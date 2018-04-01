@@ -11,13 +11,12 @@ class AllocationController extends Controller
     {
         $total = auth()->guard('web')->user()->transactions()->sum('amount');
 
-        $assets = auth()->guard('web')->user()
-            ->transactions()->with('folio.scheme')->get()
-            ->groupBy(function($txn) {
-                return $txn->folio->scheme->scheme_type;
-            })->map(function($txn, $index) use ($total) {
+        $assets = auth()->guard('web')->user()->transactions()
+            ->with('folio.scheme')->get()
+            ->groupBy('folio.scheme.scheme_type')
+            ->map(function($txn, $type) use ($total) {
                 return (object)[
-                    'type' => $index,
+                    'type' => $type,
                     'amount' => $amount = $txn->sum('amount'),
                     'percent' => ($amount/$total) * 100,
                 ];
