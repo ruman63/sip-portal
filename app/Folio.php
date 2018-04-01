@@ -8,7 +8,7 @@ class Folio extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['units'];
+    protected $appends = ['totalAmount'];
 
     public function client()
     {
@@ -20,11 +20,13 @@ class Folio extends Model
         return $this->belongsTo('App\Scheme', 'scheme_code', 'scheme_code');
     }
 
-    public function getUnitsAttribute()
+    public function transactions()
     {
-        if(! $this->purchase_price) {
-            return null;
-        }
-        return $this->amount / $this->purchase_price ;
+        return $this->hasMany('App\Transaction');
+    }
+
+    public function getTotalAmountAttribute()
+    {
+        return $this->transactions->sum('amount');
     }
 }

@@ -22,7 +22,6 @@ class PortfolioTest extends TestCase
     public function a_client_can_access_his_portfolio_section()
     {
         $this->signIn();
-        $this->withExceptionHandling();
         
         $response = $this->getJson(route('portfolios.index'))
             ->assertStatus(200);
@@ -32,20 +31,24 @@ class PortfolioTest extends TestCase
     public function portfolio_summary_is_evaluated_correctly()
     {
         $this->signIn();
-        $this->withExceptionHandling();
 
-        $schemes = create('App\Scheme', [], 2);
-        
         $clientFolios = create('App\Folio', [
-            'client_id' => auth()->id(),
-            'scheme_code' => $schemes[0]->scheme_code
+            'client_id' => auth()->guard('web')->id(),
+        ], 2);
+        
+        $firstFolioTxn = create('App\Transaction', [
+            'folio_id' => $clientFolios[0]->id
+        ], 2);
+        $secondFolioTxn = create('App\Transaction', [
+            'folio_id' => $clientFolios[1]->id
         ], 2);
 
         $otherFolios = create('App\Folio', [], 2);
         
         $response = $this->getJson(route('portfolios.index'))->json();
 
-        $this->assertCount(1, $response);
-        $this->assertEquals($clientFolios->sum('amount'), $response[0]['amount']);
+        $this->assertCount(2, $response);
+        $this->assertEquals($firstFolioTxn->sum('amount'), $response[0]['totalAmount']);
+        $this->assertEquals($secondFolioTxn->sum('amount'), $response[1]['totalAmount']);
     }
 }

@@ -9,8 +9,5 @@ $factory->define(App\Folio::class, function (Faker $faker) {
         'client_id' => function() {
             return factory('App\Client')->create();
         },
-        'trade_date' => $faker->dateTime,
-        'purchase_price' => $price = $faker->numberBetween(10, 10000),
-        'amount' => $price * $faker->randomDigit
     ];
 });

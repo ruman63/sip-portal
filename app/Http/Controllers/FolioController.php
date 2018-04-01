@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Folio;
 use Illuminate\Http\Request;
+use App\Transaction;
 
 class FolioController extends Controller
 {
@@ -21,15 +22,25 @@ class FolioController extends Controller
     
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'folio_no' => 'required',
+            'transaction_uid' => 'required',
+            'type' => 'required',
             'scheme_code' => 'required',
-            'trade_date' => 'required',
-            'purchase_price' => 'required',
+            'date' => 'required',
+            'rate' => 'required',
             'amount' => 'required',
         ]);
 
-        $folio = Folio::create($data + [ 'client_id' => auth()->guard('web')->id() ]);
+        $folio = Folio::create(
+            request()->only(['folio_no', 'scheme_code'])
+            + [ 'client_id' => auth()->guard('web')->id() ]
+        );
+
+        $transaction = Transaction::make(request()->only(['type', 'date', 'rate','amount']));
+        $transaction->folio_id = $folio->id;
+        $transaction->uid = request('transaction_uid');
+        $transaction->save();
         
         flash('Folio added to your Account');
 

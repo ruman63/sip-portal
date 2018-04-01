@@ -26,15 +26,22 @@ class CreateFolioTest extends TestCase
 
         $this->postJson(route('folios.store'), [
             'folio_no' => $folioId = '12312432',
+            'transaction_uid' => $txnId = 2312414,
+            'type' => 'ADD',
             'scheme_code' => 'LT-17',
-            'trade_date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
-            'purchase_price' => 120.53,
+            'date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
+            'rate' => 120.53,
             'amount' => '3000',
         ]);
 
         $this->assertDatabaseHas('folios', [
             'folio_no' => $folioId,
             'client_id' => $client->id
+        ]);
+
+        $this->assertDatabaseHas('transactions', [
+            'uid' => $txnId,
+            'folio_id' => 1,    //First Folio Created
         ]);
     }
 }

@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\BSEParser;
 
 class FolioTests extends TestCase
 {
@@ -24,20 +24,33 @@ class FolioTests extends TestCase
         $scheme = create('App\Scheme');
         
         $folio = create('App\Folio', ['scheme_code' => $scheme->scheme_code]);
-
+        
         $this->assertInstanceOf('App\Scheme', $folio->scheme);
     }
 
     /** @test */
-    public function a_folio_knows_the_no_of_units_purchased()
+    public function a_folio_has_many_transactions()
+    {
+        $folio = create('App\Folio');
+        
+        $txn = create('App\Transaction', ['folio_id' => $folio->id]);
+
+        $this->assertInstanceOf(Collection::class, $folio->transactions);
+    }
+
+    /** @test */
+    public function a_folio_knows_the_total_amount_invested()
     {
         
-        $folio = create('App\Folio', [
-            'purchase_price' => 120,
-            'amount' => 5000
-        ]);
+        $folios = create('App\Folio', [], 2);
 
-        $this->assertEquals(5000/120, $folio->units);
-        $this->assertArrayHasKey('units', $folio->toArray());
+        $txns = create('App\Transaction', [
+            'folio_id' => $folios[0]->id
+        ], 3);
+
+        $this->assertEquals($txns->sum('amount'), $folios[0]->totalAmount);
+        $this->assertEquals(0, $folios[1]->totalAmount);
+        
+        $this->assertArrayHasKey('totalAmount', $folios[0]->toArray());
     }
 }

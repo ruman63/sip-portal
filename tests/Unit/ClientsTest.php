@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Folio;
+use App\Transaction;
 use Tests\TestCase;
+use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,5 +22,26 @@ class ClientsTest extends TestCase
         ]);
 
         $this->assertEquals($client->name, 'John Doe');
+    }
+
+    /** @test */
+    public function client_has_many_transactions_through_folios()
+    {
+        $client = create('App\Client');
+        $folio = create('App\Folio', ['client_id' => $client->id]);
+        create('App\Transaction', ['folio_id' => $folio->id]);
+
+        $this->assertInstanceOf(Collection::class, $client->transactions);
+        $this->assertInstanceOf(Transaction::class, $client->transactions->first());
+    }
+
+    /** @test */
+    public function client_has_many_folios()
+    {
+        $client = create('App\Client');
+        $folio = create('App\Folio', ['client_id' => $client->id]);
+
+        $this->assertInstanceOf(Collection::class, $client->folios);
+        $this->assertInstanceOf(Folio::class, $client->folios->first());
     }
 }

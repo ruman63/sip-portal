@@ -9,17 +9,19 @@ class AllocationController extends Controller
 {
     public function index()
     {
-        $total = Folio::where('client_id', auth()->guard('web')->id())->sum('amount');
+        $total = auth()->guard('web')->user()->transactions()->sum('amount');
 
-        $assets =  Folio::selectRaw('schemes.scheme_type type, SUM(folios.amount) amount')
-            ->where('client_id', auth()->guard('web')->id())
-            ->join('schemes', 'folios.scheme_code', '=', 'schemes.scheme_code')
-            ->groupBy('type')
-            ->get()
-            ->map(function($item) use ($total) {
-                $item['percent'] = ($item->amount / $total) * 100;
-                return $item;  
-            });
+        $assets = auth()->guard('web')->user()
+            ->transactions()->with('folio.scheme')->get()
+            ->groupBy(function($txn) {
+                return $txn->folio->scheme->scheme_type;
+            })->map(function($txn, $index) use ($total) {
+                return (object)[
+                    'type' => $index,
+                    'amount' => $amount = $txn->sum('amount'),
+                    'percent' => ($amount/$total) * 100,
+                ];
+            })->values();
 
         if(request()->wantsJson()) {
             return $assets;
