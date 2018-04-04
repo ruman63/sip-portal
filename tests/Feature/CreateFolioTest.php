@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CreateFolioTest extends TestCase
 {
     use RefreshDatabase;
+    
     /** @test */
     public function a_guest_cannot_add_folio()
     {
@@ -30,8 +31,8 @@ class CreateFolioTest extends TestCase
             'type' => 'ADD',
             'scheme_code' => 'LT-17',
             'date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
-            'rate' => 120.53,
-            'amount' => '3000',
+            'rate' => $rate = 120.53,
+            'amount' => $amount = 3000,
         ]);
 
         $this->assertDatabaseHas('folios', [
@@ -42,6 +43,7 @@ class CreateFolioTest extends TestCase
         $this->assertDatabaseHas('transactions', [
             'uid' => $txnId,
             'folio_id' => 1,    //First Folio Created
+            'units' => $amount/$rate,
         ]);
     }
 }

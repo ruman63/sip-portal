@@ -8,15 +8,13 @@ class Transaction extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['units'];
+    public static function boot(){
+        static::creating(function($transaction) {
+            $transaction->units = $transaction->amount/$transaction->rate;
+        });
+    }
 
     public function folio() {
         return $this->belongsTo('App\Folio');
-    }
-
-
-    public function getUnitsAttribute()
-    {
-        return $this->amount/$this->rate;
     }
 }

@@ -17,7 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
             $table->string('uid')->unique();
             $table->string('type');
-            $table->float('rate', 6)->nullable();
+            $table->float('units');
+            $table->float('rate', 6);
             $table->float('amount', 16);
             $table->string('folio_id');
             $table->string('date');
