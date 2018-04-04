@@ -27,11 +27,11 @@ class Folio extends Model
 
     public function getTotalAmountAttribute()
     {
-        return $this->transactions->sum('amount');
+        return $this->transactions()->sum('amount');
     }
 
     public function getTotalUnitsAttribute()
     {
-        return $this->transactions->sum('units');
+        return $this->transactions()->sum('units');
     }
 }

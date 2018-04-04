@@ -64,11 +64,11 @@ class FolioTests extends TestCase
             'folio_id' => $folios[0]->id
         ], 3);
 
-        $this->assertEquals($txns->sum('units'), $folios[0]->totalUnits);
+        $this->assertApproximatelyEquals($txns->sum('units'), $folios[0]->totalUnits);
         
         tap($folios[0]->toArray(), function($array) use ($txns) {
             $this->assertArrayHasKey('totalUnits', $array);
-            $this->assertEquals($txns->sum('units'), $array['totalUnits']);
+            $this->assertApproximatelyEquals($txns->sum('units'), $array['totalUnits']);
         });
         
         $this->assertEquals(0, $folios[1]->totalUnits);

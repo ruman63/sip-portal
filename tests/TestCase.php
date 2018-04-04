@@ -26,4 +26,12 @@ abstract class TestCase extends BaseTestCase
         $this->actingAs($admin ?? factory('App\Admin')->create() , 'cpanel');
         return $this;
     }
+
+    protected function assertApproximatelyEquals($expected, $actual, $decimals = 2) {
+        return $this->assertEquals(
+            round($expected, $decimals), 
+            round($actual, $decimals),
+            "Failed asserting that ${actual} is approximately equal to expected ${expected}."
+        );
+    }
 }
