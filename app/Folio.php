@@ -8,7 +8,7 @@ class Folio extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['totalAmount'];
+    protected $appends = ['totalAmount', 'totalUnits'];
 
     public function client()
     {
@@ -28,5 +28,10 @@ class Folio extends Model
     public function getTotalAmountAttribute()
     {
         return $this->transactions->sum('amount');
+    }
+
+    public function getTotalUnitsAttribute()
+    {
+        return $this->transactions->sum('units');
     }
 }

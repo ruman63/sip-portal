@@ -53,4 +53,24 @@ class FolioTests extends TestCase
         
         $this->assertArrayHasKey('totalAmount', $folios[0]->toArray());
     }
+
+    /** @test */
+    public function a_folio_knows_the_total_units_hold()
+    {
+        
+        $folios = create('App\Folio', [], 2);
+
+        $txns = create('App\Transaction', [
+            'folio_id' => $folios[0]->id
+        ], 3);
+
+        $this->assertEquals($txns->sum('units'), $folios[0]->totalUnits);
+        
+        tap($folios[0]->toArray(), function($array) use ($txns) {
+            $this->assertArrayHasKey('totalUnits', $array);
+            $this->assertEquals($txns->sum('units'), $array['totalUnits']);
+        });
+        
+        $this->assertEquals(0, $folios[1]->totalUnits);
+    }
 }
