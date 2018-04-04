@@ -73,4 +73,22 @@ class FolioTests extends TestCase
         
         $this->assertEquals(0, $folios[1]->totalUnits);
     }
+
+    /** @test */
+    public function a_folio_knows_the_average_rate_of_purchase()
+    {
+        
+        $folios = create('App\Folio', [], 2);
+
+        $txns = create('App\Transaction', [
+            'folio_id' => $folios[0]->id
+        ], 3);
+
+        $this->assertApproximatelyEquals($folios[0]->totalAmount/ $folios[0]->totalUnits, $folios[0]->averageRate);
+        
+        tap($folios[0]->toArray(), function($array) use ($txns) {
+            $this->assertArrayHasKey('averageRate', $array);
+            $this->assertApproximatelyEquals($array['totalAmount']/$array['totalUnits'], $array['averageRate']);
+        });
+    }
 }

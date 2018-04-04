@@ -31,7 +31,7 @@ abstract class TestCase extends BaseTestCase
         return $this->assertEquals(
             round($expected, $decimals), 
             round($actual, $decimals),
-            "Failed asserting that ${actual} is approximately equal to expected ${expected}."
+            "Failed asserting that " . ($actual ?? "'null'") . " is approximately equal to expected ${expected}."
         );
     }
 }
