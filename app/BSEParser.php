@@ -27,7 +27,10 @@ class BSEParser
             function($record) use ($keys) {
                 return $keys->combine($record)->only($this->keys())->toArray();
             }
-        );
+        )->filter(function($item) {
+            return \Carbon\Carbon::parse($item['end_date']) > \Carbon\Carbon::now();
+        });
+
         return $this;
     }
 

@@ -11,6 +11,7 @@ $factory->define(App\Scheme::class, function (Faker $faker) {
         'amc_scheme_code' => strtoupper($faker->bothify('#????#')),
         'isin' => strtoupper($faker->bothify('INF###?##??#')),
         'amc_code' => strtoupper(str_replace(' ', '', $faker->words(3, true))). '_MF',
+        'nav' => $faker->numberBetween(10, 8000),
         'scheme_plan' => $faker->randomElement(['NORMAL', 'DIRECT']),
         'scheme_type' => $faker->randomElement(['ELSS', 'DEBT', 'EQUITY', 'LIQUID']),
         'purchase_allowed' => $faker->randomElement(['Y', 'N']),

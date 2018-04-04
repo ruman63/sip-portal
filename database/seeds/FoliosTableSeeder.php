@@ -13,7 +13,7 @@ class FoliosTableSeeder extends Seeder
      */
     public function run()
     {
-        $schemes = Scheme::all();
+        $schemes = Scheme::whereNotNull('nav')->get();
         Client::all()->each(function($client) use ($schemes) {
             factory('App\Folio', 3)->create([
                 'client_id' => $client->id,

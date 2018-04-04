@@ -38,16 +38,16 @@
                                 {{ $folio->sell }} 
                             </td>
                             <td>
-                                {{ number_format($folio->units, 2) }}
+                                {{ round($folio->totalUnits, 2) }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($folio->amount, 2) }} &#x20B9;
+                                {{ round($folio->totalAmount, 2) }} &#x20B9;
                             </td>
                             <td class="text-right">
-                                {{ number_format($folio->current_value = ($folio->units * $folio->scheme->nav), 2) }} &#x20B9;
+                                {{ round($folio->currentValue, 2) }} &#x20B9;
                             </td>
                             <td class="text-right">
-                                {{ number_format($folio->current_value - $folio->amount) }} &#x20B9;
+                                {{ round($folio->currentValue - $folio->totalAmount, 2) }} &#x20B9;
                             </td>
                             <td>
                                 {{ $folio->absoluteReturn }}

@@ -86,9 +86,29 @@ class FolioTests extends TestCase
 
         $this->assertApproximatelyEquals($folios[0]->totalAmount/ $folios[0]->totalUnits, $folios[0]->averageRate);
         
-        tap($folios[0]->toArray(), function($array) use ($txns) {
+        tap($folios[0]->toArray(), function($array) {
             $this->assertArrayHasKey('averageRate', $array);
             $this->assertApproximatelyEquals($array['totalAmount']/$array['totalUnits'], $array['averageRate']);
+        });
+    }
+
+    /** @test */
+    public function a_folio_knows_the_current_value_of_the_invested_amount()
+    {
+        
+        $folios = create('App\Folio', [], 2);
+
+        $txns = create('App\Transaction', [
+            'folio_id' => $folios[0]->id
+        ], 3);
+
+        $currentValue = $folios[0]->scheme->nav * $folios[0]->averageRate;
+        
+        $this->assertApproximatelyEquals($currentValue, $folios[0]->currentValue);
+        
+        tap($folios[0]->toArray(), function($array) use ($currentValue) {
+            $this->assertArrayHasKey('currentValue', $array);
+            $this->assertApproximatelyEquals($currentValue, $array['currentValue']);
         });
     }
 }

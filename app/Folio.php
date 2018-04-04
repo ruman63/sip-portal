@@ -8,7 +8,12 @@ class Folio extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['totalAmount', 'totalUnits', 'averageRate'];
+    protected $appends = [
+        'totalAmount', 
+        'totalUnits', 
+        'averageRate',
+        'currentValue',
+    ];
 
     public function client()
     {
@@ -33,6 +38,11 @@ class Folio extends Model
     public function getTotalUnitsAttribute()
     {
         return $this->transactions()->sum('units');
+    }
+
+    public function getCurrentValueAttribute()
+    {
+        return $this->averageRate * $this->scheme->nav;
     }
 
     public function getAverageRateAttribute()
