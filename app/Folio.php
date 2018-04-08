@@ -42,7 +42,7 @@ class Folio extends Model
 
     public function getCurrentValueAttribute()
     {
-        return $this->averageRate * $this->scheme->nav;
+        return $this->totalUnits * $this->scheme->nav;
     }
 
     public function getAverageRateAttribute()

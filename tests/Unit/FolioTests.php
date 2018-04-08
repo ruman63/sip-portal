@@ -102,7 +102,7 @@ class FolioTests extends TestCase
             'folio_id' => $folios[0]->id
         ], 3);
 
-        $currentValue = $folios[0]->scheme->nav * $folios[0]->averageRate;
+        $currentValue = $folios[0]->scheme->nav * $folios[0]->totalUnits;
         
         $this->assertApproximatelyEquals($currentValue, $folios[0]->currentValue);
         
