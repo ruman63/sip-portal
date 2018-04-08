@@ -14,6 +14,11 @@ class PortfolioController extends Controller
         ->get()
         ->map(function($folio) {
             $folio['absoluteReturn'] = ($folio->currentValue - $folio->totalAmount) * 100 / $folio->totalAmount;
+            $earliestTxnDate = $folio->transactions->sortBy(function($txn) {
+                return \Carbon\Carbon::parse($txn->date);
+            })->first()->date;
+            $days = \Carbon\Carbon::parse($earliestTxnDate)->diffInDays();
+            $folio['xirr'] = $folio->absoluteReturn / $days * 365;
             return $folio;
         });
 

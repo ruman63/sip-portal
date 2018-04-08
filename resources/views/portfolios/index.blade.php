@@ -14,14 +14,14 @@
                         <th>Folio</th>
                         {{-- <th> </th> --}}
                         {{-- <th>Sell</th> --}}
-                        <th>Units</th>
+                        <th class="text-right">Units</th>
                         <th class="text-right">Average <br> Rate </th>
                         <th class="text-right">Purchase <br> Value </th>
                         <th class="text-right">Current <br> Nav </th>
                         <th class="text-right">Current <br> Value </th>
                         <th class="text-right">Gain</th>
                         <th class="text-right">Absolute <br> Return</th>
-                        <th>XIRR</th>
+                        <th class="text-right">XIRR</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                             <td>
                                 {{ $folio->sell }} 
                             </td> --}}
-                            <td>
+                            <td class="text-right">
                                 {{ currency(round($folio->totalUnits, 2)) }}
                             </td>
                             <td class="text-right">
@@ -54,17 +54,37 @@
                             <td class="text-right">
                                 {{ currency(round($folio->currentValue, 2)) }} &#x20B9;
                             </td>
-                            <td class="text-right">
+                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
                                 {{ currency(round($folio->currentValue - $folio->totalAmount, 2)) }} &#x20B9;
                             </td>
-                            <td class="text-right">
+                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
                                 {{ round($folio->absoluteReturn, 2) }} %
                             </td>
-                            <td>
-                                {{ $folio->xirr }}
+                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
+                                    {{ round($folio->xirr, 2) }} %
                             </td>
                         </tr>
                     @endforeach
+                    <tr class="border-t-2 text-sm font-semibold uppercase">
+                        <td>Total</td>
+                        <td></td>
+                        <td class="text-right">
+                            {{ currency(round($portfolio->sum('totalUnits'),2)) }}
+                        </td>
+                        <td></td>
+                        <td class="text-right">
+                            {{ currency($purchase = round($portfolio->sum('totalAmount'),2)) }} &#x20B9;
+                        </td>
+                        <td></td>
+                        <td class="text-right">
+                            {{ currency($current = round($portfolio->sum('currentValue'),2)) }} &#x20B9;
+                        </td>
+                        <td class="text-right {{ $current < $purchase ? 'text-red' : 'text-green-dark' }}">
+                            {{ $loss = currency($current - $purchase) }} &#x20B9;
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

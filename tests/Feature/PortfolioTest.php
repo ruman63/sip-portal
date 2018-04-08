@@ -68,8 +68,32 @@ class PortfolioTest extends TestCase
         $response = $this->getJson(route('portfolios.index'))->json();
 
         $this->assertCount(1, $response);
+
         $this->assertArrayHasKey('absoluteReturn', $response[0]);
         $expectedReturn = ($clientFolio->currentValue - $clientFolio->totalAmount) * 100 / $clientFolio->totalAmount;
         $this->assertEquals($expectedReturn, $response[0]['absoluteReturn']);
+    }
+
+    /** @test */
+    public function portfolio_summary_gives_xirr_correctly()
+    {
+        $this->signIn();
+
+        $clientFolio = create('App\Folio', [
+            'client_id' => auth()->guard('web')->id(),
+        ]);
+        $days = 300;
+        $folioTxns = create('App\Transaction', [
+            'folio_id' => $clientFolio->id,
+            'date' => \Carbon\Carbon::now()->subDays($days),
+        ], 3);
+
+        $response = $this->getJson(route('portfolios.index'))->json();
+
+        $this->assertCount(1, $response);
+
+        $this->assertArrayHasKey('xirr', $response[0]);
+        $expectedXIRR = $response[0]['absoluteReturn'] / $days * 365;
+        $this->assertEquals($expectedXIRR, $response[0]['xirr']);
     }
 }
