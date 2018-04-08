@@ -51,4 +51,25 @@ class PortfolioTest extends TestCase
         $this->assertEquals($firstFolioTxn->sum('amount'), $response[0]['totalAmount']);
         $this->assertEquals($secondFolioTxn->sum('amount'), $response[1]['totalAmount']);
     }
+
+    /** @test */
+    public function portfolio_summary_gives_abslute_return_correctly()
+    {
+        $this->signIn();
+
+        $clientFolio = create('App\Folio', [
+            'client_id' => auth()->guard('web')->id(),
+        ]);
+        
+        $folioTxns = create('App\Transaction', [
+            'folio_id' => $clientFolio->id
+        ], 3);
+
+        $response = $this->getJson(route('portfolios.index'))->json();
+
+        $this->assertCount(1, $response);
+        $this->assertArrayHasKey('absoluteReturn', $response[0]);
+        $expectedReturn = ($clientFolio->currentValue - $clientFolio->totalAmount) * 100 / $clientFolio->totalAmount;
+        $this->assertEquals($expectedReturn, $response[0]['absoluteReturn']);
+    }
 }

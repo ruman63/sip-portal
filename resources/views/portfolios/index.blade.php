@@ -12,13 +12,15 @@
                     <tr>
                         <th>Scheme</th>
                         <th>Folio</th>
-                        <th>Dividend <br> Reinvest</th>
-                        <th>Sell</th>
+                        {{-- <th> </th> --}}
+                        {{-- <th>Sell</th> --}}
                         <th>Units</th>
-                        <th class="text-right">Purchase <br> Value</th>
-                        <th class="text-right">Current <br> Value</th>
+                        <th class="text-right">Average <br> Rate </th>
+                        <th class="text-right">Purchase <br> Value </th>
+                        <th class="text-right">Current <br> Nav </th>
+                        <th class="text-right">Current <br> Value </th>
                         <th class="text-right">Gain</th>
-                        <th>Absolute <br> Return</th>
+                        <th class="text-right">Absolute <br> Return</th>
                         <th>XIRR</th>
                     </tr>
                 </thead>
@@ -31,26 +33,32 @@
                             <td>
                                 {{ $folio->folio_no }} 
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $folio->reinvest }} 
                             </td>
                             <td>
                                 {{ $folio->sell }} 
-                            </td>
+                            </td> --}}
                             <td>
-                                {{ round($folio->totalUnits, 2) }}
+                                {{ currency(round($folio->totalUnits, 2)) }}
                             </td>
                             <td class="text-right">
-                                {{ round($folio->totalAmount, 2) }} &#x20B9;
+                                {{ round($folio->averageRate, 2) }} &#x20B9;
                             </td>
                             <td class="text-right">
-                                {{ round($folio->currentValue, 2) }} &#x20B9;
+                                {{ currency(round($folio->totalAmount, 2)) }} &#x20B9;
                             </td>
                             <td class="text-right">
-                                {{ round($folio->currentValue - $folio->totalAmount, 2) }} &#x20B9;
+                                {{ currency($folio->scheme->nav) }} &#x20B9;
                             </td>
-                            <td>
-                                {{ $folio->absoluteReturn }}
+                            <td class="text-right">
+                                {{ currency(round($folio->currentValue, 2)) }} &#x20B9;
+                            </td>
+                            <td class="text-right">
+                                {{ currency(round($folio->currentValue - $folio->totalAmount, 2)) }} &#x20B9;
+                            </td>
+                            <td class="text-right">
+                                {{ round($folio->absoluteReturn, 2) }} %
                             </td>
                             <td>
                                 {{ $folio->xirr }}

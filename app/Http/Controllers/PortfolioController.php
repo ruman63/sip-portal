@@ -11,7 +11,11 @@ class PortfolioController extends Controller
     {
         $portfolio = auth()->guard('web')->user()->folios()
         ->with('transactions', 'scheme')
-        ->get();
+        ->get()
+        ->map(function($folio) {
+            $folio['absoluteReturn'] = ($folio->currentValue - $folio->totalAmount) * 100 / $folio->totalAmount;
+            return $folio;
+        });
 
         if(request()->wantsJson()) {
             return $portfolio;
