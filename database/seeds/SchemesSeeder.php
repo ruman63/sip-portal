@@ -13,7 +13,7 @@ class SchemesSeeder extends Seeder
      */
     public function run()
     {
-        (new BSEParser())->parse()->save(1000);
+        (new BSEParser())->parse()->save();
         (new AmfiiNavParser(null, true))->parse()->update();
     }
 }
