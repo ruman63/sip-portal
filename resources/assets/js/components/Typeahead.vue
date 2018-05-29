@@ -15,9 +15,10 @@
            @keydown.esc="reset"
            @blur="blur"
            @focus="focus"
-           @input="update"/>
+           @input="update"
+           :disabled="disabled"/>
 
-    <input type="hidden" :name="name" v-model="data.value">
+    <input type="hidden" :name="name" v-model="data.scheme_code">
 
     <!-- the list -->
     <div v-show="show" class="relative">
@@ -30,7 +31,7 @@
                 class="py-1 px-3 rounded"
                 @mousedown="hit" 
                 @mousemove="setActive($item)">
-                    <span v-text="item.name"></span>
+                    <span v-text="`[${item.scheme_code}] ${item.scheme_name}`"></span>
             </li>
         </ul>
         <div v-else 
@@ -47,7 +48,12 @@ import VueTypeahead from '../mixins/Typeahead';
 export default {
   extends: VueTypeahead, // vue@1.0.22+
   // mixins: [VueTypeahead], // vue@1.0.21-
-  props: ['url', 'name'],
+  props: {
+    'url':{},
+    'name':{},
+    'value':{},
+    'disabled':{default:false}
+  },
   data () {
     return {
       // The source url
@@ -78,24 +84,31 @@ export default {
       queryParamName: 's'
     }
   },
-
+  watch: {
+    value() {
+      if(!this.value) {
+        return;
+      }
+      let item = this.value;
+      this.data = item;
+      this.query = `[${item.scheme_code}] ${item.scheme_name}`;
+    }
+  },
   methods: {
     // The callback function which is triggered when the user hits on an item
     // (required)
     onHit (item) {
       this.data = item;
-      this.query = item.name;
+      this.query = `[${item.scheme_code}] ${item.scheme_name}`;
+      this.$emit('input', item.code);
     },
 
     // The callback function which is triggered when the response data are received
     // (optional)
     prepareResponseData (data) {
       // data = ...
-      return data.map((item) => {
-          let name = item.scheme_code + ' - ' + item.scheme_name ;
-          let value = item.scheme_code;
-          return {name, value};
-      }); 
+      console.log(data);
+      return data;
     },
 
     activeClass(index) {
