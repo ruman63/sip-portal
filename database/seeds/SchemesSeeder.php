@@ -13,7 +13,6 @@ class SchemesSeeder extends Seeder
      */
     public function run()
     {
-        (new BSEParser())->parse()->save();
-        (new AmfiiNavParser(null, true))->parse()->update();
+        factory('App\Scheme', 100)->create();
     }
 }
