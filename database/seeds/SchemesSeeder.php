@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\BSEParser;
-use App\AmfiiNavParser;
 
 class SchemesSeeder extends Seeder
 {

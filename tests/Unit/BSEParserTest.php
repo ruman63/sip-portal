@@ -15,14 +15,14 @@ class BSEParserTest extends TestCase
     {
         $this->assertArrayHasKey(
             'scheme_code', 
-            (new \App\BSEParser())->parse()->records()->random()
+            (new \App\Parsers\BSEParser())->parse()->records()->random()
         );
     }
     
     /** @test */
     public function it_decodes_file_and_persists_to_database()
     {
-        $parser = new \App\BSEParser();
+        $parser = new \App\Parsers\BSEParser();
         $records = $parser->parse()->records(5);
         $parser->save(5);
         $this->assertDatabaseHas('schemes', $records->first());

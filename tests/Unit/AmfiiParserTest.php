@@ -16,16 +16,16 @@ class AmfiiParserTest extends TestCase
         
         $this->assertArrayHasKey(
             'scheme_code', 
-            (new \App\AmfiiNavParser())->parse()->records()->random()
+            (new \App\Parsers\AmfiiNavParser())->parse()->records()->random()
         );
     }
 
     /** @test */
     public function it_decodes_file_and_persists_to_database()
     {
-        $BSEParser = new \App\BSEParser();
+        $BSEParser = new \App\Parsers\BSEParser();
         $BSEParser->parse()->save(15);
-        $AmfiiParser = new \App\AmfiiNavParser();
+        $AmfiiParser = new \App\Parsers\AmfiiNavParser();
         $AmfiiParser->parse()->update();
         $this->assertTrue(\App\Scheme::whereNotNull('nav')->count() > 2);
     }
