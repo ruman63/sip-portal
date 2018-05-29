@@ -24,9 +24,9 @@ class AmfiiParserTest extends TestCase
     public function it_decodes_file_and_persists_to_database()
     {
         $BSEParser = new \App\Parsers\BSEParser();
-        $BSEParser->parse()->save(15);
+        $BSEParser->parse()->save(10);
         $AmfiiParser = new \App\Parsers\AmfiiNavParser();
         $AmfiiParser->parse()->update();
-        $this->assertTrue(\App\Scheme::whereNotNull('nav')->count() > 2);
+        $this->assertTrue(\App\Scheme::whereNotNull('nav')->count() > 1);
     }
 }
