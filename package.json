@@ -11,6 +11,8 @@
     },
     "devDependencies": {
         "axios": "^0.17",
+        "browser-sync": "^2.24.4",
+        "browser-sync-webpack-plugin": "^2.2.2",
         "chart.js": "^2.7.2",
         "cross-env": "^5.1",
         "font-awesome": "^4.7.0",

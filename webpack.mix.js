@@ -16,4 +16,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .options({
     processCssUrls: false,
     postCss: [ tailwindcss('./tailwind.js') ],
+  })
+  .browserSync({
+    proxy: "portal.test"
   });
