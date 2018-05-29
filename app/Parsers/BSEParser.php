@@ -1,36 +1,55 @@
 <?php 
 namespace App\Parsers;
 
+use App\Scheme;
+use Illuminate\Log\Logger;
+
 class BSEParser
 {
-    protected $contents;
-    protected $records;
+    private $lines;
+    private $output;
+    public $records;
 
-    public function __construct($file = 'schemes.txt')
+    public function __construct($output = null)
     {
-        $this->contents = collect(
-            explode("|\r\n", \Storage::disk('local')->get($file))
-        )->filter()->map(function($line) {
-            return collect(explode('|', $line));
-        });
-    }
+        $this->output = $output;
+        $file = 'schemes.txt';
 
+        if(!\Storage::disk('local')->exists($file)) {
+            $this->logger->error("'$file' could not be found. Please upload file to storage/app/$file");
+        }
+
+        $this->lines = collect(
+            explode("|\r\n", \Storage::disk('local')->get($file))
+        )->filter();
+    }
+    
     public function parse()
     {
-        $keys = $this->contents->shift();
+        $result = collect([]);
 
-        $keys = $keys->map(function($key) {
+        $keys = collect(
+            explode('|', $this->lines->shift())
+        )->map(function($key) {
             return str_slug($key, '_');
         });
-        
-        $this->records = $this->contents->map(
-            function($record) use ($keys) {
-                return $keys->combine($record)->only($this->keys())->toArray();
-            }
-        )->filter(function($item) {
-            return \Carbon\Carbon::parse($item['end_date']) > \Carbon\Carbon::now();
-        });
 
+        $this->lines
+            ->chunk(100)
+            ->each(function($lines) use ($keys, $result) {
+                
+                $schemes = $lines->map(function($line) use ($keys) {
+                    $scheme = collect(explode('|', $line));
+                    return $keys->combine($scheme)->only($this->keys())->toArray();
+                })->filter(function($scheme) {
+                    return \Carbon\Carbon::parse($scheme['end_date']) > \Carbon\Carbon::now();
+                });
+
+                $result->push($schemes);
+            });
+
+        $this->records = $result->flatten(1);
+            
         return $this;
     }
 
@@ -86,17 +105,20 @@ class BSEParser
         ];
     }
 
-    public function save($records = null)
+    public function save($take = null)
     {
-        $this->records($records)->each(function($record){
-            Scheme::create($record);
-        });
-    }
+        $schemes = $this->records($take);
+        $bar = $this->output ? $this->output->createProgressBar($schemes->count()) : null;
 
-    public function updateOrCreate($records = null)
-    {
-        $this->records($records)->each(function($record) {
-            Scheme::updateOrCreate($record);
+        $schemes =  $schemes->map(function($scheme, $index) use ($bar){
+            if($bar) {
+                $bar->advance();
+            }
+            return Scheme::create($scheme);
         });
+
+        $bar ? $bar->finish() : '';
+
+        return $schemes;
     }
 }

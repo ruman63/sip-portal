@@ -23,8 +23,8 @@ class BSEParserTest extends TestCase
     public function it_decodes_file_and_persists_to_database()
     {
         $parser = new \App\Parsers\BSEParser();
-        $records = $parser->parse()->records(5);
-        $parser->save(5);
+        $records = $parser->parse()->records(2);
+        $parser->save(null, 2);
         $this->assertDatabaseHas('schemes', $records->first());
     }
 }
