@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('uid')->unique();
+            $table->string('scheme_code', 20);
             $table->string('type');
             $table->float('units');
             $table->float('rate', 6);

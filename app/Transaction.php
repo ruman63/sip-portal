@@ -17,4 +17,9 @@ class Transaction extends Model
     public function folio() {
         return $this->belongsTo('App\Folio');
     }
+    
+    public function scheme()
+    {
+        return $this->belongsTo('App\Scheme', 'scheme_code', 'scheme_code');
+    }
 }

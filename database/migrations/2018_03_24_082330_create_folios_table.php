@@ -16,7 +16,6 @@ class CreateFoliosTable extends Migration
         Schema::create('folios', function (Blueprint $table) {
             $table->increments('id');
             $table->string('folio_no', 20)->unique();
-            $table->string('scheme_code', 20);
             $table->unsignedInteger('client_id');
             $table->timestamps();
         });
