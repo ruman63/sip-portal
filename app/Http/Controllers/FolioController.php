@@ -10,7 +10,7 @@ class FolioController extends Controller
 {
     public function index() 
     {
-        return Folio::with(['client', 'scheme'])
+        return Folio::with(['client', 'transactions.scheme'])
             ->where('client_id', auth()->guard('web')->id())
             ->get();
     }
@@ -33,11 +33,11 @@ class FolioController extends Controller
         ]);
 
         $folio = Folio::create(
-            request()->only(['folio_no', 'scheme_code'])
+            request()->only('folio_no')
             + [ 'client_id' => auth()->guard('web')->id() ]
         );
 
-        $transaction = Transaction::make(request()->only(['type', 'date', 'rate','amount']));
+        $transaction = Transaction::make(request()->only(['scheme_code', 'type', 'date', 'rate','amount']));
         $transaction->folio_id = $folio->id;
         $transaction->uid = request('transaction_uid');
         $transaction->save();

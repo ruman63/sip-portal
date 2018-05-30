@@ -10,7 +10,7 @@ class PortfolioController extends Controller
     public function index()
     {
         $portfolio = auth()->guard('web')->user()->folios()
-        ->with('transactions', 'scheme')
+        ->with('transactions.scheme')
         ->get()
         ->map(function($folio) {
             $folio['absoluteReturn'] = ($folio->currentValue - $folio->totalAmount) * 100 / $folio->totalAmount;

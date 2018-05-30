@@ -39,6 +39,7 @@ class PortfolioTest extends TestCase
         $firstFolioTxn = create('App\Transaction', [
             'folio_id' => $clientFolios[0]->id
         ], 2);
+
         $secondFolioTxn = create('App\Transaction', [
             'folio_id' => $clientFolios[1]->id
         ], 2);
@@ -68,7 +69,7 @@ class PortfolioTest extends TestCase
         $response = $this->getJson(route('portfolios.index'))->json();
 
         $this->assertCount(1, $response);
-
+        
         $this->assertArrayHasKey('absoluteReturn', $response[0]);
         $expectedReturn = ($clientFolio->currentValue - $clientFolio->totalAmount) * 100 / $clientFolio->totalAmount;
         $this->assertEquals($expectedReturn, $response[0]['absoluteReturn']);

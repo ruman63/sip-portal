@@ -16,7 +16,7 @@ class AmfiiParserTest extends TestCase
         
         $this->assertArrayHasKey(
             'scheme_code', 
-            (new \App\Parsers\AmfiiNavParser())->parse()->records()->random()
+            (new \App\Parsers\AmfiiNavParser(null, $remote = false))->parse()->records()->random()
         );
     }
 
@@ -25,7 +25,7 @@ class AmfiiParserTest extends TestCase
     {
         $BSEParser = new \App\Parsers\BSEParser();
         $BSEParser->parse()->save(10);
-        $AmfiiParser = new \App\Parsers\AmfiiNavParser();
+        $AmfiiParser = new \App\Parsers\AmfiiNavParser(null, $remote=false);
         $AmfiiParser->parse()->update();
         $this->assertTrue(\App\Scheme::whereNotNull('nav')->count() > 1);
     }
