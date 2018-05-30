@@ -11,7 +11,7 @@ class AmfiiNavParser
     protected $records;
     private $output;
 
-    public function __construct($output = null, $remote = false)
+    public function __construct($output = null, $remote = true)
     {
         $this->output = $output;
         
