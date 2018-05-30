@@ -14,7 +14,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('dashboard', function ($view) {
+        view()->composer('*', function ($view) {
             return $view->with(
                 'lastUpdatedNav', 
                 Carbon::parse(\DB::table('schemes')->min('nav_date'))
