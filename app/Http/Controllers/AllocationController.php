@@ -12,8 +12,8 @@ class AllocationController extends Controller
         $total = auth()->guard('web')->user()->transactions()->sum('amount');
 
         $assets = auth()->guard('web')->user()->transactions()
-            ->with('folio.scheme')->get()
-            ->groupBy('folio.scheme.scheme_type')
+            ->with('scheme')->get()
+            ->groupBy('scheme.scheme_type')
             ->map(function($txn, $type) use ($total) {
                 return (object)[
                     'type' => $type,
