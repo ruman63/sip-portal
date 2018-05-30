@@ -32,9 +32,9 @@ class FolioController extends Controller
             'amount' => 'required',
         ]);
 
-        $folio = Folio::create(
-            request()->only('folio_no')
-            + [ 'client_id' => auth()->guard('web')->id() ]
+        $folio = Folio::firstOrCreate(
+            request()->only('folio_no'),
+            [ 'client_id' => auth()->guard('web')->id() ]
         );
 
         $transaction = Transaction::make(request()->only(['scheme_code', 'type', 'date', 'rate','amount']));

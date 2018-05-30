@@ -26,44 +26,51 @@
                 </thead>
                 <tbody>
                     @foreach($portfolio as $folio)
-                        <tr>
-                            <td title="{{ $folio->scheme->scheme_name }}">
-                                {{ str_limit($folio->scheme->scheme_name, 40) }} 
-                            </td>
-                            <td>
-                                {{ $folio->folio_no }} 
-                            </td>
-                            {{-- <td>
-                                {{ $folio->reinvest }} 
-                            </td>
-                            <td>
-                                {{ $folio->sell }} 
-                            </td> --}}
-                            <td class="text-right">
-                                {{ currency(round($folio->totalUnits, 2)) }}
-                            </td>
-                            <td class="text-right">
-                                {{ round($folio->averageRate, 2) }} &#x20B9;
-                            </td>
-                            <td class="text-right">
-                                {{ currency(round($folio->totalAmount, 2)) }} &#x20B9;
-                            </td>
-                            <td class="text-right">
-                                {{ currency($folio->scheme->nav) }} &#x20B9;
-                            </td>
-                            <td class="text-right">
-                                {{ currency(round($folio->currentValue, 2)) }} &#x20B9;
-                            </td>
-                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
-                                {{ currency(round($folio->currentValue - $folio->totalAmount, 2)) }} &#x20B9;
-                            </td>
-                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
-                                {{ round($folio->absoluteReturn, 2) }} %
-                            </td>
-                            <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
-                                    {{ round($folio->xirr, 2) }} %
+                        <tr >
+                            <td colspan="10" class="font-semibold">
+                                <strong>Folio</strong> {{ $folio->folio_no }}
                             </td>
                         </tr>
+                        @foreach($folio->transactions as $transaction)
+                            <tr>
+                                <td title="{{ $transaction->scheme->scheme_name }}">
+                                    {{ str_limit($transaction->scheme->scheme_name, 40) }} 
+                                </td>
+                                <td>
+                                    {{ $folio->folio_no }} 
+                                </td>
+                                {{-- <td>
+                                    {{ $folio->reinvest }} 
+                                </td>
+                                <td>
+                                    {{ $folio->sell }} 
+                                </td> --}}
+                                <td class="text-right">
+                                    {{ currency(round($transaction->units, 2)) }}
+                                </td>
+                                <td class="text-right">
+                                    {{ round($transaction->rate, 2) }} &#x20B9;
+                                </td>
+                                <td class="text-right">
+                                    {{ currency(round($transaction->amount, 2)) }} &#x20B9;
+                                </td>
+                                <td class="text-right">
+                                    {{ currency($transaction->scheme->nav) }} &#x20B9;
+                                </td>
+                                <td class="text-right">
+                                    {{ currency(round($transaction->currentValue, 2)) }} &#x20B9;
+                                </td>
+                                <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
+                                    {{ currency(round($transaction->currentValue - $transaction->amount, 2)) }} &#x20B9;
+                                </td>
+                                <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
+                                    {{ round($folio->absoluteReturn, 2) }} %
+                                </td>
+                                <td class="text-right {{ $folio->absoluteReturn < 0 ? 'text-red' : 'text-green-dark' }}">
+                                        {{ round($folio->xirr, 2) }} %
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     <tr class="border-t-2 text-sm font-semibold uppercase">
                         <td>Total</td>
