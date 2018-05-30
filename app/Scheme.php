@@ -9,15 +9,11 @@ class Scheme extends Model
 {
     protected $guarded = [];
     protected $dates = ['create_at', 'updated_at', 'date'];
-    
-    public function category() {
-        return $this->belongsTo(SchemeCategory::class, 'scheme_category_id');
-    }
 
-    public function company() {
-        return $this->belongsTo(Company::class, 'company_id');
-    }
-
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction', 'scheme_code', 'scheme_code');
+    }    
     public function setDateAttribute($date)
     {
         return $this->attributes['date'] = Carbon::createFromFormat('d-M-Y', $date)->format('Y-m-d');

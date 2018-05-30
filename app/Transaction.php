@@ -15,7 +15,7 @@ class Transaction extends Model
         });
     }
 
-    public function folio() {
+    public function client() {
         return $this->belongsTo('App\Folio');
     }
     

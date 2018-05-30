@@ -2,7 +2,7 @@
     position: relative;
     ul.sub-menu {
         @apply .hidden .absolute .pin-r .w-32 .bg-white .text-black .list-reset .opacity-0 .shadow-md .z-0 .py-1 .rounded ;
-        top: 105%;
+        top: 100%;
         &:before {
             content: '';
             width: 7px;

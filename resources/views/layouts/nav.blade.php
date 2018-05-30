@@ -43,8 +43,8 @@
                     </li>
                     <li class="flex">
                         <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
-                            href="{{ route('folios.create') }}">
-                            Folio Entry
+                            href="{{ route('transactions.create') }}">
+                            Manual Entry
                         </a>
                     </li>
                 @endif

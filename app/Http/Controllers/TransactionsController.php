@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Folio;
 use Illuminate\Http\Request;
 use App\Transaction;
 
-class FolioController extends Controller
+class TransactionsController extends Controller
 {
     public function index() 
     {
-        return Folio::with(['client', 'transactions.scheme'])
+        return Transaction::with(['client', 'scheme'])
             ->where('client_id', auth()->guard('web')->id())
             ->get();
     }
     
     public function create() 
     {
-        return view('folios.create');
+        return view('transactions.create');
     }
     
     public function store(Request $request)
@@ -32,17 +31,22 @@ class FolioController extends Controller
             'amount' => 'required',
         ]);
 
-        $folio = Folio::firstOrCreate(
-            request()->only('folio_no'),
-            [ 'client_id' => auth()->guard('web')->id() ]
+        $transaction = Transaction::make(
+            request()->only([
+                'folio_no', 
+                'scheme_code', 
+                'type', 
+                'date', 
+                'rate', 
+                'amount'
+            ])
         );
 
-        $transaction = Transaction::make(request()->only(['scheme_code', 'type', 'date', 'rate','amount']));
-        $transaction->folio_id = $folio->id;
         $transaction->uid = request('transaction_uid');
+        $transaction->client_id = auth()->guard('web')->id();
         $transaction->save();
         
-        flash('Folio added to your Account');
+        flash('Tranasaction added to your Account');
 
         return back();
     }

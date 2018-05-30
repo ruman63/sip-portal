@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 use App\Folio;
 use Faker\Generator;
+use App\Client;
+use App\Scheme;
 
 class TransactionsTableSeeder extends Seeder
 {
@@ -13,11 +15,11 @@ class TransactionsTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-        Folio::all()->each(function($folio) use ($faker) {
+        $clients = Client::all();
+        foreach($clients as $client){
             factory('App\Transaction', 4)->create([
-                'folio_id' => $folio->id,
-                'rate' => $folio->scheme->nav + $faker->numberBetween(-50, 50),
+                'client_id' => $client->id,
             ]);
-        });
+        };
     }
 }

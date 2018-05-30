@@ -29,12 +29,7 @@ class Client extends Authenticatable
 
     public function transactions()
     {
-        return $this->hasManyThrough('App\Transaction', 'App\Folio');
-    }
-    
-    public function folios()
-    {
-        return $this->hasMany('App\Folio');
+        return $this->hasMany('App\Transaction');
     }
     
     public function getNameAttribute()

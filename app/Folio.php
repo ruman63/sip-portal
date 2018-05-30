@@ -15,16 +15,6 @@ class Folio extends Model
         'currentValue',
     ];
 
-    public function client()
-    {
-        return $this->belongsTo('App\Client', 'client_id');
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany('App\Transaction');
-    }
-
     public function getTotalAmountAttribute()
     {
         return $this->transactions()->sum('amount');

@@ -3,12 +3,12 @@
     <section class="py-2">
         <ul class="breadcrumbs">
             <li><a href="{{ route('dashboard') }}"> Home </a></li>
-            <li> Folio Entry </li>
+            <li> Manual Entry </li>
         </ul>
     </section>
     <section class="py-4">
-        <h2 class="mb-6">Create Folio Entry</h2>
-        <form method="POST" action="{{ route('folios.store') }}" class="py-3">
+        <h2 class="mb-6">Transactions Entry</h2>
+        <form method="POST" action="{{ route('transactions.store') }}" class="py-3">
             {{ csrf_field() }}
             <div class="flex flex-wrap mb-2">
                 <div class="field w-1/2 px-1">
@@ -52,11 +52,12 @@
     </section>
 
     <section class="py-4">
-        <h2 class="mb-4">Your Folio</h2>
+        <h2 class="mb-4">Your Transactions</h2>
         <v-data-table
-            :names="['folio_no', 'totalUnits', 'averageRate', 'totalAmount']"
-            :labels="['Folio', 'Units', 'Average Rate', 'Amount']"
-            url="{{ route('folios.index') }}"
+            class="mb-8"
+            :names="['date', 'uid', 'folio_no', 'scheme.scheme_name', 'scheme.scheme_type', 'units', 'rate', 'amount']"
+            :labels="['Date', 'Txn ID', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount']"
+            url="{{ route('transactions.index') }}"
         ></v-data-table>
     </section>
 @endsection
