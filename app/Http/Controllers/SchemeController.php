@@ -12,7 +12,7 @@ class SchemeController extends Controller
         $schemes = Scheme::query();
         
         if(request()->has('s')) {
-            $schemes->where('scheme_name', 'LIKE', request('s').'%');
+            $schemes->where('scheme_name', 'LIKE', '%'.request('s').'%');
         }
         
         return $schemes->get();

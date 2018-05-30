@@ -38,7 +38,7 @@ class ReadSchemesTest extends TestCase
         create('App\Scheme', ['scheme_name' => 'Aditya Birla Sun Life'], 2);
         create('App\Scheme', [], 2);
         
-        $response = $this->getJson(route('schemes.index').'?s=aditya')->json();
+        $response = $this->getJson(route('schemes.index').'?s=birla')->json();
 
         $this->assertCount(2, $response);
     }
