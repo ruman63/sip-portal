@@ -1,7 +1,7 @@
 .has-menu {
     position: relative;
     ul.sub-menu {
-        @apply .absolute .pin-r .w-32 .bg-white .text-black .list-reset .opacity-0 .shadow-md .z-0 .py-1 .rounded ;
+        @apply .hidden .absolute .pin-r .w-32 .bg-white .text-black .list-reset .opacity-0 .shadow-md .z-0 .py-1 .rounded ;
         top: 105%;
         &:before {
             content: '';
@@ -17,7 +17,7 @@
     }
     &:hover {
         ul.sub-menu {
-            @apply .opacity-100 .z-50 ;
+            @apply .block .opacity-100 .z-50 ;
         }
     }
 }
