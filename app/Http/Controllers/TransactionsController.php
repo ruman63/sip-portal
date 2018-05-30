@@ -9,8 +9,8 @@ class TransactionsController extends Controller
 {
     public function index() 
     {
-        return Transaction::with(['client', 'scheme'])
-            ->where('client_id', auth()->guard('web')->id())
+        return Transaction::where('client_id', auth()->guard('web')->id())
+            ->with(['client', 'scheme'])
             ->get();
     }
     

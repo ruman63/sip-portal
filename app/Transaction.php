@@ -16,7 +16,7 @@ class Transaction extends Model
     }
 
     public function client() {
-        return $this->belongsTo('App\Folio');
+        return $this->belongsTo('App\Client');
     }
     
     public function scheme()

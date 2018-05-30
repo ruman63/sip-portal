@@ -12,13 +12,6 @@ class TransactionsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_transaction_belongs_to_a_folio()
-    {
-        $txn = create('App\Transaction');
-        $this->assertInstanceOf(Folio::class, $txn->folio);
-    }
-
-    /** @test */
     public function describe_test_here()
     {
         $txn = create('App\Transaction', [

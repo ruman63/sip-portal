@@ -6,16 +6,16 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateFolioTest extends TestCase
+class CreateTransactionsTest extends TestCase
 {
     use RefreshDatabase;
     
     /** @test */
-    public function a_guest_cannot_add_folio()
+    public function a_guest_cannot_add_transactions()
     {
         $this->withExceptionHandling();
 
-        $this->postJson(route('folios.store'))->assertStatus(401);
+        $this->postJson(route('transactions.store'))->assertStatus(401);
     }
 
     /** @test */
@@ -25,7 +25,7 @@ class CreateFolioTest extends TestCase
             $client = create('App\Client')
         );
 
-        $this->postJson(route('folios.store'), [
+        $this->postJson(route('transactions.store'), [
             'folio_no' => $folioNo = '12312432',
             'transaction_uid' => $txnId = 2312414,
             'type' => 'ADD',

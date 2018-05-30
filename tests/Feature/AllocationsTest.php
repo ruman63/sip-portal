@@ -22,28 +22,19 @@ class AllocationsTest extends TestCase
     {
         $this->signIn($client = create('App\Client'));
 
-        $debtFolios = create('App\Folio', [
-            'client_id' => $client->id
+        $debtTxns = create('App\Transaction', [
+            'amount' => 4000,
+            'type' => 'ADD',
+            'client_id' => auth()->guard('web')->id(),
+            'scheme_code' => function() {
+                return create('App\Scheme', ['scheme_type' => 'DEBT'])->scheme_code;
+            }
         ], 2);
-        $equityFolio = create('App\Folio', [
-            'client_id' => $client->id
-        ]);
-
-        $debtFolios->each(function($folio) {
-            create('App\Transaction', [
-                'amount' => 2000,
-                'type' => 'ADD',
-                'folio_id' => $folio->id,
-                'scheme_code' => function() {
-                    return create('App\Scheme', ['scheme_type' => 'DEBT'])->scheme_code;
-                }
-            ], 2);
-        });
 
         $equityTransactions = create('App\Transaction', [
             'amount' => 1000,
             'type' => 'ADD',
-            'folio_id' => $equityFolio->id,
+            'client_id' => auth()->guard('web')->id(),
             'scheme_code' => function() {
                 return create('App\Scheme', ['scheme_type' => 'EQUITY'])->scheme_code;
             }
