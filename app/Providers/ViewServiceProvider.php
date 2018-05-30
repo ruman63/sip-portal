@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use View;
-use App\Scheme;
-use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
+use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -16,10 +14,12 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->share(
-            'lastUpdatedNav', 
-            Carbon::parse( Scheme::min('nav_date'))
-        );
+        view()->composer('dashboard', function ($view) {
+            return $view->with(
+                'lastUpdatedNav', 
+                Carbon::parse(\DB::table('schemes')->min('nav_date'))
+            );
+        });
     }
 
     /**
