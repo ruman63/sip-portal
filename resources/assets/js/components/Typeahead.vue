@@ -17,26 +17,25 @@
            @focus="focus"
            @input="update"/>
 
-    <input type="hidden" :name="name" v-model="data.value">
+    <input type="hidden" :name="name" v-model="data.scheme_code">
 
     <!-- the list -->
     <div v-show="show" class="relative">
         <ul v-if="hasItems" 
         class="absolute pin-t pin-x list-reset p-1 bg-white border mt-1 border-solid border-grey">
-        <!-- for vue@1.0 use: ($item, item) -->
-            <li v-for="(item, $item) in items" 
-                :key="item.unique_no"
-                :class="activeClass($item)" 
-                class="py-1 px-3 rounded"
-                @mousedown="hit" 
-                @mousemove="setActive($item)">
-                    <span v-text="item.name"></span>
-            </li>
+          <!-- for vue@1.0 use: ($item, item) -->
+          <li v-for="(item, $item) in items" 
+            :key="item.unique_no"
+            :class="activeClass($item)" 
+            class="py-1 px-3 rounded"
+            @mousedown="hit" 
+            @mousemove="setActive($item)">
+              <span v-text="`[${item.scheme_code}] ${item.scheme_name}`"></span>
+          </li>
         </ul>
         <div v-else 
-            v-text="empty"
-            class="absolute pin-t pin-x p-1 bg-white border mt-1 border-solid border-grey">
-            
+          v-text="empty"
+          class="absolute pin-t pin-x p-1 bg-white border mt-1 border-solid border-grey">
         </div>
     </div>
   </div>
@@ -47,7 +46,11 @@ import VueTypeahead from '../mixins/Typeahead';
 export default {
   extends: VueTypeahead, // vue@1.0.22+
   // mixins: [VueTypeahead], // vue@1.0.21-
-  props: ['url', 'name'],
+  props: {
+    'url':{},
+    'name':{},
+    'value':{}
+  },
   data () {
     return {
       // The source url
@@ -78,24 +81,20 @@ export default {
       queryParamName: 's'
     }
   },
-
   methods: {
     // The callback function which is triggered when the user hits on an item
     // (required)
     onHit (item) {
       this.data = item;
-      this.query = item.name;
+      this.query = `[${this.data.scheme_code}] ${this.data.scheme_name}`;
+      this.$emit('input', item.scheme_code);
     },
 
     // The callback function which is triggered when the response data are received
     // (optional)
     prepareResponseData (data) {
       // data = ...
-      return data.map((item) => {
-          let name = item.scheme_code + ' - ' + item.scheme_name ;
-          let value = item.scheme_code;
-          return {name, value};
-      }); 
+      return data;
     },
 
     activeClass(index) {

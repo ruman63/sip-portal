@@ -2,32 +2,36 @@
     <div class="w-full overflow-x-scroll">
         <table class="max-w-full">
             <thead>
-                <tr>
-                    <th class="cursor-pointer" v-for="(column,index) in columns" :key="index+1" @click="sort(column)">
-                        <div class="flex">
-                            <span class="flex-1" 
-                                v-text="label(index)">
-                            </span>
-                            <i v-if="sortColumn === column" 
-                                class="ml-4 fa" 
-                                :class="ascending ? 'fa-caret-down' : 'fa-caret-up'">
-                            </i>
-                        </div>
-                    </th> 
-                </tr>
+                <!-- <slot name="header"> -->
+                    <tr>
+                        <th class="cursor-pointer" v-for="(column,index) in columns" :key="index+1" @click="sort(column)">
+                            <div class="flex">
+                                <span class="flex-1" 
+                                    v-text="label(index)">
+                                </span>
+                                <i v-if="sortColumn === column" 
+                                    class="ml-4 fa" 
+                                    :class="ascending ? 'fa-caret-down' : 'fa-caret-up'">
+                                </i>
+                            </div>
+                        </th> 
+                    </tr>
+                <!-- </slot> -->
             </thead>
             <tbody v-if="!empty">
-                <tr v-for="item in rows" :key="item.id">
-                    <td v-for="(column,index) in columns" :key="index+1">
-                        <span v-if="column === '__actions'">
-                            <slot name="actions"></slot>
-                        </span>
-                        <span v-else>{{ value(item,column) }}</span>
-                    </td>
-                </tr>           
+                <tr v-for="item in rows" :key="item.id" >
+                    <slot :item="item">
+                        <td v-for="(column,index) in columns" :key="index+1">
+                            <span v-if="column === '__actions'">
+                                Actions
+                            </span>
+                            <span v-else>{{ value(item,column) }}</span>
+                        </td>
+                    </slot>           
+                </tr>
             </tbody>
             <tbody v-else>
-                <td :colspan="names.length" class="text-center" v-text="emptyMessage ? emptyMessage : 'No Data!'"></td>
+                <td :colspan="names.length" class="text-center" v-text="emptyMessage"></td>
             </tbody>
         </table>
     </div>
@@ -38,7 +42,8 @@ export default {
         url: { default: null },
         names: { required: true },
         data: { default: null },
-        labels: { default: null }
+        labels: { default: null },
+        emptyMessage: {default: 'No Data!'}
     },
     data () {
         return {
@@ -93,11 +98,14 @@ export default {
                 value = value[nest[i]];
             }
             return value;
+        },
+        fetchData() {
+            axios.get(this.url).then( ({data}) => this.rows = data, this.requesting = false);
         }
     },
     mounted() {
         if(this.data == null && this.url != null) {
-            axios.get(this.url).then( ({data}) => this.rows = data, this.requesting = false);
+            this.fetchData();
         } else {
             this.rows = this.data;
             this.requesting = false;

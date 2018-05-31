@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    protected $appends = ['currentValue'];
+    // protected $appends = ['currentValue'];
     protected $guarded = [];
 
     public static function boot(){
