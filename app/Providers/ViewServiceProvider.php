@@ -15,9 +15,10 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('*', function ($view) {
+            $lastUpdatedNav = \DB::table('schemes')->max('nav_date');
             return $view->with(
                 'lastUpdatedNav', 
-                Carbon::parse(\DB::table('schemes')->max('nav_date'))
+                $lastUpdatedNav ? Carbon::parse($lastUpdatedNav) : null
             );
         });
     }
