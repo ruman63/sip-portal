@@ -3,6 +3,7 @@ export default {
     props: ['route'],
     data() {
         return {
+            transactions: [],
             folios: [],
             type: 'fresh',
             form:{
@@ -46,8 +47,14 @@ export default {
         submit() {
             axios.post(this.route, this.form)
                 .catch(({response}) => console.log(response.data.errors))
-                .then(() => flash('Transaction Added Successfully'));
+                .then(({data}) => {
+                    flash('Transaction Added Successfully');
+                    this.transactions.push(data);
+                });
         }
+    },
+    mounted() {
+        axios.get(this.route).then(({data}) => this.transactions = data);
     }
 }
 </script>

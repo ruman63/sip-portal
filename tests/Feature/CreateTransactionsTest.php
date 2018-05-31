@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Transaction;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -25,7 +26,7 @@ class CreateTransactionsTest extends TestCase
             $client = create('App\Client')
         );
 
-        $this->postJson(route('transactions.store'), [
+        $response = $this->postJson(route('transactions.store'), [
             'folio_no' => $folioNo = '12312432',
             'transaction_uid' => $txnId = 2312414,
             'type' => 'ADD',
@@ -33,7 +34,7 @@ class CreateTransactionsTest extends TestCase
             'date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
             'rate' => $rate = 120.53,
             'amount' => $amount = 3000,
-        ]);
+        ])->json();
 
         $this->assertDatabaseHas('transactions', [
             'folio_no' => $folioNo,
@@ -41,5 +42,8 @@ class CreateTransactionsTest extends TestCase
             'client_id' => $client->id,
             'units' => $amount/$rate,
         ]);
+
+        $this->assertEquals(Transaction::with('scheme')->first()->toArray(), $response);
     }
+
 }

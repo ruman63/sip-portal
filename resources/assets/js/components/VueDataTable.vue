@@ -54,6 +54,13 @@ export default {
             requesting: true
         }
     },
+    watch: {
+        data() {
+            if(this.data) {
+                this.rows = this.data;
+            }
+        }
+    },
     computed: {
         empty() {
             if(this.url != null && this.requesting) {
@@ -104,7 +111,7 @@ export default {
         }
     },
     mounted() {
-        if(this.data == null && this.url != null) {
+        if (this.data == null && this.url != null) {
             this.fetchData();
         } else {
             this.rows = this.data;

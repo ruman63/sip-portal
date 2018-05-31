@@ -9,14 +9,15 @@ class TransactionsController extends Controller
 {
     public function index() 
     {
-        return Transaction::where('client_id', auth()->guard('web')->id())
+        $transactions = Transaction::where('client_id', auth()->guard('web')->id())
             ->with(['client', 'scheme'])
             ->get();
-    }
-    
-    public function create() 
-    {
-        return view('transactions.create');
+
+        if(request()->wantsJson()) {
+            return $transactions;
+        }
+        
+        return view('transactions.index', compact('transactions'));
     }
     
     public function store(Request $request)
@@ -45,8 +46,12 @@ class TransactionsController extends Controller
         $transaction->uid = request('transaction_uid');
         $transaction->client_id = auth()->guard('web')->id();
         $transaction->save();
+
+        if(request()->wantsJson()) {
+            return $transaction->load('scheme');
+        }
         
-        flash('Tranasaction added to your Account');
+        flash('Transaction added to your Account');
 
         return back();
     }
