@@ -1,5 +1,5 @@
 import { util } from 'vue'
-import debounce from 'lodash/debounce';
+import debounce from 'lodash.debounce';
 
 export default {
   props: {
