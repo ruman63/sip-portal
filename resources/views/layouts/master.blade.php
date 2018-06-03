@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" class="overflow-hidden">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,12 +14,12 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="font-sans">
-    <div id="app">
+    <div id="app" class="flex flex-col h-screen">
         
         @include('layouts.nav')
         
-        <main class="h-screen-with-nav-and-footer w-full overflow-auto">
-            <div class="container mx-auto">
+        <main class="flex-1 w-full overflow-auto">
+            <div class="container h-full mx-auto">
                 @yield('content')
             </div>
         </main>
