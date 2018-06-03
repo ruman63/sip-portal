@@ -50,7 +50,6 @@ export default {
         setTimeout(() => this.clear(), 2000);
 
         window.Events.$on('flash', message => {
-            console.log(message)
             this.flash(message)
         });
     }

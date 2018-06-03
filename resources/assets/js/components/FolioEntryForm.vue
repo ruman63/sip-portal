@@ -1,60 +1,97 @@
 <script>
 export default {
-    props: ['route'],
+    props: ['url'],
     data() {
         return {
-            transactions: [],
+            updating: false,
             folios: [],
+            selectedScheme: null,
             type: 'fresh',
             form:{
+                id: null,
+                uid: '',
                 type: 'ADD',
-                folio_no: '1234',
+                folio_no: '',
                 scheme_code: '',
-                transaction_uid: 't-123',
-                date: '2017-11-12',
-                rate: '321',
-                amount: '24000', 
+                date: '',
+                rate: '',
+                amount: '', 
             }
         }
     },
     computed: {
         isFresh() {
             return this.type === 'fresh';
+        },
+        requestMethod() {
+            return this.updating ? 'patch' : 'post';
+        },
+        route(){
+            return this.updating ? `${this.url}/${this.form.id}` : this.url;
+        },
+        flashMessage() {
+            return `Transaction ${this.updating ? 'updated' : 'created'} Successfully!`
+        },
+        title(){
+            return `${this.updating ? 'Edit' : 'New'} Transaction`;
         }
     },
     watch: {
         type() {
             this.changeType();
+        },
+        selectedScheme() {
+            if(this.selectedScheme) {
+                this.form.scheme_code = this.selectedScheme.scheme_code
+            }
         }
     },
     methods: {
+        beforeOpen(event) {
+            if(event.params && event.params.transaction) {
+                this.form = event.params.transaction;
+                this.selectedScheme = this.form.scheme;
+                this.updating = true;
+            } else  if(this.updating) {
+                this.reset();
+            }
+        },
         changeType() {
             if(!this.isFresh) {
                 axios.get('/folios').then(({data}) => {
                     this.folios = data;
-                    this.form.folio = this.folios[0];
+                    this.form.folio_no = this.folios[0];
                 });
             } 
             else {
-                this.form.folio = '';
-                this.form.scheme = '';
+                this.form.folio_no = '';
             }
         },
-        changeFolio() {
-            let selectedFolio = this.folios.find(item => item.folio_no == this.form.folio);
-            this.form.scheme = selectedFolio.scheme;
-        },
         submit() {
-            axios.post(this.route, this.form)
+            axios[this.requestMethod](this.route, this.form)
                 .catch(({response}) => console.log(response.data.errors))
                 .then(({data}) => {
-                    flash('Transaction Added Successfully');
-                    this.transactions.push(data);
+                    flash(this.flashMessage);
+                    this.close();
+                    this.$emit(this.updating ? 'updated' : 'created', data);
                 });
+        },
+        reset() {
+            this.updating = false;
+            this.selectedScheme = null;
+            this.form = {
+                type: 'ADD',
+                folio_no: '',
+                scheme_code: '',
+                uid: '',
+                date: '',
+                rate: '',
+                amount: '', 
+            };
+        },
+        close() {
+            this.$modal.hide('transaction-form');
         }
-    },
-    mounted() {
-        axios.get(this.route).then(({data}) => this.transactions = data);
     }
 }
 </script>

@@ -81,13 +81,20 @@ export default {
       queryParamName: 's'
     }
   },
+  watch: {
+    value() {
+      if(this.value) {
+        this.onHit(this.value);
+      }
+    }
+  },
   methods: {
     // The callback function which is triggered when the user hits on an item
     // (required)
     onHit (item) {
       this.data = item;
       this.query = `[${this.data.scheme_code}] ${this.data.scheme_name}`;
-      this.$emit('input', item.scheme_code);
+      this.$emit('input', item);
     },
 
     // The callback function which is triggered when the response data are received
@@ -99,6 +106,11 @@ export default {
 
     activeClass(index) {
         return index === this.current ? 'bg-blue-darkest text-white' : 'text-black';
+    }
+  },
+  mounted() {
+    if(this.value) {
+      this.onHit(this.value);
     }
   }
 }

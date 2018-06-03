@@ -24,7 +24,7 @@ class TransactionsController extends Controller
     {
         $request->validate([
             'folio_no' => 'required',
-            'transaction_uid' => 'required',
+            'uid' => 'required',
             'type' => 'required',
             'scheme_code' => 'required',
             'date' => 'required',
@@ -32,20 +32,18 @@ class TransactionsController extends Controller
             'amount' => 'required',
         ]);
 
-        $transaction = Transaction::make(
-            request()->only([
-                'folio_no', 
-                'scheme_code', 
-                'type', 
-                'date', 
-                'rate', 
-                'amount'
-            ])
-        );
-
-        $transaction->uid = request('transaction_uid');
-        $transaction->client_id = auth()->guard('web')->id();
-        $transaction->save();
+        $transaction = auth()->guard('web')->user()
+            ->transactions()->create(
+                request()->only([
+                    'uid',
+                    'folio_no', 
+                    'scheme_code', 
+                    'type', 
+                    'date', 
+                    'rate', 
+                    'amount'
+                ])
+            );
 
         if(request()->wantsJson()) {
             return $transaction->load('scheme');

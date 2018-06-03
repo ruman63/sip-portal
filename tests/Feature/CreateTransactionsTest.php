@@ -28,7 +28,7 @@ class CreateTransactionsTest extends TestCase
 
         $response = $this->postJson(route('transactions.store'), [
             'folio_no' => $folioNo = '12312432',
-            'transaction_uid' => $txnId = 2312414,
+            'uid' => $txnId = 2312414,
             'type' => 'ADD',
             'scheme_code' => 'LT-17',
             'date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),

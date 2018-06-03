@@ -2,7 +2,12 @@
     <div class="w-full overflow-x-scroll">
         <table class="max-w-full">
             <thead>
-                <!-- <slot name="header"> -->
+                <slot name="header" 
+                :sortColumn="sortColumn" 
+                :columns="columns"
+                :ascending="ascending" 
+                :sort="sort" 
+                :label="label">
                     <tr>
                         <th class="cursor-pointer" v-for="(column,index) in columns" :key="index+1" @click="sort(column)">
                             <div class="flex">
@@ -16,19 +21,21 @@
                             </div>
                         </th> 
                     </tr>
-                <!-- </slot> -->
+                </slot>
             </thead>
-            <tbody v-if="!empty">
-                <tr v-for="item in rows" :key="item.id" >
-                    <slot :item="item">
-                        <td v-for="(column,index) in columns" :key="index+1">
-                            <span v-if="column === '__actions'">
-                                Actions
-                            </span>
-                            <span v-else>{{ value(item,column) }}</span>
-                        </td>
+            <tbody v-if="!empty" is="transition-group" name="highlight">
+                <template v-for="item in rows">
+                    <slot :item="item" :select="select" :isSelected="isSelected">
+                        <tr :key="item.uid">
+                            <td v-for="(column,index) in columns" :key="index+1">
+                                <span v-if="column === '__actions'">
+                                    Actions
+                                </span>
+                                <span v-else>{{ value(item,column) }}</span>
+                            </td>
+                        </tr>
                     </slot>           
-                </tr>
+                </template>
             </tbody>
             <tbody v-else>
                 <td :colspan="names.length" class="text-center" v-text="emptyMessage"></td>
@@ -47,6 +54,7 @@ export default {
     },
     data () {
         return {
+            selectedItem: null,
             columns: [],
             rows: [],
             ascending: false,
@@ -70,6 +78,18 @@ export default {
         }
     },
     methods: {
+        select(item) {
+            if(this.isSelected(item)) {
+                return this.selectedItem = null;
+            }
+            this.selectedItem = item;
+        },
+        isSelected(item) {
+            if(item == null) {
+                return this.selectedItem != null; 
+            }
+            return this.selectedItem && (this.selectedItem.id == item.id);
+        },
         sort(column) {
             if ( this.sortColumn === column ) {
                 this.ascending = !this.ascending
@@ -119,6 +139,27 @@ export default {
         }
 
         this.columns = this.names;
+
+        window.Events.$on('v-table:add', item => this.rows.push(item));
+        window.Events.$on('v-table:update', item => this.rows.map(row => row.id==item.id ? item : row));
     }
 }
 </script>
+<style>
+    .highlight-enter-active{
+        transition: background-color 6s ease-in 0.5s, opacity .7s ease-out;
+    }
+    .highlight-leave-active {
+        transition: background-color 1s ease-out, transform 0.1s ease-in 0.8s, opacity 0.1s ease-in 0.8s;        
+    }
+
+    .highlight-enter {
+        opacity: 0;
+        background-color: #FFFF99EE;
+    }
+    .highlight-leave-to {
+        opacity: 0;
+        transform: translateX(150%);
+        background-color: #f77;
+    }
+</style>

@@ -28,7 +28,7 @@ Vue.filter('currency', function(number) {
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
-Vue.component('folio-entry-form', require('./components/FolioEntryForm.vue'));
+Vue.component('folio-entry-page', require('./components/FolioEntryPage.vue'));
 Vue.component('v-typeahead', require('./components/Typeahead.vue'));
 Vue.component('logout', require('./components/Logout.vue'));
 Vue.component('clock', require('./components/Clock.vue'));
