@@ -106,7 +106,7 @@
                         <td>@{{ item.folio_no }}</td>
                         <td>@{{ item.scheme.scheme_name }}</td>
                         <td>@{{ item.scheme.scheme_type }}</td>
-                        <td class="text-right">@{{ item.units.toFixed(2) }}</td>
+                        <td class="text-right">@{{ item.units | fixed }}</td>
                         <td class="text-right">@{{ item.rate | currency }} &#x20B9;</td>
                         <td class="text-right">@{{ item.amount | currency }} &#x20B9;</td>
                         {{-- <td class="w-32 text-right">

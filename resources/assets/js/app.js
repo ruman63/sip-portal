@@ -25,6 +25,13 @@ Vue.filter('currency', function(number) {
     return number.currency();
 });
 
+Vue.filter('fixed', function(number) {
+    if(typeof(number) != 'Number') {
+        number = parseFloat(number);
+    }
+    return number.toFixed(2);
+});
+
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
