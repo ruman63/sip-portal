@@ -18,11 +18,11 @@
         
         @include('layouts.nav')
         
-        <div class="container mx-auto flex h-screen-with-nav-and-footer">
-            <main class="flex-1 h-full w-full overflow-auto">
+        <main class="h-screen-with-nav-and-footer w-full overflow-auto">
+            <div class="container mx-auto">
                 @yield('content')
-            </main>
-        </div>
+            </div>
+        </main>
 
         @include('layouts.footer')
         
