@@ -6,7 +6,7 @@
             <li> Manual Entry </li>
         </ul>
     </section>
-    <folio-entry-page inline-template>
+    <folio-entry-page inline-template v-cloak>
         <section class="py-4">
             <header class="flex justify-between items-baseline mb-6 pb-1 border-b-2">
                 <h1>Your Transactions</h1>
@@ -106,7 +106,7 @@
                         <td>@{{ item.folio_no }}</td>
                         <td>@{{ item.scheme.scheme_name }}</td>
                         <td>@{{ item.scheme.scheme_type }}</td>
-                        <td class="text-right">@{{ item.units }}</td>
+                        <td class="text-right">@{{ item.units.toFixed(2) }}</td>
                         <td class="text-right">@{{ item.rate | currency }} &#x20B9;</td>
                         <td class="text-right">@{{ item.amount | currency }} &#x20B9;</td>
                         {{-- <td class="w-32 text-right">
