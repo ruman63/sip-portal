@@ -24,13 +24,15 @@ class UpdateTransactionsTest extends TestCase
         $this->signIn();
         
         $otherTransaction = create('App\Transaction');
-        $changes = [
-            'uid' => '2000',
+
+        $modified = [
+            'uid' => 'TR101',
+            'folio_no' => '1234/12',
             'rate' => 130,
-            'folio_no' => '123456/34'
+            'amount' => 2000
         ];
 
-        $this->patchJson(route('transactions.update'), ['id' => $otherTransaction->id] + $changes)
+        $this->patchJson(route('transactions.update', $otherTransaction), $modified)
             ->assertStatus(401);
 
         $this->assertEquals($otherTransaction, $otherTransaction->fresh());
@@ -43,18 +45,19 @@ class UpdateTransactionsTest extends TestCase
         
         $transaction = create('App\Transaction', ['client_id' => auth()->guard('web')->id()]);
 
-        $changes = [
-            'uid' => '2000',
+        $modified = [
+            'uid' => 'TR101',
+            'folio_no' => '1234/12',
             'rate' => 130,
-            'folio_no' => '123456/34'
+            'amount' => 2000
         ];
 
-        $this->patchJson(route('transactions.update'), ['id' => $transaction->id] + $changes)
+        $this->patchJson(route('transactions.update', $transaction), $modified)
             ->assertStatus(401);
 
-        tap($transaction->fresh()->toArray(), function($fresh) use ($changes) {
-            $this->assertArraySubset($changes, $fresh);
-            $this->assertEquals($fresh['amount']/$changes['rate'], $fresh['units']);
+        tap($transaction->fresh()->toArray(), function($fresh) use ($modified) {
+            $this->assertArraySubset($modified, $fresh);
+            $this->assertEquals($modified['amount']/$modified['rate'], $fresh['units']);
         });
     }       
 }
