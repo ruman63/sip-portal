@@ -1,13 +1,14 @@
 <template>
-    <div class="fixed flex flex-col pin-b pin-r mb-4 mr-6 items-end z-50 w-1/3">
-        <transition name="fade"
+    <div class="fixed flex flex-col pin-b pin-r mb-4 mr-6 items-end z-max w-1/3">
+        <transition-group name="fade"
         enter-active-class="fadeIn"
         leave-active-class="fadeOut"
         mode="in-out">
-            <div class="border rounded mb-2 p-3" :class="classes[message.level]" v-for="message in messages" :key="message.id">
+            <div class="border rounded mb-2 p-3" :class="classes[message.level]" 
+                v-for="message in messages" :key="message.id">
                 {{ message.message }}
             </div>
-        </transition>
+        </transition-group>
     </div>
 </template>
 
@@ -71,9 +72,6 @@ export default {
             opacity: 1;
         }
     }
-</style>
->
-
 </style>
 
 
