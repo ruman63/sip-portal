@@ -25,8 +25,8 @@
             </thead>
             <tbody v-if="!empty" is="transition-group" name="highlight">
                 <template v-for="item in rows">
-                    <slot :item="item" :select="select" :isSelected="isSelected">
-                        <tr :key="item.uid">
+                    <slot :item="item" :select="select" :getKey="key" :isSelected="isSelected">
+                        <tr :key="key(item)">
                             <td v-for="(column,index) in columns" :key="index+1">
                                 <span v-if="column === '__actions'">
                                     Actions
@@ -78,6 +78,11 @@ export default {
         }
     },
     methods: {
+        key(item) {
+            let key='';
+            this.names.forEach(name => key += this.value(item, name));
+            return key;
+        },
         select(item) {
             if(this.isSelected(item)) {
                 return this.selectedItem = null;
@@ -139,9 +144,6 @@ export default {
         }
 
         this.columns = this.names;
-
-        window.Events.$on('v-table:add', item => this.rows.push(item));
-        window.Events.$on('v-table:update', item => this.rows.map(row => row.id==item.id ? item : row));
     }
 }
 </script>

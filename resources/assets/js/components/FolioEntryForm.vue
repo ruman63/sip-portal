@@ -49,7 +49,7 @@ export default {
     methods: {
         beforeOpen(event) {
             if(event.params && event.params.transaction) {
-                this.form = event.params.transaction;
+                this.form = Object.assign({}, event.params.transaction) ;
                 this.selectedScheme = this.form.scheme;
                 this.updating = true;
             } else  if(this.updating) {
@@ -72,8 +72,8 @@ export default {
                 .catch(({response}) => console.log(response.data.errors))
                 .then(({data}) => {
                     flash(this.flashMessage);
-                    this.close();
-                    this.$emit(this.updating ? 'updated' : 'created', data);
+                    this.$emit((this.updating ? 'updated' : 'created'), data);
+                    this.resetAndClose();
                 });
         },
         reset() {
@@ -90,6 +90,10 @@ export default {
             };
         },
         close() {
+            this.$modal.hide('transaction-form');
+        },
+        resetAndClose() {
+            this.reset();
             this.$modal.hide('transaction-form');
         }
     }

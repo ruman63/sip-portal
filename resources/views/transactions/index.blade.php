@@ -95,11 +95,11 @@
                                     :class="{ascending:'fa-caret-down'}"></i>
                             </div>
                         </th>
-                        {{-- <th></th> --}}
+                        <th></th>
                     </tr>
                 </template>
-                <template slot-scope="{ item }">
-                    <tr :key="item.uid"
+                <template slot-scope="{ item, getKey }">
+                    <tr :key="getKey(item)"
                         class="text-xs">
                         <td>@{{ item.date }}</td>
                         <td>@{{ item.uid }}</td>
@@ -109,10 +109,10 @@
                         <td class="text-right">@{{ item.units | fixed }}</td>
                         <td class="text-right">@{{ item.rate | currency }} &#x20B9;</td>
                         <td class="text-right">@{{ item.amount | currency }} &#x20B9;</td>
-                        {{-- <td class="w-32 text-right">
+                        <td class="w-32 text-right">
                             <button class="btn rounded-full w-8 h-8 p-1 is-blue" @click="edit(item)"><i class="fa fa-edit text-xs"></i></button>
                             <button class="btn rounded-full w-8 h-8 p-1 bg-red hover:bg-red-dark text-white"><i class="fa fa-trash text-xs"></i></button>
-                        </td> --}}
+                        </td>
                     </tr>
                 </template>
             </v-data-table>

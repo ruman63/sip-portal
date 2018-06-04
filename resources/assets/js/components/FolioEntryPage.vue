@@ -16,10 +16,15 @@ export default {
             })
         },
         created(transaction) {
-            window.Events.$emit('v-table:add', transaction);
+            this.transactions.push(transaction);
         },
         updated(transaction) {
-            wondow.Events.$emit('v-table:update', transaction);
+            let index = this.transactions.indexOf(
+                this.transactions.find(item => item.id==transaction.id)
+            );
+            if(index >= 0) {
+                this.transactions.splice(index, 1, transaction);
+            }
         }
     },
     mounted() {
