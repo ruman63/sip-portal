@@ -134,6 +134,7 @@ export default {
       } else {
         this.current = -1
       }
+      this.$refs.options.children[this.current].scrollIntoView({ block: 'nearest' });
     },
 
     down () {
@@ -142,6 +143,7 @@ export default {
       } else {
         this.current = -1
       }
+      this.$refs.options.children[this.current].scrollIntoView({ block: 'nearest' });      
     },
 
     onHit () {

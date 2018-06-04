@@ -22,7 +22,8 @@
     <!-- the list -->
     <div v-show="show" class="relative">
         <ul v-if="hasItems" 
-        class="absolute pin-t pin-x list-reset p-1 bg-white border mt-1 border-solid border-grey">
+        ref="options"
+        class="absolute pin-t pin-x list-reset p-1 bg-white border h-64 overflow-y-scroll mt-1 border-solid border-grey">
           <!-- for vue@1.0 use: ($item, item) -->
           <li v-for="(item, $item) in items" 
             :key="item.unique_no"
@@ -63,7 +64,7 @@ export default {
 
       // Limit the number of items which is shown at the list
       // (optional)
-      limit: 5,
+      // limit: 5,
 
       // The minimum character length needed before triggering
       // (optional)
