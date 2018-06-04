@@ -13,18 +13,10 @@ class PortfolioController extends Controller
         $portfolio = auth()->guard('web')->user()
             ->transactions()
             ->with(['scheme' => function ($query) {
-                return $query->select(['scheme_code', 'scheme_name', 'scheme_type', 'scheme_plan', 'nav']);
+                return $query->select(['scheme_code', 'scheme_name', 'scheme_type', 'nav']);
             }])->get()
             ->groupBy('scheme.scheme_type');
-            // ->map(function($txns) {
-            //     $txns['currentValue'] = $txns->sum('currentValue');
-            //     $txns['totalAmount'] = $txns->sum('amount');
-            //     $txns['absoluteReturn'] = ( $txns['currentValue'] - $txns['totalAmount']) * 100 / $txns['totalAmount'];
-            //     $days = Carbon::parse($txns->max('date'))->diffInDays();
-            //     $txns['xirr'] = $txns['absoluteReturn'] / $days * 365;
-            //     return $txns;
-            // });
-        
+            
         if(request()->wantsJson()) {
             return $portfolio;
         }

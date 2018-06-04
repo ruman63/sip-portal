@@ -10,7 +10,7 @@ class TransactionsController extends Controller
 {
     public function index() 
     {
-        $transactions = Transaction::where('client_id', auth()->guard('web')->id())
+        $transactions = auth()->guard('web')->user()->transactions()
             ->with(['client', 'scheme'])
             ->get();
 
@@ -21,9 +21,9 @@ class TransactionsController extends Controller
         return view('transactions.index', compact('transactions'));
     }
     
-    public function store(Request $request)
+    public function store()
     {
-        $request->validate([
+        $data = request()->validate([
             'type' => 'required',
             'rate' => 'required',
             'amount' => 'required',
@@ -34,30 +34,20 @@ class TransactionsController extends Controller
         ]);
 
         $transaction = auth()->guard('web')->user()
-            ->transactions()->create(
-                request()->only([
-                    'uid',
-                    'folio_no', 
-                    'scheme_code', 
-                    'type', 
-                    'date', 
-                    'rate', 
-                    'amount'
-                ])
-            );
+            ->transactions()->create($data);
 
         if(request()->wantsJson()) {
             return $transaction->load('scheme');
         }
         
-        flash('Transaction added to your Account');
+        flash('Transaction created successfully');
 
         return back();
     }
 
     public function update(Transaction $transaction)
     {
-        request()->validate([
+        $data = request()->validate([
             'uid' => 'required' . ($transaction->uid != request('uid') ? '|unique:transactions,uid' : ''),
             'rate' => 'required',
             'type' => 'required',
@@ -73,15 +63,7 @@ class TransactionsController extends Controller
             ], 403);
         }
 
-        $transaction->update(request()->only([
-            'uid',
-            'folio_no',
-            'rate', 
-            'type',
-            'date',
-            'amount',
-            'scheme_code'
-        ])); 
+        $transaction->update($data); 
 
         if(request()->wantsJson()) {
             return $transaction->load('scheme');
