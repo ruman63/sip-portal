@@ -40,7 +40,7 @@
                                         v-text="folio">
                                     </option>
                                 </select>
-                                <span class="text-red text-xs mt-1">{{ $errors->first('folio_no') }}</span>
+                                <span v-if="hasErrors('folio_no')" class="text-red text-xs mt-1" v-text="firstError('folio_no')"></span>
                             </div>
                             <div class="field w-3/4 px-1">
                                 <label for="scheme_code" class="control">Scheme Code</label>
@@ -48,29 +48,27 @@
                                     v-model="selectedScheme" 
                                     url="{{ route('schemes.index') }}">
                                 </v-typeahead>
-                                {{-- <input type="text" name="scheme_code" placeholder="e.g. LT-17" id="scheme_code" class="control"
-                                    required> --}}
-                                <span class="text-red text-xs mt-1">{{ $errors->first('scheme_code') }}</span>
+                                <span v-if="hasErrors('scheme_code')" class="text-red text-xs mt-1" v-text="firstError('scheme_code')"></span>
                             </div>
                             <div class="field w-1/4 px-1">
-                                <label for="folio_no" class="control">Transaction ID</label>
-                                <input type="text" v-model="form.uid" id="transaction_uid" class="control" required>
-                                <span class="text-red text-xs mt-1">{{ $errors->first('transaction_uid') }}</span>
+                                <label for="uid" class="control">Transaction ID</label>
+                                <input type="text" v-model="form.uid" id="uid" class="control" required>
+                                <span v-if="hasErrors('uid')" class="text-red text-xs mt-1" v-text="firstError('uid')"></span>
                             </div>
                             <div class="field w-1/4 px-1">
                                 <label for="date" class="control">Date of Trade</label>
                                 <input type="date" v-model="form.date" id="date" class="control" required>
-                                <span class="text-red text-xs mt-1">{{ $errors->first('date') }}</span>
+                                <span v-if="hasErrors('date')" class="text-red text-xs mt-1" v-text="firstError('date')"></span>
                             </div>
                             <div class="field w-1/4 px-1">
                                 <label for="rate" class="control">Purchase Price</label>
-                                <input type="number" placeholder="0.00" id="rate" class="control" v-model="form.rate" required>
-                                <span class="text-red text-xs mt-1">{{ $errors->first('rate') }}</span>
+                                <input type="number" step="0.0001" placeholder="0.00" id="rate" class="control" v-model="form.rate" required>
+                                <span v-if="hasErrors('rate')" class="text-red text-xs mt-1" v-text="firstError('rate')"></span>
                             </div>
                             <div class="field w-1/4 px-1">
                                 <label for="amount" class="control">Amount</label>
-                                <input type="number" placeholder="0.00" id="amount" class="control" v-model="form.amount" required>
-                                <span class="text-red text-xs mt-1">{{ $errors->first('amount') }}</span>
+                                <input type="number" step="0.0001" placeholder="0.00" id="amount" class="control" v-model="form.amount" required>
+                                <span v-if="hasErrors('amount')" class="text-red text-xs mt-1" v-text="firstError('amount')"></span>
                             </div>
                         </div>
                         <div class="flex justify-end">

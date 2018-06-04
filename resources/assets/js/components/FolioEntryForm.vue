@@ -7,6 +7,7 @@ export default {
             folios: [],
             selectedScheme: null,
             type: 'fresh',
+            errors: {},
             form:{
                 id: null,
                 uid: '',
@@ -47,6 +48,12 @@ export default {
         }
     },
     methods: {
+        hasErrors(property) {
+            return this.errors.hasOwnProperty(property) && (this.errors[property].length > 0);
+        },
+        firstError(property) {
+            return this.hasErrors(property) ? this.errors[property][0] : null;  
+        },
         beforeOpen(event) {
             if(event.params && event.params.transaction) {
                 this.form = Object.assign({}, event.params.transaction) ;
@@ -69,11 +76,17 @@ export default {
         },
         submit() {
             axios[this.requestMethod](this.route, this.form)
-                .catch(({response}) => console.log(response.data.errors))
                 .then(({data}) => {
                     flash(this.flashMessage);
                     this.$emit((this.updating ? 'updated' : 'created'), data);
                     this.resetAndClose();
+                }).catch(({response}) => {
+                    if(response.status == 422) {
+                        flash(response.data.message, 'danger');
+                        this.errors = Object.assign({}, response.data.errors);
+                    } else {
+                        flash(response.statusText, 'danger');
+                    }
                 });
         },
         reset() {
@@ -88,6 +101,7 @@ export default {
                 rate: '',
                 amount: '', 
             };
+            this.errors = {};
         },
         close() {
             this.$modal.hide('transaction-form');
