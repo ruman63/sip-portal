@@ -12,6 +12,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .v--modal-overlay .v--modal-box {
+            overflow: initial !important;
+        }
+    </style>
 </head>
 <body class="font-sans">
     <div id="app" class="flex flex-col h-screen">
