@@ -24,12 +24,12 @@ class TransactionsTest extends TestCase
             'amount' => 123416,
         ]);
 
-        tap($up->toArray(), function($array) use ($amount, $rate) {
+        tap($up->toArray(), function($array) {
             $this->assertArrayHasKey('units', $array);
             $this->assertEquals(12.35, $array['units']);
         });
 
-        tap($down->toArray(), function($array) use ($amount, $rate) {
+        tap($down->toArray(), function($array) {
             $this->assertArrayHasKey('units', $array);
             $this->assertEquals(12.34, $array['units']);
         });

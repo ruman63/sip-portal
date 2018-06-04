@@ -27,7 +27,10 @@ class UpdateTransactionsTest extends TestCase
 
         $modified = [
             'uid' => 'TR101',
+            'date' => '2017-08-12',
+            'type' => "ADD",
             'folio_no' => '1234/12',
+            'scheme_code' => $otherTransaction->scheme_code,
             'rate' => 130,
             'amount' => 2000
         ];
@@ -83,6 +86,8 @@ class UpdateTransactionsTest extends TestCase
             'uid' => 'TR101',
             'folio_no' => '1234/12',
             'rate' => 13,
+            'type' => "ADD",
+            'date' => '2017-08-01',
             'scheme_code' => $scheme->scheme_code,
             'amount' => 2000
         ])->json();

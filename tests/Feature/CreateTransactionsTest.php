@@ -26,12 +26,13 @@ class CreateTransactionsTest extends TestCase
             $client = create('App\Client')
         );
 
+        $scheme = create('App\Scheme');
         $response = $this->postJson(route('transactions.store'), [
             'folio_no' => $folioNo = '12312432',
             'uid' => $txnId = 2312414,
             'type' => 'ADD',
-            'scheme_code' => 'LT-17',
-            'date' => \Carbon\Carbon::now()->subMonths(4)->toDateTimeString(),
+            'scheme_code' => $scheme->scheme_code,
+            'date' => \Carbon\Carbon::now()->subMonths(4)->format('Y-m-d'),
             'rate' => $rate = 120.53,
             'amount' => $amount = 3000,
         ])->json();
