@@ -30,4 +30,16 @@ class Transaction extends Model
     public function getCurrentValueAttribute() {
         return $this->units * $this->scheme->nav;
     }
+
+    public function getUnitsAttribute($units) {
+        return round($units, 2);
+    }
+
+    public function getAmountAttribute($amount) {
+        return round($amount, 2);
+    }
+
+    public function getRateAttribute($rate) {
+        return round($rate, 2);
+    }
 }
