@@ -14,8 +14,8 @@ class UpdateTransactionsTest extends TestCase
     public function a_guest_cannot_update_transactions()
     {
         $this->withExceptionHandling();
-
-        $this->patchJson(route('transactions.update'))->assertStatus(401);
+        $transaction = create('App\Transaction');
+        $this->patchJson(route('transactions.update', $transaction))->assertStatus(401);
     }
 
     /** @test */
@@ -33,9 +33,9 @@ class UpdateTransactionsTest extends TestCase
         ];
 
         $this->patchJson(route('transactions.update', $otherTransaction), $modified)
-            ->assertStatus(401);
+            ->assertStatus(403);
 
-        $this->assertEquals($otherTransaction, $otherTransaction->fresh());
+        $this->assertEquals($otherTransaction->toArray(), $otherTransaction->fresh()->toArray());
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class UpdateTransactionsTest extends TestCase
         ];
 
         $this->patchJson(route('transactions.update', $transaction), $modified)
-            ->assertStatus(401);
+            ->assertStatus(200);
 
         tap($transaction->fresh()->toArray(), function($fresh) use ($modified) {
             $this->assertArraySubset($modified, $fresh);

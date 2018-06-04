@@ -13,6 +13,9 @@ class Transaction extends Model
         static::creating(function($transaction) {
             $transaction->units = $transaction->amount/$transaction->rate;
         });
+        static::updating(function($transaction) {
+            $transaction->units = $transaction->amount/$transaction->rate;
+        });
     }
 
     public function client() {

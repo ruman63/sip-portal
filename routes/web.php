@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/transactions', "TransactionsController@index")->name('transactions.index');
     Route::post('/transactions', "TransactionsController@store")->name('transactions.store');
-    Route::patch('/transactions', "TransactionsController@update")->name('transactions.update');
+    Route::patch('/transactions/{transaction}', "TransactionsController@update")->name('transactions.update');
     Route::get('/allocations', "AllocationController@index")->name('allocations.index');
     Route::get('/portfolio', "PortfolioController@index")->name('portfolios.index');
     

@@ -53,4 +53,27 @@ class TransactionsController extends Controller
 
         return back();
     }
+
+    public function update(Transaction $transaction)
+    {
+        if($transaction->client_id!=auth()->guard('web')->id()) {
+            return response()->json([
+                'message' => 'Forbidden! You are not authorized to update this transaction!'
+            ], 403);
+        }
+
+        $transaction->update(request()->only([
+            'uid',
+            'folio_no',
+            'rate', 
+            'amount'
+        ])); 
+
+        if(request()->wantsJson()) {
+            return $transaction;
+        }
+            
+        flash('Transaction updated successfully!');
+        return back();
+    }
 }
