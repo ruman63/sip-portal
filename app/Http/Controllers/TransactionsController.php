@@ -66,11 +66,14 @@ class TransactionsController extends Controller
             'uid',
             'folio_no',
             'rate', 
-            'amount'
+            'type',
+            'date',
+            'amount',
+            'scheme_code'
         ])); 
 
         if(request()->wantsJson()) {
-            return $transaction;
+            return $transaction->load('scheme');
         }
             
         flash('Transaction updated successfully!');
