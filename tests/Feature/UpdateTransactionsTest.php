@@ -33,7 +33,7 @@ class UpdateTransactionsTest extends TestCase
         ];
 
         $this->patchJson(route('transactions.update', $otherTransaction), $modified)
-            ->assertStatus(401);
+            ->assertStatus(403);
 
         $this->assertEquals($otherTransaction, $otherTransaction->fresh());
     }
@@ -53,7 +53,7 @@ class UpdateTransactionsTest extends TestCase
         ];
 
         $this->patchJson(route('transactions.update', $transaction), $modified)
-            ->assertStatus(401);
+            ->assertStatus(403);
 
         tap($transaction->fresh()->toArray(), function($fresh) use ($modified) {
             $this->assertArraySubset($modified, $fresh);
