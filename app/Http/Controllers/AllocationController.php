@@ -9,18 +9,14 @@ class AllocationController extends Controller
 {
     public function index()
     {
-        $total = auth()->guard('web')->user()->transactions()->sum('amount');
+        $client = auth()->guard('web')->user();
+        $total = $client->transactions()->sum('amount');
 
-        $assets = auth()->guard('web')->user()->transactions()
-            ->with('scheme')->get()
-            ->groupBy('scheme.scheme_type')
-            ->map(function($txn, $type) use ($total) {
-                return (object)[
-                    'type' => $type,
-                    'amount' => $amount = $txn->sum('amount'),
-                    'percent' => ($amount/$total) * 100,
-                ];
-            })->values();
+        $assets = $client->transactions()
+            ->selectRaw("schemes.scheme_type type, SUM(amount) amount, (SUM(amount)/$total)*100 percent")
+            ->join('schemes', 'schemes.scheme_code', '=', 'transactions.scheme_code')
+            ->groupBy('schemes.scheme_type')
+            ->get();
 
         if(request()->wantsJson()) {
             return $assets;
