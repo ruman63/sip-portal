@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
+use Carbon\Carbon;
 
 class TransactionsController extends Controller
 {
@@ -23,13 +24,13 @@ class TransactionsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'folio_no' => 'required',
-            'uid' => 'required',
             'type' => 'required',
-            'scheme_code' => 'required',
-            'date' => 'required',
             'rate' => 'required',
             'amount' => 'required',
+            'folio_no' => 'required',
+            'uid' => 'required|unique:transactions,uid',
+            'date' => 'required|date_format:Y-m-d|before:tomorrow',
+            'scheme_code' => 'required|exists:schemes,scheme_code',
         ]);
 
         $transaction = auth()->guard('web')->user()
@@ -56,6 +57,16 @@ class TransactionsController extends Controller
 
     public function update(Transaction $transaction)
     {
+        request()->validate([
+            'uid' => 'required' . ($transaction->uid != request('uid') ? '|unique:transactions,uid' : ''),
+            'rate' => 'required',
+            'type' => 'required',
+            'amount' => 'required',
+            'folio_no' => 'required',
+            'date' => 'required|date_format:Y-m-d|before:tomorrow',
+            'scheme_code' => 'required|exists:schemes,scheme_code',
+        ]);
+        
         if($transaction->client_id!=auth()->guard('web')->id()) {
             return response()->json([
                 'message' => 'Forbidden! You are not authorized to update this transaction!'
