@@ -24,7 +24,7 @@
                 </slot>
             </thead>
             <tbody v-if="!empty" is="transition-group" name="highlight">
-                <template v-for="item in rowsData">
+                <template v-for="item in rows">
                     <slot :item="item" :select="select" :getKey="key" :isSelected="isSelected">
                         <tr :key="key(item)">
                             <td v-for="(column,index) in columns" :key="index+1">
@@ -50,7 +50,6 @@ export default {
         names: { required: true },
         data: { default: null },
         labels: { default: null },
-        group: {default:null},
         emptyMessage: {default: 'No Data!'}
     },
     data () {
@@ -76,13 +75,6 @@ export default {
                 return false;
             }
             return !this.rows.length;
-        },
-        rowsData() {
-            let data = this.rows;
-            if(this.group) {
-                data.groupBy(item => this.value(item, this.group));
-            }
-            return data;
         }
     },
     methods: {
