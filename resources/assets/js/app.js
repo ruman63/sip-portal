@@ -18,6 +18,19 @@ String.prototype.currency = function(){
     return this.replace(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g, '$1,');
 }
 
+Array.prototype.groupBy = function (callback) {
+    var grouped = {};
+    this.forEach(function(item) {
+        let key = callback(item);
+        if(grouped.hasOwnProperty(key)) {
+            grouped[key].push(item);
+        } else {
+            grouped[key] = [item]
+        }
+    });
+    return grouped;
+}
+
 Vue.filter('currency', function(number) {
     if(typeof(number) !== 'String') {
         number = number.toString();

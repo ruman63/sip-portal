@@ -22,15 +22,15 @@
                 </div>
             </form>
         </div>
-        <div class="p-3 w-full overflow-x-scroll">
-            <table class="min-w-full">
+        <div class="p-3 overflow-x-scroll">
+            <table class="max-w-full">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile</th>
-                        <th>Member Since</th>
+                        <th>Member <br>Since</th>
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -49,12 +49,9 @@
                                 method="POST">
                                     {{ csrf_field() }}
                                     <button type="submit" title="Login" class="btn is-blue">
-                                        <i class="fa fa-sign-in"></i>
+                                        <i class="fa fa-sign-in mr-1 "></i> Login
                                     </button>
                                 </form>
-                                <a href="{{ route('clients.transactions', $client) }}" class="btn is-blue" title="Modify Transactions">
-                                    <i class="fa fa-inr"></i>
-                                </a>
                             </td>
                         </tr>
                     @empty

@@ -50,6 +50,7 @@ export default {
         names: { required: true },
         data: { default: null },
         labels: { default: null },
+        group: {default:null},
         emptyMessage: {default: 'No Data!'}
     },
     data () {
@@ -75,6 +76,12 @@ export default {
                 return false;
             }
             return !this.rows.length;
+        },
+        rowData() {
+            if(!this.group) {
+                return this.rows;
+            }
+            return this.rows.groupBy(item => this.value(item, this.group));
         }
     },
     methods: {
@@ -123,7 +130,7 @@ export default {
         value(obj, name) {
             let nest = name.split('.');
             var value = obj;
-            for(let i in nest) {
+            for(let i=0; i<nest.length; i++) {
                 if(!value) {
                     return null;
                 } 

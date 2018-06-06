@@ -43,6 +43,9 @@ export default {
         type() {
             this.changeType();
         },
+        clientId() {
+            this.form.client_id = this.clientId;
+        },
         selectedScheme() {
             if(this.selectedScheme) {
                 this.form.scheme_code = this.selectedScheme.scheme_code
@@ -99,6 +102,7 @@ export default {
                 folio_no: '',
                 scheme_code: '',
                 uid: '',
+                client_id: this.clientId,
                 date: '',
                 rate: '',
                 amount: '', 

@@ -10,7 +10,7 @@
         <ul class="menu">
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('clients.index') }}">Clients</a></li>
-            <li><a href="{{ route('admin.transactions.index') }}">All Transactions</a></li>
+            <li><a href="{{ route('admin.transactions.index') }}">Transactions</a></li>
             <li><a href="">AUM Report</a></li>
             <li><a href="">Folio Query</a></li>
             <li><a href="">Portfolio Returns</a></li>

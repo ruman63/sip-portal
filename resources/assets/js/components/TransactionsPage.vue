@@ -6,18 +6,20 @@
             </header>
             <div class="flex justify-between items-baseline mb-6">
                 <div class="select-wrapper w-1/2">
-                    <select v-model="clientId" class="control">
+                    <select ref="clientMenu" v-model="clientId" class="control">
                         <option value="">All Clients</option>
                         <option v-for="client in clients" :key="client.id" :value="client.id" v-text="`${client.name} (${client.pan})`"></option>
                     </select>
                 </div>
-                <button @click.prevent="$modal.show('transaction-form')" class="text-sm btn is-blue">
+                <button @click.prevent="showCreateForm" class="text-sm btn is-blue">
                     <i class="fa fa-plus mr-1"></i> New Transaction 
                 </button>
             </div>
             <transactions-form
                 @created="created" 
                 @updated="updated" 
+                url="/admin/transactions"
+                :client-id="clientId"
                 inline-template
                 >
                 <modal name="transaction-form" height="auto" @before-open="beforeOpen">
@@ -87,6 +89,7 @@
                 :data="transactions"
                 :labels="table.header"
                 :names="table.row"
+                :group="groupBy"
                 >
                 <template slot="header" slot-scope="{ sortColumn, columns, ascending, sort, label }">
                     <tr>
@@ -104,7 +107,7 @@
                     <tr :key="getKey(item)"
                         class="text-xs">
                         <td>{{ item.date }}</td>
-                        <td>{{ item.client.name }}</td>
+                        <td>{{ item.uid }}</td>
                         <td>{{ item.folio_no }}</td>
                         <td>{{ item.scheme.scheme_name }}</td>
                         <td>{{ item.scheme.scheme_type }}</td>
@@ -130,8 +133,9 @@ export default {
         return {
             transactions: [],
             clients: [],
+            groupBy: 'client.name',
             clientId: '',
-            editing: false,
+            formUrl: '/admin/transactions',
             table: {
                 header: ['Date', 'Client', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount'],
                 row: ['date', 'client.name', 'folio_no', 'scheme.scheme_name', 'scheme.scheme_type', 'units', 'rate', 'amount']
@@ -148,12 +152,18 @@ export default {
     },
     watch: {
         clientId() {
-            axios.get(this.transactionsUrl).then(({data}) => this.transactions = data);
+            axios.get(this.transactionsUrl).then(({data}) => {
+                this.transactions = data
+                if(this.clientId=='') {
+                    this.groupBy = 'client.name';
+                } else {
+                    this.groupBy = null;
+                }
+            });
         }
     },
     methods: {
         edit(transaction) {
-            editing: true;
             this.$modal.show('transaction-form', {
                 transaction, 
             })
@@ -167,6 +177,15 @@ export default {
             );
             if(index >= 0) {
                 this.transactions.splice(index, 1, transaction);
+            }
+        },
+        showCreateForm() {
+            if(this.clientId) {
+                this.$modal.show('transaction-form');
+            }
+            else {
+                alert('Please select one client from the dropdown!');
+                this.$refs.clientMenu.focus();
             }
         }
     },
