@@ -1,9 +1,10 @@
 <script>
 export default {
-    props: ['url'],
+    props: ['url', 'clientId'],
     data() {
         return {
             updating: false,
+            schemes_url: '/schemes',
             folios: [],
             selectedScheme: null,
             type: 'fresh',
@@ -14,6 +15,7 @@ export default {
                 type: 'ADD',
                 folio_no: '',
                 scheme_code: '',
+                client_id: this.clientId,
                 date: '',
                 rate: '',
                 amount: '', 

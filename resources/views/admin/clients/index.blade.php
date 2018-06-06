@@ -52,7 +52,9 @@
                                         <i class="fa fa-sign-in"></i>
                                     </button>
                                 </form>
-                                <button class="btn is-blue" title="Fill Details"> <i class="fa fa-pencil-square-o"></i> </button>
+                                <a href="{{ route('clients.transactions', $client) }}" class="btn is-blue" title="Modify Transactions">
+                                    <i class="fa fa-inr"></i>
+                                </a>
                             </td>
                         </tr>
                     @empty

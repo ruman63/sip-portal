@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin;
 
 use Tests\TestCase;
 use App\Transaction;
@@ -16,20 +16,21 @@ class CreateTransactionsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->postJson(route('transactions.store'))->assertStatus(401);
+        $this->postJson(route('admin.transactions.store'))->assertStatus(401);
     }
 
     /** @test */
-    public function a_logged_in_client_can_add_folio()
+    public function an_admin_can_create_transactions_and_recieves_created_transaction_as_response()
     {
-        $this->signIn(
-            $client = create('App\Client')
-        );
+        $this->signInAdmin();
 
+        $client = create('App\Client');
         $scheme = create('App\Scheme');
-        $response = $this->postJson(route('transactions.store'), [
+
+        $response = $this->postJson(route('admin.transactions.store'), [
             'folio_no' => $folioNo = '12312432',
             'uid' => $txnId = 2312414,
+            'client_id' => $client->id,
             'type' => 'ADD',
             'scheme_code' => $scheme->scheme_code,
             'date' => \Carbon\Carbon::now()->subMonths(4)->format('Y-m-d'),

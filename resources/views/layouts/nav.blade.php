@@ -44,7 +44,7 @@
                     <li class="flex">
                         <a class="px-2 py-2 text-xs tracking-wide uppercase text-white" 
                             href="{{ route('transactions.index') }}">
-                            Manual Entry
+                            Transactions          
                         </a>
                     </li>
                 @endif
