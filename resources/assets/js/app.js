@@ -18,6 +18,19 @@ String.prototype.currency = function(){
     return this.replace(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g, '$1,');
 }
 
+Array.prototype.groupBy = function (callback) {
+    var grouped = {};
+    this.forEach(function(item) {
+        let key = callback(item);
+        if(grouped.hasOwnProperty(key)) {
+            grouped[key].push(item);
+        } else {
+            grouped[key] = [item]
+        }
+    });
+    return grouped;
+}
+
 Vue.filter('currency', function(number) {
     if(typeof(number) !== 'String') {
         number = number.toString();
@@ -35,7 +48,7 @@ Vue.filter('fixed', function(number) {
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
-Vue.component('folio-entry-page', require('./components/FolioEntryPage.vue'));
+Vue.component('transactions-page', require('./components/TransactionsPage.vue'));
 Vue.component('v-typeahead', require('./components/Typeahead.vue'));
 Vue.component('logout', require('./components/Logout.vue'));
 Vue.component('clock', require('./components/Clock.vue'));

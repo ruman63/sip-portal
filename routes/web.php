@@ -17,7 +17,6 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', "DashboardController@index")->name('dashboard');
     
-    Route::get('/folios', "FoliosController@index")->name('folios.index');
 
     Route::get('/transactions', "TransactionsController@index")->name('transactions.index');
     Route::post('/transactions', "TransactionsController@store")->name('transactions.store');
@@ -41,6 +40,11 @@ Route::group([
             Route::get('clients', 'ClientsController@index')->name('clients.index');
             Route::post('clients/{client}/login', 'ClientsController@loginAs')->name('clients.login-as');
             Route::post('clients/logout', 'ClientsController@logout')->name('clients.logout');
+            Route::get('clients/{client}/transactions', 'ClientTransactionController@index')->name('clients.transactions');
+            Route::get('/folios', "FoliosController@index")->name('admin.folios.index');
+            Route::get('/transactions', 'TransactionController@index')->name('admin.transactions.index');     
+            Route::post('/transactions', 'TransactionController@store')->name('admin.transactions.store');     
+            Route::patch('/transactions/{transaction}', 'TransactionController@update')->name('admin.transactions.update');     
             Route::post('logout', 'LoginController@logout')->name('admin.logout');
         });
     }

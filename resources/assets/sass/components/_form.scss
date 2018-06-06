@@ -9,7 +9,7 @@ label.control {
 input, select, textarea {
 
     &.control {
-        @apply .text-sm .bg-white .flex .w-full .py-2 .px-4 .border .h-10 .min-w-0 ;
+        @apply .text-sm .bg-white .flex .w-full .py-2 .px-2 .border .h-10 .min-w-0 ;
         &.is-lg {
             @apply .text-lg ;
         }
@@ -19,5 +19,15 @@ input, select, textarea {
     }
     &:disabled {
         cursor: not-allowed;
+    }
+}
+
+.select-wrapper {
+    @apply .relative ;
+    &:after {
+        @apply .flex .justify-center .items-center .absolute .pin-y .pin-r .text-base .leading-none .w-8 .z-10 ;
+        pointer-events: none;
+        font-family: "FontAwesome";
+        content: '\f0d7';
     }
 }

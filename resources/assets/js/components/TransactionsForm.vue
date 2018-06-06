@@ -1,9 +1,10 @@
 <script>
 export default {
-    props: ['url'],
+    props: ['url', 'clientId'],
     data() {
         return {
             updating: false,
+            schemes_url: '/schemes',
             folios: [],
             selectedScheme: null,
             type: 'fresh',
@@ -14,6 +15,7 @@ export default {
                 type: 'ADD',
                 folio_no: '',
                 scheme_code: '',
+                client_id: this.clientId,
                 date: '',
                 rate: '',
                 amount: '', 
@@ -41,6 +43,9 @@ export default {
         type() {
             this.changeType();
         },
+        clientId() {
+            this.form.client_id = this.clientId;
+        },
         selectedScheme() {
             if(this.selectedScheme) {
                 this.form.scheme_code = this.selectedScheme.scheme_code
@@ -65,7 +70,9 @@ export default {
         },
         changeType() {
             if(!this.isFresh) {
-                axios.get('/folios').then(({data}) => {
+                axios.get('/admin/folios', {
+                    params: { client_id: this.clientId }
+                }).then(({data}) => {
                     this.folios = data;
                     this.form.folio_no = this.folios[0];
                 });
@@ -97,6 +104,7 @@ export default {
                 folio_no: '',
                 scheme_code: '',
                 uid: '',
+                client_id: this.clientId,
                 date: '',
                 rate: '',
                 amount: '', 

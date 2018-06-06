@@ -123,7 +123,7 @@ export default {
         value(obj, name) {
             let nest = name.split('.');
             var value = obj;
-            for(let i in nest) {
+            for(let i=0; i<nest.length; i++) {
                 if(!value) {
                     return null;
                 } 

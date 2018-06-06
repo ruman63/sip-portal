@@ -14,17 +14,17 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="font-sans">
-    <div id="app">
+    <div id="app" class="flex flex-col h-screen">
         {{--  Todo: navbar here  --}}
         @include('admin.layouts.nav')
         
-        <div class="container mx-auto flex h-screen-with-nav">
+        <div class="flex flex-1 overflow-hidden">
             
             @if(Auth::guard('cpanel')->check())
                 @include('admin.layouts.side-menu')
             @endif
             
-            <main class="py-4 px-6 flex-1 h-full w-full overflow-auto">
+            <main class="py-4 px-6 flex-1 h-full w-full overflow-y-scroll">
                 @yield('content')
             </main>
         </div>

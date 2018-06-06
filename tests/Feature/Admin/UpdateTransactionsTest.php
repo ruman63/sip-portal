@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,39 +15,16 @@ class UpdateTransactionsTest extends TestCase
     {
         $this->withExceptionHandling();
         $transaction = create('App\Transaction');
-        $this->patchJson(route('transactions.update', $transaction))->assertStatus(401);
-    }
-    
-    /** @test */
-    public function a_client_cannot_update_others_transactions()
-    {
-        $this->signIn();
-        
-        $otherTransaction = create('App\Transaction');
-
-        $modified = [
-            'uid' => 'TR101',
-            'date' => '2017-08-12',
-            'type' => "ADD",
-            'folio_no' => '1234/12',
-            'scheme_code' => $otherTransaction->scheme_code,
-            'rate' => 130,
-            'amount' => 2000
-        ];
-
-        $this->patchJson(route('transactions.update', $otherTransaction), $modified)
-            ->assertStatus(403);
-
-        $this->assertEquals($otherTransaction->toArray(), $otherTransaction->fresh()->toArray());
+        $this->patchJson(route('admin.transactions.update', $transaction))->assertStatus(401);
     }
 
     /** @test */
-    public function a_client_can_update_his_own_transactions()
+    public function an_admin_can_update_all_transactions()
     {
-        $this->signIn();
+        $this->signInAdmin();
         
         $scheme = create('App\Scheme');
-        $transaction = create('App\Transaction', ['client_id' => auth()->guard('web')->id()]);
+        $transaction = create('App\Transaction');
 
         $modified = [
             'uid' => 'TR101',
@@ -59,7 +36,7 @@ class UpdateTransactionsTest extends TestCase
             'amount' => 2000
         ];
 
-        $this->patchJson(route('transactions.update', $transaction), $modified)
+        $this->patchJson(route('admin.transactions.update', $transaction), $modified)
             ->assertStatus(200);
 
         tap($transaction->fresh(), function($fresh) use ($modified) {
@@ -75,14 +52,14 @@ class UpdateTransactionsTest extends TestCase
     } 
     
     /** @test */
-    public function when_client_updates_transaction_updated_transaction_json_is_returned_with_scheme()
+    public function updated_transaction_json_is_returned_with_scheme()
     {
-        $this->signIn();
+        $this->signInAdmin();
         
         $scheme = create('App\Scheme');
-        $transaction = create('App\Transaction', ['client_id' => auth()->guard('web')->id()]);
+        $transaction = create('App\Transaction');
 
-        $response = $this->patchJson(route('transactions.update', $transaction), [
+        $response = $this->patchJson(route('admin.transactions.update', $transaction), [
             'uid' => 'TR101',
             'folio_no' => '1234/12',
             'rate' => 13,
