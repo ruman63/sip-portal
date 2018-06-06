@@ -137,8 +137,8 @@ export default {
             clientId: '',
             formUrl: '/admin/transactions',
             table: {
-                header: ['Date', 'Client', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount'],
-                row: ['date', 'client.name', 'folio_no', 'scheme.scheme_name', 'scheme.scheme_type', 'units', 'rate', 'amount']
+                header: ['Date', 'TxnId', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount'],
+                row: ['date', 'uid', 'folio_no', 'scheme.scheme_name', 'scheme.scheme_type', 'units', 'rate', 'amount']
             }
         }
     },
@@ -148,6 +148,9 @@ export default {
                 return `/admin/clients/${this.clientId}/transactions`;
             }
             return '/admin/transactions';
+        },
+        selectedClient() {
+            return this.clients.find(item => item.id == this.clientId);
         }
     },
     watch: {

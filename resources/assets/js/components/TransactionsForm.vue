@@ -70,7 +70,9 @@ export default {
         },
         changeType() {
             if(!this.isFresh) {
-                axios.get('/folios').then(({data}) => {
+                axios.get('/admin/folios', {
+                    params: { client_id: this.clientId }
+                }).then(({data}) => {
                     this.folios = data;
                     this.form.folio_no = this.folios[0];
                 });
