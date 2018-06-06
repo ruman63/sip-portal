@@ -2,7 +2,7 @@
     <div>
         <section class="py-4">
             <header class="mb-4 pb-1 border-b-2">
-                <h1>Transactions</h1>
+                <h1 v-text="pageTitle">Transactions</h1>
             </header>
             <div class="flex justify-between items-baseline mb-6">
                 <div class="select-wrapper w-1/2">
@@ -150,7 +150,13 @@ export default {
             return '/admin/transactions';
         },
         selectedClient() {
-            return this.clients.find(item => item.id == this.clientId);
+            return this.client(this.clientId);
+        },
+        pageTitle() {
+            if(this.clientId) {
+                return `${this.selectedClient.name}'s Transactions`
+            }
+            return 'All Transactions';            
         }
     },
     watch: {
@@ -169,6 +175,9 @@ export default {
         }
     },
     methods: {
+        client(id){
+            return this.clients.find(item => item.id == id);
+        },
         fetch(){
             axios.get(this.transactionsUrl).then(({data}) => this.transactions = data);
         },
