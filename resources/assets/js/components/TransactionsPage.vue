@@ -89,7 +89,6 @@
                 :data="transactions"
                 :labels="table.header"
                 :names="table.row"
-                :group="groupBy"
                 >
                 <template slot="header" slot-scope="{ sortColumn, columns, ascending, sort, label }">
                     <tr>
@@ -133,11 +132,12 @@ export default {
         return {
             transactions: [],
             clients: [],
-            groupBy: 'client.name',
+            groupBy: 'client.id',
+            filter: null,
             clientId: '',
             formUrl: '/admin/transactions',
             table: {
-                header: ['Date', 'TxnId', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount'],
+                header: ['Date', 'Txn Id', 'Folio', 'Scheme', 'Scheme Type', 'Units', 'Rate', 'Amount'],
                 row: ['date', 'uid', 'folio_no', 'scheme.scheme_name', 'scheme.scheme_type', 'units', 'rate', 'amount']
             }
         }
@@ -155,17 +155,23 @@ export default {
     },
     watch: {
         clientId() {
-            axios.get(this.transactionsUrl).then(({data}) => {
-                this.transactions = data
-                if(this.clientId=='') {
-                    this.groupBy = 'client.name';
-                } else {
-                    this.groupBy = null;
-                }
-            });
+            this.fetch();
+            if(this.clientId=='') {
+                this.groupBy = 'client.id';
+                this.filter = null;
+            } else {
+                this.groupBy = null;
+                this.filter = {
+                    property: 'client.id',
+                    value: this.clientId
+                };
+            }
         }
     },
     methods: {
+        fetch(){
+            axios.get(this.transactionsUrl).then(({data}) => this.transactions = data);
+        },
         edit(transaction) {
             this.$modal.show('transaction-form', {
                 transaction, 
@@ -194,7 +200,7 @@ export default {
     },
     mounted() {
         axios.get('/admin/clients').then(({data}) => this.clients = data);
-        axios.get('/admin/transactions').then(({data}) => this.transactions = data);
+        this.fetch();
     }
 }
 </script>
