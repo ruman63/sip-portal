@@ -14,21 +14,16 @@
 Route::get('/', "PagesController@index")->name('index');
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth:web'], function() {
     Route::get('/dashboard', "DashboardController@index")->name('dashboard');
-    
-
     Route::get('/transactions', "TransactionsController@index")->name('transactions.index');
-    Route::post('/transactions', "TransactionsController@store")->name('transactions.store');
-    Route::patch('/transactions/{transaction}', "TransactionsController@update")->name('transactions.update');
     Route::get('/allocations', "AllocationController@index")->name('allocations.index');
     Route::get('/portfolio', "PortfolioController@index")->name('portfolios.index');
     Route::patch('/change-password', "Auth\\ClientPasswordController@change")->name('password.update');
     Route::get('/change-password', "Auth\\ClientPasswordController@edit")->name('password.edit');
-    
-    Route::get('/schemes', "SchemeController@index")->name('schemes.index');
-    
 });
+    
+Route::get('/schemes', "SchemeController@index")->name('schemes.index')->middleware('auth:web,cpanel');
 
 Route::group([
         'prefix'=> 'admin', 

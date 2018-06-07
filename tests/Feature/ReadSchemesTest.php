@@ -28,6 +28,17 @@ class ReadSchemesTest extends TestCase
         $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
         $this->assertCount(5, $response);
     }
+
+    /** @test */
+    public function an_admin_can_also_read_schemes()
+    {
+        $this->signInAdmin();
+        $this->withExceptionHandling();
+        create('App\Scheme', [], 5);
+
+        $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
+        $this->assertCount(5, $response);
+    }
     
     /** @test */
     public function a_logged_in_client_can_search_schemes()
