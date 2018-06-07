@@ -31,6 +31,11 @@ class Client extends Authenticatable
     {
         return $this->hasMany('App\Transaction');
     }
+
+    public function changePassword($newPassword)
+    {
+        return $this->update([ 'password' => bcrypt($newPassword) ]);
+    }
     
     public function getNameAttribute()
     {

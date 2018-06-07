@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 
 class ClientsTest extends TestCase
 {
@@ -32,5 +33,15 @@ class ClientsTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $client->transactions);
         $this->assertInstanceOf(Transaction::class, $client->transactions->first());
+    }
+
+    /** @test */
+    public function client_can_change_his_password()
+    {
+        $client = create('App\Client');
+        $this->assertTrue(Hash::check('secret', $client->password));
+
+        $client->changePassword('top-secret');
+        $this->assertTrue(Hash::check('top-secret', $client->fresh()->password));        
     }
 }

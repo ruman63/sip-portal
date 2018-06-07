@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::patch('/transactions/{transaction}', "TransactionsController@update")->name('transactions.update');
     Route::get('/allocations', "AllocationController@index")->name('allocations.index');
     Route::get('/portfolio', "PortfolioController@index")->name('portfolios.index');
+    Route::patch('/change-password', "Auth\\ClientPasswordController@change")->name('password.update');
+    Route::get('/change-password', "Auth\\ClientPasswordController@edit")->name('password.edit');
     
     Route::get('/schemes', "SchemeController@index")->name('schemes.index');
     

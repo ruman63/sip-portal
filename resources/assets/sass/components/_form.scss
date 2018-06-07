@@ -22,6 +22,17 @@ input, select, textarea {
     }
 }
 
+.field.has-error{
+    label.control {
+        @apply .text-red ;
+    }
+    input, select, textarea {
+        &.control {
+            @apply .border-red ;
+        }
+    }
+}
+
 .select-wrapper {
     @apply .relative ;
     &:after {
