@@ -44,7 +44,8 @@ Route::group([
             Route::get('/folios', "FoliosController@index")->name('admin.folios.index');
             Route::get('/transactions', 'TransactionController@index')->name('admin.transactions.index');     
             Route::post('/transactions', 'TransactionController@store')->name('admin.transactions.store');     
-            Route::patch('/transactions/{transaction}', 'TransactionController@update')->name('admin.transactions.update');     
+            Route::patch('/transactions/{transaction}', 'TransactionController@update')->name('admin.transactions.update');  
+            Route::delete('/transactions/{transaction}', 'TransactionController@destroy')->name('admin.transactions.destroy');   
             Route::post('logout', 'LoginController@logout')->name('admin.logout');
         });
     }

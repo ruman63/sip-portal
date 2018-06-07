@@ -65,4 +65,16 @@ class TransactionController extends Controller
         return back();
     }
 
+    public function destroy(Transaction $transaction)
+    {
+        
+        $transaction->delete();
+
+        if(request()->wantsJson()) {
+            return response()->json(['message'=>'Transaction deleted']);
+        }
+
+        flash('Transaction deleted successfully!');
+        return back();
+    }
 }
