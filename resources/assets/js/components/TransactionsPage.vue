@@ -116,7 +116,7 @@
                         <td class="text-right">{{ item.amount | currency }} &#x20B9;</td>
                         <td class="w-32 text-right">
                             <button class="btn rounded-full w-8 h-8 p-1 is-blue" @click="edit(item)"><i class="fa fa-edit text-xs"></i></button>
-                            <button class="btn rounded-full w-8 h-8 p-1 bg-red hover:bg-red-dark text-white"><i class="fa fa-trash text-xs"></i></button>
+                            <button class="btn rounded-full w-8 h-8 p-1 bg-red hover:bg-red-dark text-white" @click="remove(item)"><i class="fa fa-trash text-xs"></i></button>
                         </td>
                     </tr>
                 </template>
@@ -184,6 +184,18 @@ export default {
             this.$modal.show('transaction-form', {
                 transaction, 
             })
+        },
+        remove(transaction) {
+            axios.delete(`/admin/transactions/${transaction.id}`)
+                .then(() => {
+                    flash('Transactions deleted sucessfully!');
+                    let index = this.transactions.indexOf(transaction);
+                    if(index>=0) {
+                        this.transactions.splice(index,1);
+                    }
+                }).catch(({response}) => {
+                    flash(response.statusText, 'danger');
+                });
         },
         key(t) {
             return [t.id, t.uid, t.scheme_code, t.folio_no, t.client_id, t.amount, t.rate].join('|');
