@@ -1,10 +1,16 @@
-ul.breadcrumbs {
-    @apply .list-reset .text-xs .flex .py-1 ;
-    > li {
-        @apply .px-1 .py-1 .text-grey-dark ;
+.breadcrumbs {
+    @apply .border-b .bg-grey-lighter .list-reset .text-xs .flex .items-baseline .py-1 ;
+    > li, .breadcrumb-item  {
+        @apply .p-1 .text-grey-dark .font-semibold .leading-none ;
+        a {
+            @apply .text-blue-darker ;
+            &:hover {
+                @apply .text-blue-dark ;
+            }
+        }
         &:after {
             content: '\f061';
-            @apply .font-fontawesome .ml-2 .text-grey-dark ;
+            @apply .font-fontawesome .ml-2 .text-grey-dark .font-thin ;
         }
         &:last-of-type{
             &:after {

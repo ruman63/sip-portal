@@ -29,8 +29,14 @@
                 @include('admin.layouts.side-menu')
             @endif
             
-            <main class="py-4 px-6 flex-1 h-full w-full overflow-y-scroll">
-                @yield('content')
+            <main class="flex flex-col flex-1">
+                <ul class="px-2 breadcrumbs">
+                    <li><a href="{{ route('admin.dashboard') }}"><i class="text-sm fa fa-dashboard"></i> Dashboard </a></li>
+                    @yield('breadcrumbs')
+                </ul>
+                <section class="py-6 px-4 flex-1 overflow-y-scroll">
+                    @yield('content')
+                </section>
             </main>
         </div>
         

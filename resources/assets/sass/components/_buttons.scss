@@ -1,5 +1,5 @@
 .btn {
-    @apply .py-2 .px-3 .bg-grey-light .font-semibold ;
+    @apply .py-2 .px-3 .bg-grey-light .font-semibold .leading-none ;
     
     &:hover {
         @apply .bg-blue .text-white ;

@@ -1,28 +1,21 @@
 @extends('admin.layouts.master')
+@section('breadcrumbs')
+    <li> Clients </li>
+@endsection
 @section('content')
-
-    <ul class="breadcrumbs mb-6">
-        <li><a href="{{ route('admin.dashboard') }}"><i class="text-sm fa fa-home"></i></a></li>
-        <li> Clients </li>
-    </ul>
-    <section class="px-2">
-        <div class="flex border-b pb-1 mb-4">
-            <h2 class="flex items-center flex-grow text-blue-darkest tracking-wide font-semibold uppercase">Manage Clients</h2>
+    <section class="pb-8">
+        <header class="page-header">
+            <h1> Manage Clients </h1>
+        </header>
+        <div class="flex justify-between items-center mb-8">
+            <div class="w-1/2">
+                <input type="text" class="control" placeholder="Search Clients...">
+            </div>
             <button class="btn is-blue" @click="$modal.show('register')"> 
                 <i class="fa fa-user-plus mr-1"></i> Register Client
             </button>
         </div>
-        <div class="flex flex-row-reverse px-2">
-            <form action="" method="GET" class="text-sm mb-2">
-                <div class="flex items-strech text-xs">
-                    <input type="text" class="flex-grow border-t border-b border-l py-2 px-2 focus:border-blue-darker" placeholder="Search Clients">
-                    <button type="submit" class="px-3 bg-blue-darker text-white">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="p-3 overflow-x-scroll">
+        <div class="overflow-x-scroll">
             <table class="max-w-full">
                 <thead>
                     <tr>
