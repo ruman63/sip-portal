@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import TransactionsForm from './TransactionsForm.vue';
+import TransactionsForm from '../components/TransactionsForm.vue';
 export default {
     components: {TransactionsForm},
     data() {
