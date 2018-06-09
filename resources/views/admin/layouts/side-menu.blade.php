@@ -11,7 +11,7 @@
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('clients.index') }}">Clients</a></li>
             <li><a href="{{ route('admin.transactions.index') }}">Transactions</a></li>
-            <li><a href="{{ route('admin.sip.index') }}">Systematic Investment Plan</a></li>
+            <li><a href="{{ route('admin.sip.index') }}">Manage SIP<span class="lowercase">(s)</span></a></li>
             <li><a href="">AUM Report</a></li>
             <li><a href="">Folio Query</a></li>
             <li><a href="">Portfolio Returns</a></li>
