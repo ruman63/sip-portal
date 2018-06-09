@@ -30,10 +30,12 @@
             @endif
             
             <main class="flex flex-col flex-1">
-                <ul class="px-2 breadcrumbs">
-                    <li><a href="{{ route('admin.dashboard') }}"><i class="text-sm fa fa-dashboard"></i> Dashboard </a></li>
-                    @yield('breadcrumbs')
-                </ul>
+                @if(Auth::guard('cpanel')->check())
+                    <ul class="px-2 breadcrumbs">
+                        <li><a href="{{ route('admin.dashboard') }}"><i class="text-sm fa fa-dashboard"></i> Dashboard </a></li>
+                        @yield('breadcrumbs')
+                    </ul>
+                @endif
                 <section class="py-6 px-4 flex-1 overflow-y-scroll">
                     @yield('content')
                 </section>
