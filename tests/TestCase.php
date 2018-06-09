@@ -5,6 +5,8 @@ namespace Tests;
 use PHPUnit\Framework\Assert;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -19,6 +21,14 @@ abstract class TestCase extends BaseTestCase
             $this->zip($expectedCollection)->each(function($pair) {
                 Assert::assertEquals($pair[0], $pair[1]);
             });
+        });
+
+        Response::macro('getData', function($key) {
+            $data = $this->original->getData();
+            if(!array_key_exists($key, $data)) {
+                return;
+            }
+            return $data[$key];
         });
 
         \DB::statement('PRAGMA foreign_keys=on;');

@@ -12,7 +12,9 @@ class SipController extends Controller
 {
     public function index()
     {
-        return view('admin.sip.index');
+        $sipEntries = Sip::with('schedules')->get();
+
+        return view('admin.sip.index', compact('sipEntries'));
     }
 
     public function store()
