@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Sip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Collection;
+use App\SipSchedule;
 
 class SipController extends Controller
 {
@@ -21,9 +23,10 @@ class SipController extends Controller
         ]);
 
         $sip = Sip::create($data);
+        $schedules = $sip->generateSchedules();
 
         if(request()->wantsJson()) {
-            return $sip;
+            return $sip->load('schedules');
         }
 
         flash('Sip Created Successfully!');

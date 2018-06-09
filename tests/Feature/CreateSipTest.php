@@ -3,8 +3,12 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\Translation\Interval;
+use App\Sip;
+use Illuminate\Database\Eloquent\Collection;
 
 class CreateSipTest extends TestCase
 {
@@ -24,17 +28,40 @@ class CreateSipTest extends TestCase
     public function an_admin_can_create_sip()
     {
         $this->signInAdmin();
-        $data = [
+        $sip = make(Sip::class, [
             'client_id' => 1,
-            'folio_no' => '12345',
-            'scheme_code' => 'ABCXYZ',
-            'amount' => 2000,
-            'installments' => 12,
-            'interval' => 'monthly',
-            'date' => '2012-11-12',
-        ];
-        $this->postJson(route('admin.sip.store'), $data)->assertStatus(201);
+        ]);
 
-        $this->assertDatabaseHas('sip', $data);
+        $this->postJson(route('admin.sip.store'), $sip->toArray())->assertStatus(201);
+
+        $this->assertArraySubset($sip->toArray(), Sip::first()->toArray());
+    }
+
+    /** @test */
+    public function creating_an_sip_creates_correct_sip_schedules_for_monthly_plan()
+    {
+        $this->signInAdmin();
+        $firstDate = Carbon::today()->addDays(2);
+        
+        $sip = make(Sip::class, [
+            'client_id' => 1,
+            'installments' => 4,
+            'interval' => 'monthly',
+            'date' => $firstDate
+        ]);
+
+        $this->postJson(route('admin.sip.store'), $sip->toArray())->assertStatus(201);
+
+        $expectedDates = collect([
+            $firstDate->toDateTimeString(),
+            $firstDate->addMonth()->toDateTimeString(),
+            $firstDate->addMonth()->toDateTimeString(),
+            $firstDate->addMonth()->toDateTimeString(),
+        ]);
+        
+
+        $this->assertArraySubset($sip->toArray(), Sip::first()->toArray());
+        $scheduled_dates = Sip::first()->schedules->pluck('due_date');
+        $scheduled_dates->assertEquals($expectedDates);
     }
 }
