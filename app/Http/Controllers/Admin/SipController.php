@@ -23,9 +23,14 @@ class SipController extends Controller
 
     public function store()
     {
-        $data = request()->only([
-            'client_id', 'folio_no', 'scheme_code', 
-            'date', 'amount', 'installments', 'interval',
+        $data = request()->validate([
+            'client_id' => 'required|exists:clients,id', 
+            'folio_no' => 'required',
+            'scheme_code' => 'required|exists:schemes,scheme_code', 
+            'date' => 'required|date_format:Y-m-d|after:yesterday',
+            'amount' => 'required', 
+            'installments' => 'required|integer', 
+            'interval' => 'required|in:monthly,weekly',
         ]);
 
         $sip = Sip::create($data);
