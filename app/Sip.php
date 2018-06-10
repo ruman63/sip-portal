@@ -21,6 +21,11 @@ class Sip extends Model
         return $this->hasOne(Scheme::class, 'scheme_code', 'scheme_code');
     }
 
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
     public function generateSchedules()
     {
         return Collection::times($this->installments, function($times) {

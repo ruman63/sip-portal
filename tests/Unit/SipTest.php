@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Client;
 
 class SipTest extends TestCase
 {
@@ -29,6 +30,15 @@ class SipTest extends TestCase
         $schedules = create(SipSchedule::class, ['sip_id' => $sip->id], 4);
         $this->assertInstanceOf(Collection::class, $sip->schedules);
         $this->assertCount(4, $sip->schedules);
+    }
+
+    /** @test */
+    public function it_can_retrieve_client_owner()
+    {
+        $client = create(Client::class);
+        $sip = create(Sip::class, ['client_id' => $client->id]);
+        $this->assertInstanceOf(Client::class, $sip->client);
+        $this->assertEquals($client->id, $sip->client->id);
     }
 
     /** @test */
