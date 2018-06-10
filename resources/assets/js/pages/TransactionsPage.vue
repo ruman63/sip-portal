@@ -21,7 +21,7 @@
             :client-id="clientId"
             inline-template
             >
-            <modal name="transaction-form" height="auto" @before-open="beforeOpen">
+            <modal name="transaction-form" height="auto" @before-open="beforeOpen" :scrollable="true">
                 <form @submit.prevent="submit" class="p-8">
                     <h3 class="mb-6" v-text="title"></h3>
                     <div class="flex flex-wrap mb-2">
