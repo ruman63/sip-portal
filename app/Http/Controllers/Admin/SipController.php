@@ -12,7 +12,7 @@ class SipController extends Controller
 {
     public function index()
     {
-        $sipEntries = Sip::with(['schedules', 'client'])->get();
+        $sipEntries = Sip::with(['schedules', 'client', 'scheme'])->get();
 
         if(request()->wantsJson()) {
             return $sipEntries;

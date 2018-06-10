@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="relative text-left text-sm bg-white w-full py-2 px-2 border h-10 truncate" @click.prevent="toggle">
+        <button type="button" class="relative text-left text-sm bg-white w-full py-2 px-2 border h-10 truncate" @click.prevent="toggle">
             <slot name="selectedItem" v-if="selectedItem" :selected="selectedItem">
                 {{ selectedItem }}
             </slot>
@@ -11,7 +11,7 @@
                 ></div>
             </span>
         </button>
-        <div v-show="isOpen" class="relative z-10">
+        <div v-show="isOpen" class="relative z-20">
             <div class="absolute border mt-2 pin-t pin-x flex flex-col p-3 bg-white rounded shadow-lg">
                 <input ref="input" 
                   type="text"

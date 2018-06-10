@@ -1,6 +1,6 @@
 <template>
-    <div class="w-full overflow-x-scroll">
-        <table class="max-w-full">
+    <div>
+        <table>
             <thead>
                 <slot name="header" 
                 :sortColumn="sortColumn" 

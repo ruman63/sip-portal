@@ -51,7 +51,7 @@ class SipPageTests extends TestCase
     }
 
     /** @test */
-    public function sip_entries_are_passed_to_the_json_response_with_schedules_and_client_eager_loaded()
+    public function sip_entries_are_passed_to_the_json_response_with_schedules_scheme_and_client_eager_loaded()
     {
         $this->signInAdmin();
         $sip = create(Sip::class);
@@ -66,5 +66,8 @@ class SipPageTests extends TestCase
 
         $this->assertArrayHasKey('client', $response[0]);
         $this->assertEquals(1, $response[0]['client']['id']);
+
+        $this->assertArrayHasKey('scheme', $response[0]);
+        $this->assertEquals($response[0]['scheme_code'], $response[0]['scheme']['scheme_code']);
     }
 }
