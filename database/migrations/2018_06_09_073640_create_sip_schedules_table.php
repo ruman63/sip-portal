@@ -17,6 +17,7 @@ class CreateSipSchedulesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('sip_id');
             $table->date('due_date');
+            $table->float('rate')->nullable();
             $table->boolean('executed')->default(false);
             $table->timestamps();
         });

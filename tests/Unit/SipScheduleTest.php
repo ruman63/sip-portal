@@ -42,6 +42,16 @@ class SipScheduleTest extends TestCase
         $this->assertEquals("SIP", $txn->type);
         $this->assertEquals($schedule->sip->amount, $txn->amount);
         $this->assertTrue($schedule->fresh()->executed);
-        
+    }
+
+    /** @test */
+    public function sip_schedule_when_executed_also_updates_the_price_in_schedule_according_to_current_nav()
+    {
+        $sip = create('App\Sip');
+        $schedule = create('App\SipSchedule', ['sip_id' => $sip->id]);
+
+        $this->assertNull($schedule->rate);
+        $txn = $schedule->execute();
+        $this->assertEquals($schedule->sip->scheme->nav, $schedule->rate);
     }
 }

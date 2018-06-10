@@ -38,7 +38,10 @@ class SipSchedule extends Model
         ]);
 
         if($txn) {
-            $this->update(['executed' => true]);
+            $this->update([
+                'executed' => true,
+                'rate' => $this->sip->scheme->nav,
+            ]);
         }
 
         return $txn;
