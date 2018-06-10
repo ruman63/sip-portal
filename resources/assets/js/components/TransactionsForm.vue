@@ -6,7 +6,6 @@ export default {
             updating: false,
             schemes_url: '/schemes',
             folios: [],
-            selectedScheme: null,
             type: 'fresh',
             errors: {},
             form:{
@@ -45,11 +44,6 @@ export default {
         },
         clientId() {
             this.form.client_id = this.clientId;
-        },
-        selectedScheme() {
-            if(this.selectedScheme) {
-                this.form.scheme_code = this.selectedScheme.scheme_code
-            }
         }
     },
     methods: {
@@ -62,7 +56,6 @@ export default {
         beforeOpen(event) {
             if(event.params && event.params.transaction) {
                 this.form = Object.assign({}, event.params.transaction) ;
-                this.selectedScheme = this.form.scheme;
                 this.updating = true;
             } else  if(this.updating) {
                 this.reset();
@@ -98,7 +91,6 @@ export default {
         },
         reset() {
             this.updating = false;
-            this.selectedScheme = null;
             this.form = {
                 type: 'ADD',
                 folio_no: '',

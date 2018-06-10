@@ -50,8 +50,23 @@
                         <div class="field w-3/4 px-1">
                             <label for="scheme_code" class="control">Scheme Code</label>
                             <v-typeahead class="w-full" 
-                                v-model="selectedScheme" 
-                                :url="schemes_url">
+                                v-model="form.scheme_code"
+                                :src="schemes_url"
+                                param-name="s"
+                                input-key="scheme_code">
+                                <template slot="selectedItem" slot-scope="{ selected }">
+                                    <span v-text="selected.scheme_name"></span>
+                                </template>
+                                <template slot-scope="{ item }">
+                                    <div class="truncate text-sm" v-text="item.scheme_name"></div>
+                                    <div class="text-xs flex justify-end">
+                                        <span v-text="item.scheme_plan"></span>
+                                        <span class="mx-1">|</span>
+                                        <span v-text="item.scheme_type"></span>
+                                        <span class="mx-1">|</span>
+                                        <span v-text="item.scheme_code"></span>
+                                    </div>
+                                </template>
                             </v-typeahead>
                             <span v-if="hasErrors('scheme_code')" class="text-red text-xs mt-1" v-text="firstError('scheme_code')"></span>
                         </div>
