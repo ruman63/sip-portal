@@ -15,6 +15,6 @@ class SchemeController extends Controller
             $schemes->where('scheme_name', 'LIKE', '%'.request('s').'%');
         }
         
-        return $schemes->get();
+        return $schemes->limit(50)->get();
     }
 }
