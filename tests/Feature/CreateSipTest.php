@@ -17,8 +17,7 @@ class CreateSipTest extends TestCase
     /** @test */
     public function a_guest_or_a_client_cannot_create_sip()
     {
-        $this->withExceptionHandling();
-        $this->postJson(route('admin.sip.store'))->assertStatus(401);
+        $this->withExceptionHandling()->postJson(route('admin.sip.store'))->assertStatus(401);
 
         $this->signIn();
         $this->postJson(route('admin.sip.store'))->assertStatus(401);
@@ -27,12 +26,15 @@ class CreateSipTest extends TestCase
     /** @test */
     public function an_admin_can_create_sip()
     {
+        $this->withExceptionHandling();
         $this->signInAdmin();
+        $client = create('App\Client');
+
         $sip = make(Sip::class, [
-            'client_id' => 1,
+            'client_id' => $client->id
         ]);
 
-        $this->postJson(route('admin.sip.store'), $sip->toArray())->assertStatus(201);
+        $response = $this->postJson(route('admin.sip.store'), $sip->toArray())->assertStatus(201)->json();
 
         $this->assertArraySubset($sip->toArray(), Sip::first()->toArray());
     }
@@ -41,6 +43,7 @@ class CreateSipTest extends TestCase
     public function creating_an_sip_creates_correct_sip_schedules_for_monthly_plan()
     {
         $this->signInAdmin();
+        $client = create('App\Client');
         $firstDate = Carbon::today()->addDays(2);
         
         $sip = make(Sip::class, [

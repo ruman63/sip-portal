@@ -72,11 +72,11 @@ class CreateSipValidationsTest extends ValidationTestCase
     }
     
     /** @test */
-    public function date_is_required_to_be_in_correct_format()
+    public function date_is_required_to_be_a_correct_date()
     {
         $response = $this->postJson(
             route('admin.sip.store'),
-            $this->dataWith('date', '02-02-2018')
+            $this->dataWith('date', '20220231')
         )->assertStatus(422)->json();
 
         $this->assertArrayHasKey('date', $response['errors']);

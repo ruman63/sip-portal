@@ -27,7 +27,7 @@ class SipController extends Controller
             'client_id' => 'required|exists:clients,id', 
             'folio_no' => 'required',
             'scheme_code' => 'required|exists:schemes,scheme_code', 
-            'date' => 'required|date_format:Y-m-d|after:yesterday',
+            'date' => 'required|date|after:yesterday',
             'amount' => 'required', 
             'installments' => 'required|integer', 
             'interval' => 'required|in:monthly,weekly',
