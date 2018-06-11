@@ -130,8 +130,8 @@
                                     <td v-text="item.due_date"></td>
                                     <td v-if="item.rate" v-text="item.rate"></td>
                                     <td v-else> Price will be based on the closing NAV on the due date </td>
-                                    <td class="text-center" v-if="item.executed"> <i class="fa fa-tick text-green"></i> Yes </td>
-                                    <td class="text-center" v-else> <i class="fa fa-times text-red"></i> No </td>
+                                    <td class="text-center" v-if="item.executed"> <i class="fa fa-check text-green mr-2"></i> Yes </td>
+                                    <td class="text-center" v-else> <i class="fa fa-times text-red mr-2"></i> No </td>
                                     <td></td>
                                 </tr>
                             </template>
