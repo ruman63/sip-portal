@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\UpdateNavCommand;
+use App\Jobs\GenerateSipTransactions;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sync:nav')
                  ->dailyAt("5:00");
+        $schedule->job(new GenerateSipTransactions)->everyMinute();
     }
 
     /**
