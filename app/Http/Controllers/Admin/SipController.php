@@ -37,7 +37,7 @@ class SipController extends Controller
         $schedules = $sip->generateSchedules();
 
         if(request()->wantsJson()) {
-            return $sip->load('schedules');
+            return $sip->load(['schedules', 'client', 'scheme']);
         }
 
         flash('Sip Created Successfully!');

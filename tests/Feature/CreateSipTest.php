@@ -24,19 +24,27 @@ class CreateSipTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_create_sip()
+    public function admin_creates_sip_and_gets_created_sip_eager_loaded_with_relations_as_json_response()
     {
         $this->withExceptionHandling();
         $this->signInAdmin();
         $client = create('App\Client');
 
-        $sip = make(Sip::class, [
+        $data = make(Sip::class, [
             'client_id' => $client->id
-        ]);
+        ])->toArray();
 
-        $response = $this->postJson(route('admin.sip.store'), $sip->toArray())->assertStatus(201)->json();
+        $response = $this->postJson(route('admin.sip.store'), $data)->assertStatus(201)->json();
 
-        $this->assertArraySubset($sip->toArray(), Sip::first()->toArray());
+        $sip = Sip::first();
+
+        $this->assertArraySubset($data, $sip->toArray());
+
+        $this->assertArraySubset($data, $response);
+        $this->assertArraySubset($sip->client->toArray(), $response['client']);
+        $this->assertArraySubset($sip->scheme->toArray(), $response['scheme']);
+        $this->assertCount($sip->schedules()->count(), $response['schedules']);
+
     }
 
     /** @test */

@@ -51,23 +51,25 @@ class SipPageTests extends TestCase
     }
 
     /** @test */
-    public function sip_entries_are_passed_to_the_json_response_with_schedules_scheme_and_client_eager_loaded()
+    public function sip_entries_are_passed_to_the_view_with_schedules_scheme_and_client_eager_loaded()
     {
         $this->signInAdmin();
         $sip = create(Sip::class);
         $schedules = $sip->generateSchedules();
 
-        $response = $this->getJson(route('admin.sip.index'))
-            ->assertSuccessful()->json();
+        $response = $this->get(route('admin.sip.index'))
+            ->assertSuccessful();
 
-        $this->assertCount(1, $response);
-        $this->assertArrayHasKey('schedules', $response[0]);
-        $this->assertCount($schedules->count(), $response[0]['schedules']);
-
-        $this->assertArrayHasKey('client', $response[0]);
-        $this->assertEquals(1, $response[0]['client']['id']);
-
-        $this->assertArrayHasKey('scheme', $response[0]);
-        $this->assertEquals($response[0]['scheme_code'], $response[0]['scheme']['scheme_code']);
+        tap($response->getData('sipEntries')->first()->toArray(), function($sip) use ($schedules) {
+            $this->assertArrayHasKey('schedules', $sip);
+            $this->assertCount($schedules->count(), $sip['schedules']);
+    
+            $this->assertArrayHasKey('client', $sip);
+            $this->assertEquals($sip['client_id'], $sip['client']['id']);
+    
+            $this->assertArrayHasKey('scheme', $sip);
+            $this->assertEquals($sip['scheme_code'], $sip['scheme']['scheme_code']);
+        });
+        
     }
 }
