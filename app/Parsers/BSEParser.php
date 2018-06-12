@@ -3,6 +3,8 @@ namespace App\Parsers;
 
 use App\Scheme;
 use Illuminate\Log\Logger;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\File;
 
 class BSEParser
 {
@@ -13,14 +15,18 @@ class BSEParser
     public function __construct($output = null)
     {
         $this->output = $output;
-        $file = 'schemes.txt';
+        $file = \Storage::disk('local')->get('schemes.txt');
 
-        if(!\Storage::disk('local')->exists($file)) {
-            $this->logger->error("'$file' could not be found. Please upload file to storage/app/$file");
+        if(app()->environment('testing')) {
+            $file = file_get_contents(base_path() . '/tests/res/sample_schemes.txt');
+        }
+
+        if(!$file) {
+            throw new FileNotFoundException("$file not found");
         }
 
         $this->lines = collect(
-            explode("|\r\n", \Storage::disk('local')->get($file))
+            preg_split('~\|[\r\n]~', $file)
         )->filter();
     }
     
@@ -36,8 +42,7 @@ class BSEParser
 
         $this->lines
             ->chunk(100)
-            ->each(function($lines) use ($keys, $result) {
-                
+            ->each(function($lines) use ($keys, $result) { 
                 $schemes = $lines->map(function($line) use ($keys) {
                     $scheme = collect(explode('|', $line));
                     return $keys->combine($scheme)->only($this->keys())->toArray();

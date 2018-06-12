@@ -11,11 +11,15 @@ class AmfiiNavParser
     protected $records;
     private $output;
 
-    public function __construct($output = null, $remote = true)
+    public function __construct($output = null)
     {
         $this->output = $output;
         
-        $file = $remote ? file_get_contents(self::location) : \Storage::disk('local')->get(self::filename);
+        if(app()->environment('testing')) {
+            $file = file_get_contents(base_path() . '/tests/res/sample_nav.txt');
+        } else {
+            $file = file_get_contents(self::location);
+        }
 
         $this->contents = collect(explode( "\r\n", $file ))
             ->filter(function($line) {

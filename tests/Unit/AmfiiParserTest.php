@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Scheme;
 
 class AmfiiParserTest extends TestCase
 {
@@ -16,7 +17,7 @@ class AmfiiParserTest extends TestCase
         
         $this->assertArrayHasKey(
             'scheme_code', 
-            (new \App\Parsers\AmfiiNavParser(null, $remote = false))->parse()->records()->random()
+            (new \App\Parsers\AmfiiNavParser())->parse()->records()->random()
         );
     }
 
@@ -24,8 +25,8 @@ class AmfiiParserTest extends TestCase
     public function it_decodes_file_and_persists_to_database()
     {
         $BSEParser = new \App\Parsers\BSEParser();
-        $BSEParser->parse()->save(10);
-        $AmfiiParser = new \App\Parsers\AmfiiNavParser(null, $remote=false);
+        $BSEParser->parse()->save();
+        $AmfiiParser = new \App\Parsers\AmfiiNavParser();
         $AmfiiParser->parse()->update();
         $this->assertTrue(\App\Scheme::whereNotNull('nav')->count() > 1);
     }
