@@ -45,12 +45,14 @@ Vue.filter('fixed', function(number) {
     return number.toFixed(2);
 });
 
+Vue.component('transactions-page', require('./pages/TransactionsPage.vue'));
+Vue.component('manage-sip-page', require('./pages/ManageSipPage.vue'));
+Vue.component('schemes-view', require('./pages/SchemesView.vue'));
+
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
 Vue.component('v-ajax-form', require('./components/VueAjaxForm.vue'));
-Vue.component('transactions-page', require('./pages/TransactionsPage.vue'));
-Vue.component('manage-sip-page', require('./pages/ManageSipPage.vue'));
 Vue.component('v-typeahead', require('./components/Typeahead.vue'));
 Vue.component('logout', require('./components/Logout.vue'));
 Vue.component('clock', require('./components/Clock.vue'));
