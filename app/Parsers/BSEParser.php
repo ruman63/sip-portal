@@ -5,63 +5,56 @@ use App\Scheme;
 use Illuminate\Log\Logger;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\File;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class BSEParser
 {
-    private $lines;
+    private $file;
     private $output;
+    private $progressBar;
     public $records;
 
     public function __construct($output = null)
     {
         $this->output = $output;
-        $file = \Storage::disk('local')->get('schemes.txt');
+        $this->file = \Storage::disk('local')->get('schemes.txt');
 
         if(app()->environment('testing')) {
-            $file = file_get_contents(base_path() . '/tests/res/sample_schemes.txt');
+            $this->file = file_get_contents(base_path() . '/tests/res/sample_schemes.txt');
         }
 
-        if(!$file) {
+        if(!$this->file) {
             throw new FileNotFoundException("$file not found");
         }
-
-        $this->lines = collect(
-            preg_split('~\|\r?\n~', $file)
-        )->filter();
     }
     
     public function parse()
     {
-        $result = collect([]);
+        $result = new Collection;
+        $lines = $this->getLines();
 
-        $keys = collect(
-            explode('|', $this->lines->shift())
-        )->map(function($key) {
+        $keys = $lines->shift()->map(function($key) {
             return str_slug($key, '_');
         });
 
-        $this->lines
-            ->chunk(100)
-            ->each(function($lines) use ($keys, $result) { 
-                $schemes = $lines->map(function($line) use ($keys) {
-                    $scheme = collect(explode('|', $line));
-                    return $keys->combine($scheme)->only($this->keys())->toArray();
-                })->filter(function($scheme) {
-                    return Carbon::parse($scheme['end_date']) > today();
-                });
+        $this->records = $lines->chunk(100)->map(function($lines) use ($keys) { 
+            return $this->applyKeys($lines, $keys);
+        })->flatten(1);
 
-                $result->push($schemes);
-            });
-
-        $this->records = $result->flatten(1);
-            
         return $this;
     }
 
     public function records($take=null)
     {
         return $this->records->take($take);
+    }
+
+    public function activeRecords($take)
+    {
+        return $this->records->filter(function($scheme){
+            return Carbon::parse($scheme['end_date']) > today();
+        })->take($take);
     }
 
     protected function keys() {
@@ -113,18 +106,49 @@ class BSEParser
 
     public function save($take = null)
     {
-        $schemes = $this->records($take);
-        $bar = $this->output ? $this->output->createProgressBar($schemes->count()) : null;
+        $schemes = $this->activeRecords($take);
 
-        $schemes =  $schemes->map(function($scheme, $index) use ($bar){
-            if($bar) {
-                $bar->advance();
-            }
+        $this->initProgressBar($schemes->count());
+
+        $schemes =  $schemes->map( function($scheme, $index) {
+            $this->advanceProgress();
             return Scheme::create($scheme);
         });
 
-        $bar ? $bar->finish() : '';
+        $this->finishProgress();
 
         return $schemes;
+    }
+
+    private function initProgressBar($length)
+    {
+        if($this->output) {
+            $this->progressBar = $this->output->createProgressBar($length);
+        }
+    }
+    private function advanceProgress() {
+        if($this->progressBar) {
+            $this->progressBar->advance();
+        }
+    }
+    private function finishProgress() {
+        if($this->progressBar) {
+            $this->progressBar->finish();
+        }
+    }
+
+    private function getLines()
+    {
+        return collect(
+            preg_split('~\|\r?\n~', $this->file)
+        )->filter()->map(function($line) {
+            return collect(explode('|', $line));
+        });
+    }
+    private function applyKeys($lines, $keys)
+    {
+        return $lines->map(function($line) use ($keys) {
+            return $keys->combine($line)->only($this->keys())->toArray();
+        });
     }
 }

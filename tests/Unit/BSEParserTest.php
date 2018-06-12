@@ -18,7 +18,7 @@ class BSEParserTest extends TestCase
         $this->parser = new \App\Parsers\BSEParser();
         $this->parser->parse();
         $this->activeSchemesCountInSampleFile = 21;
-        $this->totalSchemesCountInSampleFile = 30;
+        $this->totalSchemesCountInSampleFile = 25;
     }
     
     /** @test */
@@ -28,7 +28,7 @@ class BSEParserTest extends TestCase
             Collection::class,
             $this->parser->records()
         );
-        $this->assertCount($this->activeSchemesCountInSampleFile, $this->parser->records());
+        $this->assertCount($this->totalSchemesCountInSampleFile, $this->parser->records());
     }
     
     /** @test */
@@ -39,6 +39,8 @@ class BSEParserTest extends TestCase
         $this->assertEquals(0, Scheme::count());
         
         $this->parser->save(null, 2);
+
+        $this->assertEquals($this->activeSchemesCountInSampleFile, Scheme::count());
 
         $this->assertDatabaseHas('schemes', $records->random());
         $this->assertDatabaseHas('schemes', $records->random());
