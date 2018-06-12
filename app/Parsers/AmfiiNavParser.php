@@ -5,8 +5,7 @@ use App\Scheme;
 
 class AmfiiNavParser
 {
-    const location = 'https://www.amfiindia.com/spages/NAVAll.txt';
-    const filename = 'nav.txt';
+    const FILE_LOCATION = 'https://www.amfiindia.com/spages/NAVAll.txt';
     protected $contents;
     protected $records;
     private $output;
@@ -18,7 +17,7 @@ class AmfiiNavParser
         if(app()->environment('testing')) {
             $file = file_get_contents(base_path() . '/tests/res/sample_nav.txt');
         } else {
-            $file = file_get_contents(self::location);
+            $file = file_get_contents(self::FILE_LOCATION);
         }
 
         $this->contents = collect(explode( "\r\n", $file ))
@@ -58,9 +57,6 @@ class AmfiiNavParser
             "scheme_code",
             "isin_div_payout_isin_growth",
             "isin_div_reinvestment",
-            // "scheme_name",
-            // "repurchase_price",
-            // "sale_price",
             "net_asset_value",
             "date",
         ];

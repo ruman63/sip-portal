@@ -23,6 +23,17 @@ abstract class TestCase extends BaseTestCase
             });
         });
 
+        EloquentCollection::macro('assertHasKey', function($key) {
+            if(!$this->has($key)) {
+                Assert::fail("expected key '$key' but it does not exist on Collection");
+            }
+        });
+
+        EloquentCollection::macro('assertHasKeyAndNotNull', function($key) {
+            $this->assertHasKey($key);
+            Assert::assertNotNull($this[$key], "was expecting a NOT NULL key '$key' but it is NULL");
+        });
+
         Response::macro('getData', function($key) {
             $data = $this->original->getData();
             if(!array_key_exists($key, $data)) {

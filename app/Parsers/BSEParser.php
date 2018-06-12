@@ -5,6 +5,7 @@ use App\Scheme;
 use Illuminate\Log\Logger;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\File;
+use Carbon\Carbon;
 
 class BSEParser
 {
@@ -26,7 +27,7 @@ class BSEParser
         }
 
         $this->lines = collect(
-            preg_split('~\|[\r\n]~', $file)
+            preg_split('~\|\r?\n~', $file)
         )->filter();
     }
     
@@ -47,7 +48,7 @@ class BSEParser
                     $scheme = collect(explode('|', $line));
                     return $keys->combine($scheme)->only($this->keys())->toArray();
                 })->filter(function($scheme) {
-                    return \Carbon\Carbon::parse($scheme['end_date']) > \Carbon\Carbon::now();
+                    return Carbon::parse($scheme['end_date']) > today();
                 });
 
                 $result->push($schemes);
@@ -69,12 +70,15 @@ class BSEParser
             "scheme_code",
             "rta_scheme_code",
             "amc_scheme_code",
+            "rta_agent_code",
             "isin",
             "amc_code",
             "scheme_type",
             "scheme_plan",
             "scheme_name",
             "purchase_allowed",
+            "start_date",
+            "end_date",
             // "purchase_transaction_mode",
             // "minimum_purchase_amount",
             // "additional_purchase_amount",
@@ -90,7 +94,6 @@ class BSEParser
             // "redemption_amount_maximum",
             // "redemption_amount_multiple",
             // "redemption_cut_off_time",
-            // "rta_agent_code",
             // "amc_active_flag",
             // "dividend_reinvestment_flag",
             // "sip_flag",
@@ -100,8 +103,6 @@ class BSEParser
             // "settlement_type",
             // "amc_ind",
             // "face_value",
-            "start_date",
-            "end_date",
             // "exit_load_flag",
             // "exit_load",
             // "lock_in_period_flag",
