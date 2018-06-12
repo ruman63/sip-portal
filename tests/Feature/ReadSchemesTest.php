@@ -18,6 +18,17 @@ class ReadSchemesTest extends TestCase
     }
 
     /** @test */
+    public function schemes_are_paginated_to_50_per_page_by_default()
+    {
+        $this->signInAdmin();
+        $this->withExceptionHandling();
+        create('App\Scheme', [], 100);
+
+        $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
+        $this->assertCount(50, $response['data']);
+    }
+    
+    /** @test */
     public function a_logged_in_client_can_read_schemes()
     {
         $this->signIn();
@@ -26,7 +37,7 @@ class ReadSchemesTest extends TestCase
         create('App\Scheme', [], 5);
 
         $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
-        $this->assertCount(5, $response);
+        $this->assertCount(5, $response['data']);
     }
 
     /** @test */
@@ -37,18 +48,21 @@ class ReadSchemesTest extends TestCase
         create('App\Scheme', [], 5);
 
         $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
-        $this->assertCount(5, $response);
+        $this->assertCount(5, $response['data']);
     }
 
     /** @test */
-    public function schemes_are_limited_to_50()
+    public function perPage_param_overrides_default_pagination_limit()
     {
-        $this->signInAdmin();
+        $this->signIn();
         $this->withExceptionHandling();
-        create('App\Scheme', [], 100);
+        
+        create('App\Scheme', [], 45);
+        
+        $response = $this->getJson(route('schemes.index', ['perPage' => 15]))->json();
 
-        $response = $this->getJson(route('schemes.index'))->assertStatus(200)->json();
-        $this->assertCount(50, $response);
+        $this->assertCount(15, $response['data']);
+        $this->assertEquals(3, $response['last_page']);
     }
     
     /** @test */
@@ -62,6 +76,6 @@ class ReadSchemesTest extends TestCase
         
         $response = $this->getJson(route('schemes.index').'?s=birla')->json();
 
-        $this->assertCount(2, $response);
+        $this->assertCount(2, $response['data']);
     }
 }

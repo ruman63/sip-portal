@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:web'], function() {
 });
     
 Route::get('/schemes', "SchemeController@index")->name('schemes.index')->middleware('auth:web,cpanel');
+Route::post('/schemes', "SchemeController@store")->name('schemes.store');
 
 Route::group([
         'prefix'=> 'admin', 

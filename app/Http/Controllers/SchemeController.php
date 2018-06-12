@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Scheme;
+use App\Parsers\BSEParser;
 
 class SchemeController extends Controller
 {
@@ -15,6 +16,15 @@ class SchemeController extends Controller
             $schemes->where('scheme_name', 'LIKE', '%'.request('s').'%');
         }
         
-        return $schemes->limit(50)->get();
+        return $schemes->paginate(request('perPage') ?? 50);
+    }
+
+    public function store()
+    {
+        request()->file('schemesFile')->storeAs('', 'schemes.txt', 'local');
+
+        (new BSEParser())->parse()->save();
+
+        return response()->json([], 201);
     }
 }
