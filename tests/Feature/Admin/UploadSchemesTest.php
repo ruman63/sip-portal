@@ -18,11 +18,14 @@ class UploadSchemesTest extends TestCase
     /** @test */
     public function uploading_scheme_files_adds_the_schemes()
     {
+        $this->signInAdmin();
+        
         $pathToFile = sys_get_temp_dir().'/schemes.txt';
         copy(base_path().'/tests/res/sample_schemes.txt', $pathToFile);
         
         Storage::fake('local');
-        $this->postJson(route('schemes.store'), [
+        
+        $this->postJson(route('admin.schemes.store'), [
             'schemesFile' => new UploadedFile($pathToFile, 'schemes.txt')
         ])->assertStatus(201);
         

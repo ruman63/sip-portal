@@ -18,13 +18,4 @@ class SchemeController extends Controller
         
         return $schemes->paginate(request('perPage') ?? 50);
     }
-
-    public function store()
-    {
-        request()->file('schemesFile')->storeAs('', 'schemes.txt', 'local');
-
-        (new BSEParser())->parse()->save();
-
-        return response()->json([], 201);
-    }
 }
