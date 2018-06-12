@@ -56,6 +56,7 @@
                                     <v-typeahead src="{{ route('schemes.index') }}" 
                                     v-model="form.scheme_code"
                                     placeholder="Select a Scheme"
+                                    param-name="s"
                                     input-key="scheme_code" />
                                         <template slot="selectedItem" slot-scope="{ selected }">
                                             <span v-text="selected.scheme_name"></span>
