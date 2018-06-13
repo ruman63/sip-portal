@@ -67,9 +67,14 @@ class AmfiiNavParser
         $navs = $this->records($records);
         $bar = $this->output ? $this->output->createProgressBar($navs->count()) : null;
         $navs->each(function($record) use ($bar) {
-            Scheme::where('isin', $record['isin_div_payout_isin_growth'])
-            ->orWhere('isin', $record['isin_div_reinvestment'])
-            ->update([
+            $q = Scheme::query();
+            if($record['isin_div_payout_isin_growth'] != '-') {
+                $q = $q->where('isin', $record['isin_div_payout_isin_growth']);
+            }
+            if($record['isin_div_reinvestment'] != '-') {
+                $q = $q->orWhere('isin', $record['isin_div_reinvestment']);
+            }
+            $q->update([
                 'nav' => $record['net_asset_value'],
                 'nav_date' => \Carbon\Carbon::parse($record['date'])->toDateTimeString(),
             ]);
