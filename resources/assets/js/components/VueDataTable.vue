@@ -152,7 +152,7 @@ export default {
         transition: background-color 6s ease-in 0.5s, opacity .7s ease-out;
     }
     .highlight-leave-active {
-        transition: background-color 1s ease-out, transform 0.1s ease-in 0.8s, opacity 0.1s ease-in 0.8s;        
+        transition: background-color 0.7s ease-out, transform 0.1s ease-in 0.4s, opacity 0.1s ease-in 0.4s;        
     }
 
     .highlight-enter {
@@ -163,5 +163,8 @@ export default {
         opacity: 0;
         transform: translateX(150%);
         background-color: #f77;
+    }
+    .highlight-move {
+        transition: transform 1s;
     }
 </style>
