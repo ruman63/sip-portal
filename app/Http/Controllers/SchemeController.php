@@ -26,4 +26,14 @@ class SchemeController extends Controller
         
         return $schemes->paginate( request('perPage') ?? 50 );
     }
+
+    public function types()
+    {
+        return Scheme::selectRaw('DISTINCT scheme_type')->get()->pluck('scheme_type');
+    }
+
+    public function agents()
+    {
+        return Scheme::selectRaw('DISTINCT rta_agent_code')->get()->pluck('rta_agent_code');
+    }
 }

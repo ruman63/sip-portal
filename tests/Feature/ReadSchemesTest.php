@@ -103,4 +103,30 @@ class ReadSchemesTest extends TestCase
 
         $this->assertCount(3, $response['data']);
     }
+
+    /** @test */
+    public function get_distinct_types_from_schemes()
+    {
+        $this->signIn();
+        create('App\Scheme', ['scheme_type' => 'DEBT'], 2);
+        create('App\Scheme', ['scheme_type' => 'ELSS'], 3);
+        create('App\Scheme', ['scheme_type' => 'EQUITY'], 2);
+
+        $response = $this->getJson(route('schemes.types'))->assertSuccessful()->json();
+
+        $this->assertEquals(['DEBT', 'ELSS', 'EQUITY'], $response);
+    }
+
+    /** @test */
+    public function get_distinct_agents_from_schemes()
+    {
+        $this->signIn();
+        create('App\Scheme', ['rta_agent_code' => 'CAMS'], 2);
+        create('App\Scheme', ['rta_agent_code' => 'KARVY'], 3);
+        create('App\Scheme', ['rta_agent_code' => 'FRANK'], 2);
+
+        $response = $this->getJson(route('schemes.agents'))->assertSuccessful()->json();
+
+        $this->assertEquals(['CAMS', 'KARVY', 'FRANK'], $response);
+    }
 }

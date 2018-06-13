@@ -4,6 +4,8 @@ export default {
     data() {
         return {
             schemes: [],
+            types: [],
+            agents: [],
             query: '',
             type: '',
             agent: '',
@@ -11,8 +13,14 @@ export default {
     },
     methods: {
         search: debounce(function() {
-            this.fetchSchemes().then(({data}) => this.schemes = data.data);
+            this.fetchSchemes();
         }, 330),
+        clear() {
+            this.query = '';
+            this.type = '';
+            this.agent = '';
+            this.fetchSchemes();
+        },
         fetchSchemes() {
             return axios.get('/schemes', {
                 params: {
@@ -20,7 +28,7 @@ export default {
                     type: this.type,
                     agent: this.agent,
                 }
-            });
+            }).then(({data}) => this.schemes = data.data);
         },
         onSuccess(response)
         {
@@ -32,7 +40,9 @@ export default {
         }
     },
     mounted() {
-        this.fetchSchemes().then(({data}) => this.schemes = data.data)
+        this.fetchSchemes()
+        axios.get('/schemes/types').then(({data}) => this.types = data );
+        axios.get('/schemes/agents').then(({data}) => this.agents = data );
     }
 }
 </script>
