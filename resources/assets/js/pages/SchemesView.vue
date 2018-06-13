@@ -21,6 +21,14 @@ export default {
                     agent: this.agent,
                 }
             });
+        },
+        onSuccess(response)
+        {
+            flash('Schemes will be generated soon. <br> File upload successful!', 'success');
+        },
+        onFailure(response)
+        {
+            flash(response.statusText, 'danger');
         }
     },
     mounted() {
