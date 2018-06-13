@@ -22,7 +22,7 @@
                   @keydown.enter.prevent="select(highlightedIndex)"
                   @keydown.esc.prevent="close"
                   class="control" />
-                <ul v-if="!isEmpty" ref="options" class="list-reset mt-2 h-64 overflow-y-scroll">
+                <ul v-if="!isEmpty" ref="options" class="list-reset mt-2 max-h-64 overflow-y-scroll">
                     <li v-for="(item,i) in items" :key="item[inputKey]"
                         class="py-2 px-3 cursor-pointer rounded" 
                         :class="{'bg-blue-darker text-white':isHighlighted(i)}"
@@ -56,7 +56,7 @@ export default {
             query: '',
             loading: false,
             isOpen: false,
-            items: [],
+            data: [],
             selectedIndex: -1,
             highlightedIndex: -1,
         }
@@ -70,13 +70,22 @@ export default {
     },
     computed: {
         selectedItem() {
-            if(this.selectedIndex >= 0 && this.selectedIndex < this.items.length) {
+            if(this.selectedIndex >= 0 && this.selectedIndex < this.data.length) {
                 return this.items[this.selectedIndex];
             }
             return null;
         },
         isEmpty() {
             return !(this.items.length > 0);
+        },
+        items() {
+            return this.isPaginator ? this.data.data : this.data;
+        },
+        isPaginator() {
+            return (
+                typeof(this.data) == 'object'
+                && Array.isArray(this.data.data)
+            );
         }
     },
     methods:{
@@ -85,7 +94,7 @@ export default {
         },
         input: debounce(function() {
             this.makeRequest().then(({data}) => {
-                this.items = data;
+                this.data = data;
                 this.loading = false;
             });
         }, 500),
@@ -153,7 +162,7 @@ export default {
     mounted() {
         this.makeRequest().then(({data}) => { 
             this.loading = false;
-            this.items = data;
+            this.data = data
             if(this.value != null && this.value != '') {
                 this.assignValue(this.value)
             }
