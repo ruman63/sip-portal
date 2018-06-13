@@ -66,7 +66,7 @@ class ReadSchemesTest extends TestCase
     }
     
     /** @test */
-    public function a_logged_in_client_can_search_schemes()
+    public function search_schemes()
     {
         $this->signIn();
         $this->withExceptionHandling();
@@ -77,5 +77,30 @@ class ReadSchemesTest extends TestCase
         $response = $this->getJson(route('schemes.index').'?s=birla')->json();
 
         $this->assertCount(2, $response['data']);
+    }
+
+    /** @test */
+    public function filter_schemes_by_types()
+    {
+        $this->signIn();
+        create('App\Scheme', ['scheme_type' => 'DEBT'], 2);
+        create('App\Scheme', ['scheme_type' => 'EQUITY'], 3);
+        
+        $response = $this->getJson(route('schemes.index', ['type' => 'DEBT']))->assertSuccessful()->json();
+
+        $this->assertCount(2, $response['data']);
+    }
+
+    /** @test */
+    public function filter_schemes_by_rta_agent()
+    {
+        $this->signIn();
+        create('App\Scheme', ['rta_agent_code' => 'CAMS'], 2);
+        create('App\Scheme', ['rta_agent_code' => 'KARVY'], 3);
+        create('App\Scheme', ['rta_agent_code' => 'FRANKLIN'], 4);
+        
+        $response = $this->getJson(route('schemes.index', ['agent' => 'KARVY']))->assertSuccessful()->json();
+
+        $this->assertCount(3, $response['data']);
     }
 }
