@@ -20,6 +20,9 @@ class BSEParser
         $this->output = $output;
         $this->file = \Storage::disk('local')->get('schemes.txt');
 
+        $this->memory_limit = ini_get('memory_limit');
+        ini_set('memory_limit', '256M');
+        
         if(app()->environment('testing')) {
             $this->file = file_get_contents(base_path() . '/tests/res/sample_schemes.txt');
         }
@@ -150,5 +153,10 @@ class BSEParser
         return $lines->map(function($line) use ($keys) {
             return $keys->combine($line)->only($this->keys())->toArray();
         });
+    }
+
+    public function __destruct()
+    {
+        ini_set('memory_limit', $this->memory_limit);
     }
 }
