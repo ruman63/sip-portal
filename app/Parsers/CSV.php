@@ -8,15 +8,15 @@ class CSV
     {
     }
 
-    public static function read($filePath)
+    public static function read($filePath, $seperator = ',')
     {
-        return (new static)->parse(file($filePath));
+        return (new static)->parse(file($filePath), $seperator);
     }
 
-    private function parse($lines)
+    private function parse($lines, $seperator)
     {
-        $csv = collect($lines)->map(function ($line) {
-            return array_map('trim', str_getcsv($line, ',', "'"));
+        $csv = collect($lines)->map(function ($line) use ($seperator) {
+            return array_map('trim', str_getcsv($line, $seperator, "'"));
         });
 
         $keys = array_map('strtolower', $csv->shift());
