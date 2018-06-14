@@ -15,7 +15,7 @@ class AmfiiNavParser
         $this->output = $output;
 
         if (app()->environment('testing')) {
-            $file = file_get_contents(base_path() . '/tests/res/sample_nav.txt');
+            $file = file_get_contents(stubs_path('sample_nav.txt'));
         } else {
             $file = file_get_contents(self::FILE_LOCATION);
         }

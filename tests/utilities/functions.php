@@ -18,3 +18,8 @@ function stubFile($stubFilePath, $uploadedFileName, $mime = null)
     copy($stubFilePath, $pathToFile);
     return new UploadedFile($pathToFile, $uploadedFileName, $mime);
 }
+
+function stubs_path($path = '')
+{
+    return base_path('tests/stubs/' . $path);
+}

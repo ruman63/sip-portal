@@ -11,7 +11,7 @@ class CSVParserTest extends TestCase
     /** @test */
     public function it_reads_the_given_comma_seperated_file_to_a_collection()
     {
-        $data = CSV::read(base_path('tests/stubs/test.csv'))->get();
+        $data = CSV::read(stubs_path('test.csv'))->get();
         $this->assertInstanceOf(Collection::class, $data);
         $this->assertCount(5, $data);
         $data->take(5)->each(function ($dataItem) {
@@ -24,7 +24,7 @@ class CSVParserTest extends TestCase
     /** @test */
     public function it_reads_the_given_pipe_seperated_file_to_a_collection()
     {
-        $data = CSV::read(base_path('tests/stubs/piped.csv'), '|')->get();
+        $data = CSV::read(stubs_path('piped.csv'), '|')->get();
         $this->assertInstanceOf(Collection::class, $data);
         $this->assertCount(5, $data);
         $data->take(5)->each(function ($dataItem) {
@@ -39,7 +39,7 @@ class CSVParserTest extends TestCase
     {
         $select = ['roll_no', 'name', 'fees'];
 
-        $data = CSV::read(base_path('tests/stubs/test.csv'))->columns($select);
+        $data = CSV::read(stubs_path('test.csv'))->columns($select);
         $this->assertCount(count($select), $data->first());
         $this->assertArrayHasSameElements($select, array_keys($data->first()));
     }

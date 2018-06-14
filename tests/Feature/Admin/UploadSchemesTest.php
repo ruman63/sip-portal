@@ -17,7 +17,7 @@ class UploadSchemesTest extends TestCase
         $this->signInAdmin();
 
         $file = stubFile(
-            base_path('tests/res/sample_schemes.txt'),
+            stubs_path('sample_schemes.txt'),
             'schemes.txt'
         );
 

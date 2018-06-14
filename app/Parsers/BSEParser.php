@@ -2,9 +2,7 @@
 namespace App\Parsers;
 
 use App\Scheme;
-use Illuminate\Log\Logger;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Http\File;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -22,59 +20,60 @@ class BSEParser
 
         $this->memory_limit = ini_get('memory_limit');
         ini_set('memory_limit', '256M');
-        
-        if(app()->environment('testing')) {
-            $this->file = file_get_contents(base_path() . '/tests/res/sample_schemes.txt');
+
+        if (app()->environment('testing')) {
+            $this->file = file_get_contents(stubs_path('sample_schemes.txt'));
         }
 
-        if(!$this->file) {
+        if (!$this->file) {
             throw new FileNotFoundException("$file not found");
         }
     }
-    
+
     public function parse()
     {
         $result = new Collection;
         $lines = $this->getLines();
 
-        $keys = $lines->shift()->map(function($key) {
+        $keys = $lines->shift()->map(function ($key) {
             return str_slug($key, '_');
         });
 
-        $this->records = $lines->chunk(100)->map(function($lines) use ($keys) { 
+        $this->records = $lines->chunk(100)->map(function ($lines) use ($keys) {
             return $this->applyKeys($lines, $keys);
         })->flatten(1);
 
         return $this;
     }
 
-    public function records($take=null)
+    public function records($take = null)
     {
         return $this->records->take($take);
     }
 
     public function activeRecords($take)
     {
-        return $this->records->filter(function($scheme){
+        return $this->records->filter(function ($scheme) {
             return Carbon::parse($scheme['end_date']) > today();
         })->take($take);
     }
 
-    protected function keys() {
+    protected function keys()
+    {
         return [
-            "unique_no",
-            "scheme_code",
-            "rta_scheme_code",
-            "amc_scheme_code",
-            "rta_agent_code",
-            "isin",
-            "amc_code",
-            "scheme_type",
-            "scheme_plan",
-            "scheme_name",
-            "purchase_allowed",
-            "start_date",
-            "end_date",
+            'unique_no',
+            'scheme_code',
+            'rta_scheme_code',
+            'amc_scheme_code',
+            'rta_agent_code',
+            'isin',
+            'amc_code',
+            'scheme_type',
+            'scheme_plan',
+            'scheme_name',
+            'purchase_allowed',
+            'start_date',
+            'end_date',
             // "purchase_transaction_mode",
             // "minimum_purchase_amount",
             // "additional_purchase_amount",
@@ -113,7 +112,7 @@ class BSEParser
 
         $this->initProgressBar($schemes->count());
 
-        $schemes =  $schemes->map( function($scheme, $index) {
+        $schemes = $schemes->map(function ($scheme, $index) {
             $this->advanceProgress();
             return Scheme::create($scheme);
         });
@@ -125,17 +124,21 @@ class BSEParser
 
     private function initProgressBar($length)
     {
-        if($this->output) {
+        if ($this->output) {
             $this->progressBar = $this->output->createProgressBar($length);
         }
     }
-    private function advanceProgress() {
-        if($this->progressBar) {
+
+    private function advanceProgress()
+    {
+        if ($this->progressBar) {
             $this->progressBar->advance();
         }
     }
-    private function finishProgress() {
-        if($this->progressBar) {
+
+    private function finishProgress()
+    {
+        if ($this->progressBar) {
             $this->progressBar->finish();
         }
     }
@@ -144,13 +147,14 @@ class BSEParser
     {
         return collect(
             preg_split('~\|\r?\n~', $this->file)
-        )->filter()->map(function($line) {
+        )->filter()->map(function ($line) {
             return collect(explode('|', $line));
         });
     }
+
     private function applyKeys($lines, $keys)
     {
-        return $lines->map(function($line) use ($keys) {
+        return $lines->map(function ($line) use ($keys) {
             return $keys->combine($line)->only($this->keys())->toArray();
         });
     }
