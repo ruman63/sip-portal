@@ -13,17 +13,17 @@ class AmfiiNavParser
     public function __construct($output = null)
     {
         $this->output = $output;
-        
-        if(app()->environment('testing')) {
+
+        if (app()->environment('testing')) {
             $file = file_get_contents(base_path() . '/tests/res/sample_nav.txt');
         } else {
             $file = file_get_contents(self::FILE_LOCATION);
         }
 
-        $this->contents = collect(explode( "\r\n", $file ))
-            ->filter(function($line) {
+        $this->contents = collect(explode("\r\n", $file))
+            ->filter(function ($line) {
                 return $line ? str_contains($line, ';') : false;
-            })->map(function($line, $i) {
+            })->map(function ($line, $i) {
                 return collect(explode(';', $line));
             });
     }
@@ -31,34 +31,36 @@ class AmfiiNavParser
     public function parse()
     {
         $keys = $this->contents->shift()
-            ->map(function($key) {
+            ->map(function ($key) {
                 return str_slug($key, '_');
             });
-        
+
         $this->records = $this->contents->map(
-            function($record) use ($keys) {
+            function ($record) use ($keys) {
                 return $keys->combine($record)
                     ->only($this->keys())
                     ->toArray();
-            })->filter(function($record) {
-                return is_numeric($record['net_asset_value']);
-            });
+            }
+        )->filter(function ($record) {
+            return is_numeric($record['net_asset_value']);
+        });
 
         return $this;
     }
 
-    public function records($take=null)
+    public function records($take = null)
     {
         return $this->records->take($take);
     }
 
-    protected function keys() {
+    protected function keys()
+    {
         return [
-            "scheme_code",
-            "isin_div_payout_isin_growth",
-            "isin_div_reinvestment",
-            "net_asset_value",
-            "date",
+            'scheme_code',
+            'isin_div_payout_isin_growth',
+            'isin_div_reinvestment',
+            'net_asset_value',
+            'date',
         ];
     }
 
@@ -66,22 +68,16 @@ class AmfiiNavParser
     {
         $navs = $this->records($records);
         $bar = $this->output ? $this->output->createProgressBar($navs->count()) : null;
-        $navs->each(function($record) use ($bar) {
-            $q = Scheme::query();
-            if($record['isin_div_payout_isin_growth'] != '-') {
-                $q = $q->where('isin', $record['isin_div_payout_isin_growth']);
-            }
-            if($record['isin_div_reinvestment'] != '-') {
-                $q = $q->orWhere('isin', $record['isin_div_reinvestment']);
-            }
-            $q->update([
-                'nav' => $record['net_asset_value'],
-                'nav_date' => \Carbon\Carbon::parse($record['date'])->toDateTimeString(),
-            ]);
+        $navs->each(function ($record) use ($bar) {
+            Scheme::where('isin', $record['isin_div_payout_isin_growth'])
+                ->orWhere('isin', $record['isin_div_reinvestment'])
+                ->update([
+                    'nav' => $record['net_asset_value'],
+                    'nav_date' => \Carbon\Carbon::parse($record['date'])->toDateTimeString(),
+                ]);
             $bar ? $bar->advance() : '';
         });
 
         $bar ? $bar->finish() : '';
-        
     }
 }
