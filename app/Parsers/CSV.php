@@ -13,6 +13,24 @@ class CSV
         return (new static)->parse(file($filePath), $seperator);
     }
 
+    public static function write($filePath, $collection)
+    {
+        return !!file_put_contents($filePath, (new static)->implode($collection));
+    }
+
+    private function implode($collection)
+    {
+        $keys = implode(',', array_keys($collection->first()));
+        return $collection->map(function ($arrayData) {
+            return implode(
+                ',',
+                array_map(function ($col) {
+                    return "'$col'";
+                }, $arrayData)
+            );
+        })->prepend($keys)->implode("\r\n");
+    }
+
     private function parse($lines, $seperator)
     {
         $csv = collect($lines)->map(function ($line) use ($seperator) {

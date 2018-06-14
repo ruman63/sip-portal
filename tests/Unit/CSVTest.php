@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Parsers\CSV;
 use Illuminate\Support\Collection;
 
-class CSVParserTest extends TestCase
+class CSVTest extends TestCase
 {
     /** @test */
     public function it_reads_the_given_comma_seperated_file_to_a_collection()
@@ -42,5 +42,27 @@ class CSVParserTest extends TestCase
         $data = CSV::read(stubs_path('test.csv'))->columns($select);
         $this->assertCount(count($select), $data->first());
         $this->assertArrayHasSameElements($select, array_keys($data->first()));
+    }
+
+    /** @test */
+    public function it_writes_a_given_collection_to_a_csv_file()
+    {
+        $collection = collect([
+            ['id' => '1', 'name' => 'Ruman Saleem', 'class' => 'PG', 'age' => 22],
+            ['id' => '2', 'name' => 'Tarun Kanwal', 'class' => 'UG', 'age' => 21],
+            ['id' => '3', 'name' => 'Arun Sharma', 'class' => 'PG', 'age' => 23],
+            ['id' => '4', 'name' => 'Siddharth Bajpayee', 'class' => 'UG', 'age' => 20],
+            ['id' => '5', 'name' => 'Vivek Oberoi', 'class' => 'PG', 'age' => 22],
+            ['id' => '6', 'name' => 'Taimoor Khan', 'class' => 'UG', 'age' => 21],
+        ]);
+        if (!is_dir(storage_path('app/test'))) {
+            mkdir(storage_path('app/test'));
+        }
+        $filepath = storage_path('app/test/file.csv');
+        $this->assertTrue(CSV::write($filepath, $collection));
+        $this->assertFileExists($filepath);
+        $collection->assertEquals(CSV::read($filepath)->get());
+
+        exec('rm -rf ' . storage_path('app/test'));
     }
 }
