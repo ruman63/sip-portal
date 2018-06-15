@@ -102,7 +102,7 @@ class BSEParser
             // "exit_load",
             // "lock_in_period_flag",
             // "lock_in_period",
-            // "channel_partner_code",
+            'channel_partner_code',
         ];
     }
 

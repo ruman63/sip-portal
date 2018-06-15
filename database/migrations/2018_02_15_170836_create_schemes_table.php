@@ -24,6 +24,8 @@ class CreateSchemesTable extends Migration
             $table->string('scheme_plan', 10);
             $table->string('scheme_name', 200);
             $table->string('purchase_allowed', 20);
+            $table->string('channel_partner_code', 20);
+            $table->string('rta_agent_code', 50);
             $table->float('nav')->nullable();
             $table->timestamp('nav_date')->nullable();
             $table->string('start_date', 15)->nullable();
