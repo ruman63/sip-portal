@@ -4,8 +4,8 @@ namespace Tests;
 
 use PHPUnit\Framework\Assert;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,22 +15,28 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        EloquentCollection::macro('assertEquals', function ($expectedCollection) {
+        Collection::macro('assertEquals', function ($expectedCollection) {
             Assert::assertCount($expectedCollection->count(), $this);
             $this->zip($expectedCollection)->each(function ($pair) {
                 Assert::assertEquals($pair[0], $pair[1]);
             });
         });
 
-        EloquentCollection::macro('assertHasKey', function ($key) {
+        Collection::macro('assertHasKey', function ($key) {
             if (!$this->has($key)) {
                 Assert::fail("expected key '$key' but it does not exist on Collection");
             }
         });
 
-        EloquentCollection::macro('assertHasKeyAndNotNull', function ($key) {
+        Collection::macro('assertHasKeyAndNotNull', function ($key) {
             $this->assertHasKey($key);
             Assert::assertNotNull($this[$key], "was expecting a NOT NULL key '$key' but it is NULL");
+        });
+
+        Collection::macro('assertHasInstancesOf', function ($class) {
+            $this->each(function ($item, $key) use ($class) {
+                Assert::assertInstanceOf($class, $item, "item with index [$key] is not a instance of '$class'");
+            });
         });
 
         Response::macro('getData', function ($key) {

@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Client;
-use App\Transaction;
+use App\Scheme;
 use Illuminate\Support\Carbon;
 
 class GeneratePortfolios implements ShouldQueue
@@ -53,14 +53,17 @@ class GeneratePortfolios implements ShouldQueue
 
     private function createTransaction($transaction, $client)
     {
-        return Transaction::create([
+        $scheme = Scheme::where('channel_partner_code', $transaction['prodcode'])->first();
+        if (!$scheme) {
+            return;
+        }
+        return $scheme->transactions()->create([
             'uid' => $transaction['trxnno'],
             'folio_no' => $transaction['folio_no'],
             'type' => $transaction['trxntype'],
             'date' => Carbon::parse($transaction['traddate'])->format('Y-m-d'),
             'amount' => $transaction['amount'],
             'rate' => $transaction['purprice'],
-            'scheme_code' => $transaction['prodcode'],
             'client_id' => $client->id,
         ]);
     }

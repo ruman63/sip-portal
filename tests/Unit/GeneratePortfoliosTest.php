@@ -8,6 +8,7 @@ use App\Client;
 use App\Jobs\GeneratePortfolios;
 use App\Parsers\CSV;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Scheme;
 
 class GeneratePortfoliosTest extends TestCase
 {
@@ -16,14 +17,11 @@ class GeneratePortfoliosTest extends TestCase
     /** @test */
     public function it_genrates_clients_logins_and_their_folios_according_to_provided_csv()
     {
-        $columns = [
-            'amc_code', 'folio_no', 'prodcode', 'scheme', 'inv_name',
-            'trxntype', 'trxnno', 'traddate', 'purprice', 'units', 'amount', 'pan',
-        ];
-
-        $job = new GeneratePortfolios(
-            $data = CSV::read(stubs_path('txns.csv'))->get()
-        );
+        $data = CSV::read(stubs_path('txns.csv'))->get();
+        $schmes = $data->pluck('prodcode')->map(function ($channel_code) {
+            return create(Scheme::class, ['channel_partner_code' => $channel_code]);
+        });
+        $job = new GeneratePortfolios($data);
 
         $job->handle();
 
@@ -33,8 +31,9 @@ class GeneratePortfoliosTest extends TestCase
         $counts = $data->groupBy('pan')->map->count()->take(3);
 
         $counts->each(function ($count, $pan) {
-            $this->assertNotNull($client = Client::where('pan', $pan)->first());
+            $this->assertNotNull($client = Client::with('transactions.scheme')->where('pan', $pan)->first());
             $this->assertCount($count, $client->transactions);
+            $client->transactions->pluck('scheme')->assertHasInstancesOf(Scheme::class);
         });
     }
 }
