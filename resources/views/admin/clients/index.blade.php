@@ -21,8 +21,8 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>PAN</th>
                         <th>Email</th>
-                        <th>Mobile</th>
                         <th>Member <br>Since</th>
                         <th>Options</th>
                     </tr>
@@ -32,8 +32,8 @@
                         <tr>
                             <td>{{ $client->id }}</td>
                             <td>{{ $client->first_name }} {{ $client->last_name }}</td>
+                            <td>{{ $client->pan }}</td>
                             <td>{{ $client->email }}</td>
-                            <td>{{ $client->mobile }}</td>
                             <td>{{ $client->created_at->diffForHumans() }}</td>
                             <td>
                                 <form class="inline-block" 
