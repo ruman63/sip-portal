@@ -13,12 +13,12 @@ class UploadPortfolioFileTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function only_csv_files_are_accepted()
+    public function only_cams_csv_files_are_accepted()
     {
         $this->signInAdmin();
 
         $response = $this->withExceptionHandling()->postJson(route('admin.generate-portfolios.store'), [
-            'csvFile' => stubFile(stubs_path('txns.csv'), 'camsFile.vsr'),
+            'csvFile' => stubFile(stubs_path('test.csv'), 'camsFile.csv'),
         ]);
 
         $response->assertStatus(422)->assertJsonValidationErrors('csvFile');
