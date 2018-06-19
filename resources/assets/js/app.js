@@ -59,13 +59,16 @@ Vue.component('clock', require('./components/Clock.vue'));
 Vue.component('chart', require('./components/Chart.vue'));
 Vue.component('flash', require('./components/Flash.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
-
 window.flash = (message, level="success", important=false) => {
     Events.$emit('flash', {
         id: Math.floor(Math.random()*10),
         message, level, important
     });
 }
+
+const app = new Vue({
+    el: '#app',
+    methods: {
+        flash: window.flash
+    }
+});

@@ -43,7 +43,7 @@
         </div>
         
         @include('flash::message')
-        @include('modals.index')
+        @include('admin.modals.import-content')
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

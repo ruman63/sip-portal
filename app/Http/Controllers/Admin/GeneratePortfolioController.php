@@ -11,12 +11,16 @@ class GeneratePortfolioController extends Controller
 {
     public function store()
     {
-        $file = request()->file('csvFile');
+        $data = request()->validate([
+            'csvFile' => 'required|file|mimes:csv',
+        ]);
 
-        $collections = CSV::read($file->getPathname())->columns([
+        $collections = CSV::read($data['csvFile']->getPathname())->columns([
             'amc_code', 'folio_no', 'prodcode', 'scheme', 'inv_name', 'trxntype', 'trxnno', 'traddate', 'purprice', 'units', 'amount', 'pan',
         ]);
 
         GeneratePortfolios::dispatch($collections);
+
+        return response()->json(['Portfolios will be generated shortly!'], 201);
     }
 }
