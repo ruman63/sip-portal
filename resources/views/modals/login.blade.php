@@ -6,9 +6,9 @@
         
         <div class="flex flex-wrap mb-4">
             <div class="field w-full px-1">
-                <label for="email" class="control">Email</label>
-                <input type="email" name="email" id="email" class="control" value="{{ old('email') }}" required>
-                <span class="text-red text-xs mt-1">{{ $errors->first('email') }}</span>
+                <label for="user" class="control">Email Address / Pan no.</label>
+                <input type="text" name="user" id="user" class="control" value="{{ old('user') }}" required>
+                <span class="text-red text-xs mt-1">{{ $errors->first('user') }}</span>
             </div>
             <div class="field w-full px-1">
                 <label for="password" class="control">Password</label>
