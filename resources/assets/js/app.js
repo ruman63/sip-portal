@@ -48,6 +48,7 @@ Vue.filter('fixed', function(number) {
 Vue.component('transactions-page', require('./pages/TransactionsPage.vue'));
 Vue.component('manage-sip-page', require('./pages/ManageSipPage.vue'));
 Vue.component('schemes-view', require('./pages/SchemesView.vue'));
+Vue.component('import-csv-data', require('./components/ImportCsvData.vue'));
 
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));

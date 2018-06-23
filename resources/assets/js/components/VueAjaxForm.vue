@@ -28,7 +28,8 @@ export default {
                 })
                 .catch(error => {
                     if(error.response.status == 422) {
-                        this.errors = error.response.errors;
+                        this.errors = error.response.data.errors;
+                        flash(error.response.data.message, 'danger');
                     }
                     this.submitting = false;
                     this.$emit('failure', error);
@@ -72,6 +73,7 @@ export default {
             submit: this.submit,
             submitting: this.submitting,
             updateFile: this.inputFile,
+            errors: this.errors,
         });
         return root;
     }
