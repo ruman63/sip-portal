@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Client;
 use App\Scheme;
 use Illuminate\Support\Carbon;
+use App\Transaction;
 
 class GeneratePortfolios implements ShouldQueue
 {
@@ -54,7 +55,7 @@ class GeneratePortfolios implements ShouldQueue
     private function createTransaction($transaction, $client)
     {
         $scheme = Scheme::where('channel_partner_code', $transaction['prodcode'])->first();
-        if (!$scheme) {
+        if (!$scheme || Transaction::where('uid', $transaction['trxnno'])->exists()) {
             return;
         }
         return $scheme->transactions()->create([
