@@ -13,12 +13,9 @@
             <li><a href="{{ route('admin.transactions.index') }}"><span> <i class="text-blue-darker fa fa-exchange mr-1"></i> Transactions</span></a></li>
             <li><a href="{{ route('admin.sip.index') }}"><span> <i class="text-blue-darker fa fa-gears mr-1"></i> Manage SIP<span class="lowercase">(s)</span></span></a></li>
             <li><a href="{{ route('admin.schemes.index') }}"> <span><i class="text-blue-darker fa fa-list mr-1"></i> Schemes</span> </a></li>
-            <expandable-list-item>
-                <span> <i class="text-blue-darker fa fa-upload mr-1"></i> Import Portfolios</span>
-                <template slot="items">
-                    <li><a @click.prevent="$modal.show('import-csv-data')" class="cursor-pointer">CSV from CAMS</a></li>
-                </template>
-            </expandable-list-item>
+            <li><a @click.prevent="$modal.show('import-csv-data')" class="cursor-pointer">
+                <span> <i class="text-blue-darker fa fa-upload mr-1"></i> Import CSV</span>
+            </a></li>
             <li><a href=""><span> <i class="text-blue-darker fa fa-file-text user mr-1"></i> AUM Report</span></a></li>
             <li><a href=""><span> <i class="text-blue-darker fa fa-users mr-1"></i> Folio Query</span></a></li>
             <li><a href=""><span> <i class="text-blue-darker fa fa-money mr-1"></i> Portfolio Returns</span></a></li>
