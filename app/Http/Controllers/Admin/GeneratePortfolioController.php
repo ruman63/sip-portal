@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Parsers\CSV;
+use Illuminate\Http\Request;
 use App\Jobs\GenerateCamsPortfolio;
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 
 class GeneratePortfolioController extends Controller
@@ -14,22 +14,43 @@ class GeneratePortfolioController extends Controller
     {
         $data = request()->validate([
             'csvFile' => 'required|file',
+            'rta' => 'required|in:cams,karvy,franklin,sundaram',
         ]);
 
-        $collections = CSV::read($data['csvFile']->getPathname())->columns([
-            'amc_code', 'folio_no', 'prodcode', 'scheme', 'inv_name', 'trxntype', 'trxnno', 'traddate', 'purprice', 'units', 'amount', 'pan',
-        ]);
+        $collections = CSV::read($data['csvFile']->getPathname())
+                    ->columns($this->getColumns($data['rta']));
 
-        if (
-            !array_has($collections->first(), ['prodcode', 'inv_name', 'traddate', 'amount', 'pan'])
-        ) {
+        $this->validateCsvOutput($collections, $data['rta']);
+
+        GenerateCamsPortfolio::dispatch($collections);
+
+        return response()->json(['Portfolios will be generated shortly!'], 201);
+    }
+
+    protected function validateCsvOutput($collections, $rta)
+    {
+        $isValid = $collections->every(function ($item) use ($rta) {
+            return array_has($item, $this->getColumns($rta));
+        });
+
+        if (!$isValid) {
             throw ValidationException::withMessages([
                 'csvFile' => ['Invalid csv data'],
             ]);
         }
 
-        GenerateCamsPortfolio::dispatch($collections);
+        return true;
+    }
 
-        return response()->json(['Portfolios will be generated shortly!'], 201);
+    protected function camsHeaders()
+    {
+        return [
+            'amc_code', 'folio_no', 'prodcode', 'scheme', 'inv_name', 'trxntype', 'trxnno', 'traddate', 'purprice', 'units', 'amount', 'pan',
+        ];
+    }
+
+    protected function getColumns($rta)
+    {
+        return $this->{$rta . 'Headers'}();
     }
 }
