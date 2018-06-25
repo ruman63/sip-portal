@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Jobs\GeneratePortfolios;
 use App\Parsers\CSV;
+use App\Jobs\GenerateCamsPortfolio;
 use Illuminate\Validation\ValidationException;
 
 class GeneratePortfolioController extends Controller
@@ -28,7 +28,7 @@ class GeneratePortfolioController extends Controller
             ]);
         }
 
-        GeneratePortfolios::dispatch($collections);
+        GenerateCamsPortfolio::dispatch($collections);
 
         return response()->json(['Portfolios will be generated shortly!'], 201);
     }

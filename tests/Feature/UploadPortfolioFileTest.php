@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Jobs\GeneratePortfolios;
+use App\Jobs\GenerateCamsPortfolio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Queue;
@@ -32,10 +32,10 @@ class UploadPortfolioFileTest extends TestCase
         Queue::fake();
 
         $this->post(route('admin.generate-portfolios.store'), [
-            'csvFile' => stubFile(stubs_path('txns.csv'), 'camsFile.csv'),
+            'csvFile' => stubFile(stubs_path('sample_cams.csv'), 'camsFile.csv'),
         ])->assertStatus(201);
 
-        Queue::assertPushed(GeneratePortfolios::class, function ($job) {
+        Queue::assertPushed(GenerateCamsPortfolio::class, function ($job) {
             $this->assertInstanceOf(Collection::class, $job->data);
             return true;
         });

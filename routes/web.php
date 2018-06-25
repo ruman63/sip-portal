@@ -46,7 +46,7 @@ Route::group(
             Route::post('/schemes', 'SchemeController@store')->name('admin.schemes.store');
             Route::get('/sip', 'SipController@index')->name('admin.sip.index');
             Route::post('/sip', 'SipController@store')->name('admin.sip.store');
-            Route::post('/generate/portfolios', 'GeneratePortfolioController@store')->name('admin.generate-portfolios.store');
+            Route::post('/portfolios/generate', 'GeneratePortfolioController@store')->name('admin.generate-portfolios.store');
             Route::get('/transactions', 'TransactionController@index')->name('admin.transactions.index');
             Route::post('/transactions', 'TransactionController@store')->name('admin.transactions.store');
             Route::patch('/transactions/{transaction}', 'TransactionController@update')->name('admin.transactions.update');

@@ -12,7 +12,7 @@ use App\Scheme;
 use Illuminate\Support\Carbon;
 use App\Transaction;
 
-class GeneratePortfolios implements ShouldQueue
+class GenerateCamsPortfolio implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
