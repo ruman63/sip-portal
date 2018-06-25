@@ -3,10 +3,11 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Jobs\GenerateCamsPortfolio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Queue;
+use App\Jobs\GenerateKarvyPortfolio;
+use App\Jobs\GenerateCamsPortfolio;
 
 class UploadPortfolioFileTest extends TestCase
 {
@@ -48,7 +49,7 @@ class UploadPortfolioFileTest extends TestCase
     }
 
     /** @test */
-    public function it_performs_portfolio_generation_when_a_correct_csv_file_is_uploaded()
+    public function it_performs_portfolio_generation_when_a_correct_cams_csv_file_is_uploaded()
     {
         $this->signInAdmin();
 
@@ -60,6 +61,24 @@ class UploadPortfolioFileTest extends TestCase
         ])->assertStatus(201);
 
         Queue::assertPushed(GenerateCamsPortfolio::class, function ($job) {
+            $this->assertInstanceOf(Collection::class, $job->data);
+            return true;
+        });
+    }
+
+    /** @test */
+    public function it_performs_portfolio_generation_when_a_correct_karvy_csv_file_is_uploaded()
+    {
+        $this->signInAdmin();
+
+        Queue::fake();
+
+        $this->post(route('admin.generate-portfolios.store'), [
+            'rta' => 'karvy',
+            'csvFile' => stubFile(stubs_path('sample_karvy.csv'), 'camsFile.csv'),
+        ])->assertStatus(201);
+
+        Queue::assertPushed(GenerateKarvyPortfolio::class, function ($job) {
             $this->assertInstanceOf(Collection::class, $job->data);
             return true;
         });

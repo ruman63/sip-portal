@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Parsers\CSV;
 use Illuminate\Http\Request;
-use App\Jobs\GenerateCamsPortfolio;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 
@@ -22,7 +21,7 @@ class GeneratePortfolioController extends Controller
 
         $this->validateCsvOutput($collections, $data['rta']);
 
-        GenerateCamsPortfolio::dispatch($collections);
+        $this->dispatchGeneratorJob($data['rta'], $collections);
 
         return response()->json(['Portfolios will be generated shortly!'], 201);
     }
@@ -49,8 +48,24 @@ class GeneratePortfolioController extends Controller
         ];
     }
 
+    protected function karvyHeaders()
+    {
+        return [
+            'transaction id', 'folio number', 'transaction type', 'transaction date', 'isin', 'investor name', 'price', 'units', 'amount', 'pan1',
+        ];
+    }
+
     protected function getColumns($rta)
     {
         return $this->{$rta . 'Headers'}();
+    }
+
+    protected function dispatchGeneratorJob($rta, $data)
+    {
+        $rta = ucwords($rta);
+        $class = "App\\Jobs\\Generate${rta}Portfolio";
+        if ($job = new $class($data)) {
+            return dispatch($job);
+        }
     }
 }
