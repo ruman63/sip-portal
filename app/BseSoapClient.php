@@ -1,17 +1,9 @@
-<<<<<<< Updated upstream
-<?php 
-=======
 <?php
->>>>>>> Stashed changes
 namespace App;
 
 class BseSoapClient extends \SoapClient
 {
-<<<<<<< Updated upstream
-    private $url = 'http://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc';
-=======
     private $url = 'http://bsestarmf.in/MFOrderEntry/MFOrder.svc';
->>>>>>> Stashed changes
     private $action = 'http://bsestarmf.in/MFOrderEntry/';
 
     public function __construct()
@@ -32,12 +24,8 @@ class BseSoapClient extends \SoapClient
     public function __soapCall($name, $arguments, $options = null, $input_headers = null, &$output_headers = null)
     {
         $this->__setSoapHeaders($this->wsaHeaders($name));
-<<<<<<< Updated upstream
-        return parent::__soapCall($name, $arguments, $options, $input_headers, $output_headers);
-=======
         $response = parent::__soapCall($name, $arguments, $options, $input_headers, $output_headers);
         return explode('|', $response->{$name . 'Result'});
->>>>>>> Stashed changes
     }
 
     private function wsaHeaders($method)
