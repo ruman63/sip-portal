@@ -1,9 +1,9 @@
 <?php
 namespace App;
 
-class BseSoapClient extends \SoapClient
+class BseOrderEntryClient extends \SoapClient
 {
-    private $url = 'http://bsestarmf.in/MFOrderEntry/MFOrder.svc';
+    private $url = 'http://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc';
     private $action = 'http://bsestarmf.in/MFOrderEntry/';
 
     public function __construct()
@@ -12,7 +12,7 @@ class BseSoapClient extends \SoapClient
             'soap_version' => SOAP_1_2,
             'exceptions' => true,
             'trace' => true,
-            'cache_wsdl' => WSDL_CACHE_NONE,
+            // 'cache_wsdl' => WSDL_CACHE_NONE,
         ]);
     }
 
