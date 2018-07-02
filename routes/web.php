@@ -38,6 +38,7 @@ Route::group(
         Route::group(['middleware' => 'auth:cpanel'], function () {
             Route::get('/', 'DashboardController@index')->name('admin.dashboard');
             Route::get('clients', 'ClientsController@index')->name('clients.index');
+            Route::post('clients/{client}/ucc-account', 'UccAccountsController@store')->name('admin.clients-ucc.store');
             Route::post('clients/{client}/login', 'ClientsController@loginAs')->name('clients.login-as');
             Route::post('clients/logout', 'ClientsController@logout')->name('clients.logout');
             Route::get('clients/{client}/transactions', 'ClientTransactionController@index')->name('clients.transactions');
