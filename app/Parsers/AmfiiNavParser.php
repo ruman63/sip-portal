@@ -15,12 +15,12 @@ class AmfiiNavParser
         $this->output = $output;
 
         if (app()->environment('testing')) {
-            $file = file_get_contents(stubs_path('sample_nav.txt'));
+            $file = file(stubs_path('sample_nav.txt'));
         } else {
-            $file = file_get_contents(self::FILE_LOCATION);
+            $file = file(self::FILE_LOCATION);
         }
 
-        $this->contents = collect(explode("\r\n", $file))
+        $this->contents = collect($file)
             ->filter(function ($line) {
                 return $line ? str_contains($line, ';') : false;
             })->map(function ($line, $i) {

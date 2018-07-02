@@ -3,20 +3,17 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Scheme;
 
 class AmfiiParserTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /** @test */
     public function parser_decodes_file_to_associative_array()
     {
-        
         $this->assertArrayHasKey(
-            'scheme_code', 
+            'scheme_code',
             (new \App\Parsers\AmfiiNavParser())->parse()->records()->random()
         );
     }
