@@ -32,6 +32,7 @@ class CreateClientsTable extends Migration
             $table->string('communication_mode', 2)->nullable();
             $table->string('dividend_pay_mode', 2)->nullable();
             $table->string('mapin_no', 16)->nullable();
+            $table->unsignedInteger('default_bank_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
