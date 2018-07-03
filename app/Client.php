@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\BseStar\CodesLookup;
 
 class Client extends Authenticatable
 {
@@ -40,5 +41,15 @@ class Client extends Authenticatable
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getTaxStatusAttribute()
+    {
+        return CodesLookup::taxStatus($this->tax_status_code);
+    }
+
+    public function getOccupationAttribute()
+    {
+        return CodesLookup::occupation($this->occupation_code);
     }
 }
