@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use App\Client;
-use App\BseStar\CodesLookup;
 use App\Address;
 use App\BankAccount;
+use App\UccAccount;
 
 class ClientsTest extends TestCase
 {
@@ -88,76 +88,6 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
-    public function client_has_tax_status_code()
-    {
-        $client = create(Client::class, [
-            'tax_status_code' => '1',
-        ]);
-
-        $this->assertEquals('1', $client->tax_status_code);
-    }
-
-    /** @test */
-    public function clients_tax_status_resolves_correctly_according_to_tax_status_code()
-    {
-        $client = create(Client::class, [
-            'tax_status_code' => $code = CodesLookup::randomTaxStatusCode(),
-        ]);
-
-        $this->assertEquals(CodesLookup::taxStatus($code), $client->tax_status, 'Client\'s tax status code dont resolve correct tax status');
-    }
-
-    /** @test */
-    public function client_has_occupation_code()
-    {
-        $client = create(Client::class, [
-            'occupation_code' => '01',
-        ]);
-
-        $this->assertEquals('01', $client->occupation_code);
-    }
-
-    /** @test */
-    public function clients_occupation_code_resolves_to_a_occupation_category()
-    {
-        $client = create(Client::class, [
-            'occupation_code' => $code = CodesLookup::randomOccupationCode(),
-        ]);
-
-        $this->assertEquals(CodesLookup::occupation($code), $client->occupation);
-    }
-
-    /** @test */
-    public function client_has_communication_mode()
-    {
-        $client = create(Client::class, [
-            'communication_mode' => 'P',
-        ]);
-
-        $this->assertEquals('P', $client->communication_mode);
-    }
-
-    /** @test */
-    public function client_has_dividend_pay_mode()
-    {
-        $client = create(Client::class, [
-            'dividend_pay_mode' => '01',
-        ]);
-
-        $this->assertEquals('01', $client->dividend_pay_mode);
-    }
-
-    /** @test */
-    public function client_has_mapin_no()
-    {
-        $client = create(Client::class, [
-            'mapin_no' => '01',
-        ]);
-
-        $this->assertEquals('01', $client->mapin_no);
-    }
-
-    /** @test */
     public function clients_have_an_address()
     {
         $client = create(Client::class);
@@ -168,6 +98,16 @@ class ClientsTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Address::class, $client->fresh()->address);
+    }
+
+    /** @test */
+    public function client_has_one_ucc_account()
+    {
+        $client = create(Client::class);
+        $uccAccount = create(UccAccount::class, ['owner_id' => $client->id]);
+
+        $this->assertInstanceOf(UccAccount::class, $client->uccAccount);
+        $this->assertEquals($uccAccount->ucc, $client->uccAccount->ucc);
     }
 
     /** @test */
@@ -213,11 +153,12 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
-    public function update_default_bank_on_others_bank_account_throws_exception()
+    public function update_default_bank_on_others_bank_account_gives_false()
     {
         $client = create(Client::class);
         $bankAccount = create(BankAccount::class);
 
         $this->assertFalse($client->updateDefaultBank($bankAccount));
+        $this->assertNull($client->defaultBankAccount);
     }
 }

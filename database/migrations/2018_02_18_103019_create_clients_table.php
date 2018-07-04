@@ -27,11 +27,6 @@ class CreateClientsTable extends Migration
             $table->string('guardian_pan', 15)->nullable();
             $table->string('nominee', 35)->nullable();
             $table->string('nominee_relation', 20)->nullable();
-            $table->string('tax_status_code', 2)->nullable();
-            $table->string('occupation_code', 2)->nullable();
-            $table->string('communication_mode', 2)->nullable();
-            $table->string('dividend_pay_mode', 2)->nullable();
-            $table->string('mapin_no', 16)->nullable();
             $table->unsignedInteger('default_bank_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
