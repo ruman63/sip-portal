@@ -3,14 +3,14 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\BseOrderEntryClient;
+use App\BseStar\OrderEntryClient;
 
 class BseOrderEntryClientTest extends TestCase
 {
     /** @test */
     public function use_getPassword_method()
     {
-        $client = new BseOrderEntryClient();
+        $client = new OrderEntryClient();
         $response = $client->getPassword([
             'UserId' => 1821101,
             'Password' => '123456',
@@ -23,7 +23,7 @@ class BseOrderEntryClientTest extends TestCase
     /** @test */
     public function use_orderEntryParam_method()
     {
-        $client = new BseOrderEntryClient();
+        $client = new OrderEntryClient();
         $password = $client->getPassword([
             'UserId' => 1821101,
             'Password' => '123456',

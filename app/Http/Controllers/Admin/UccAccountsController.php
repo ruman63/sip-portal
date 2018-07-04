@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Client;
 use App\UccAccount;
-use App\BseAdditionalServicesClient;
+use App\BseStar\AdditionalServicesClient;
 
 class UccAccountsController extends Controller
 {
-    public function store(Client $client, BseAdditionalServicesClient $bseClient)
+    public function store(Client $client, AdditionalServicesClient $bseClient)
     {
         $encPassword = $bseClient->getPassword([
             'UserId' => '1821101',

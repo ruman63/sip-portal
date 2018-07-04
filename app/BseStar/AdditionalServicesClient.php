@@ -1,10 +1,12 @@
 <?php
-namespace App;
+namespace App\BseStar;
 
-class BseOrderEntryClient extends \SoapClient
+class AdditionalServicesClient extends \SoapClient
 {
-    private $url = 'http://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc';
-    private $action = 'http://bsestarmf.in/MFOrderEntry/';
+    private $url = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc';
+    private $action = 'http://bsestarmfdemo.bseindia.com/2016/01/IMFUploadService/';
+    private $toBasic = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc/Basic';
+    private $toSecure = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc/Secure';
 
     public function __construct()
     {
@@ -42,7 +44,7 @@ class BseOrderEntryClient extends \SoapClient
             new \SoapHeader(
                 'http://www.w3.org/2005/08/addressing',
                 'To',
-                $this->url,
+                $this->toBasic,
                 $mustUnderstand
             ),
         ];

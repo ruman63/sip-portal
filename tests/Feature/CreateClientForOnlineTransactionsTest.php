@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\BseAdditionalServicesClient;
+use App\BseStar\AdditionalServicesClient;
 use App\UccAccount;
 
 class CreateClientForOnlineTransactionsTest extends TestCase
@@ -18,7 +18,7 @@ class CreateClientForOnlineTransactionsTest extends TestCase
         $client = create('App\Client');
         $data = [];
 
-        $mock = \Mockery::mock(BseAdditionalServicesClient::class);
+        $mock = \Mockery::mock(AdditionalServicesClient::class);
         $mock->shouldReceive('getPassword')
             ->with([
                 'UserId' => '1821101',
@@ -33,7 +33,7 @@ class CreateClientForOnlineTransactionsTest extends TestCase
                 'param' => implode('|', $data),
             ])->once()->andReturn(['100', 'Client Created Successfully']);
 
-        app()->instance(BseAdditionalServicesClient::class, $mock);
+        app()->instance(AdditionalServicesClient::class, $mock);
 
         $this->postJson(route('admin.clients-ucc.store', $client), $data);
 

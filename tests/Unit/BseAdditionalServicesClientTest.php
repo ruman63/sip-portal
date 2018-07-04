@@ -3,14 +3,14 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\BseAdditionalServicesClient;
+use App\BseStar\AdditionalServicesClient;
 
 class BseAdditionalServicesClientTest extends TestCase
 {
     /** @test */
     public function use_additional_service_getPassword_method()
     {
-        $client = new BseAdditionalServicesClient();
+        $client = new AdditionalServicesClient();
         $response = $client->getPassword([
             'UserId' => '1821101',
             'MemberId' => '18211',
@@ -23,7 +23,7 @@ class BseAdditionalServicesClientTest extends TestCase
     /** @test */
     public function use_create_client_ucc_mfd_02_service()
     {
-        $client = new BseAdditionalServicesClient();
+        $client = new AdditionalServicesClient();
         $encryptedPassword = $client->getPassword([
             'UserId' => '1821101',
             'MemberId' => '18211',
