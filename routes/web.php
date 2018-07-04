@@ -21,6 +21,8 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/portfolio', 'PortfolioController@index')->name('portfolios.index');
     Route::patch('/change-password', 'Auth\\ClientPasswordController@change')->name('password.update');
     Route::get('/change-password', 'Auth\\ClientPasswordController@edit')->name('password.edit');
+    Route::post('/address', 'AddressController@store')->name('address.store');
+    Route::patch('/address', 'AddressController@update')->name('address.update');
 });
 
 Route::get('/schemes', 'SchemeController@index')->name('schemes.index')->middleware('auth:web,cpanel');
