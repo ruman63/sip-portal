@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -34,5 +33,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'bsestarmf' => [
+        'production' => env('BSE_STAR_MF_PRODUCTION', false),
+        'userId' => env('BSE_STAR_MF_USER_ID', '1821101'),
+        'memberId' => env('BSE_STAR_MF_MEMBER_ID', '18211'),
+        'password' => env('BSE_STAR_MF_PASSWORD', '123456'),
+    ],
 ];

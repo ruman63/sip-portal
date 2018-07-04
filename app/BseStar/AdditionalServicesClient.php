@@ -1,52 +1,71 @@
 <?php
 namespace App\BseStar;
 
-class AdditionalServicesClient extends \SoapClient
-{
-    private $url = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc';
-    private $action = 'http://bsestarmfdemo.bseindia.com/2016/01/IMFUploadService/';
-    private $toBasic = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc/Basic';
-    private $toSecure = 'http://bsestarmfdemo.bseindia.com/MFUploadService/MFUploadService.svc/Secure';
+use App\Exceptions\BseServicesException;
 
-    public function __construct()
+class AdditionalServicesClient extends BseClient
+{
+    protected $src = '/MFUploadService/MFUploadService.svc';
+    protected $action = '/2016/01/IMFUploadService/';
+    protected $toBasic = '/MFUploadService/MFUploadService.svc/Basic';
+    protected $toSecure = '/MFUploadService/MFUploadService.svc/Secure';
+
+    public function getPassword()
     {
-        parent::SoapClient($this->url . '?wsdl', [
-            'soap_version' => SOAP_1_2,
-            'exceptions' => true,
-            'trace' => true,
-            // 'cache_wsdl' => WSDL_CACHE_NONE,
-        ]);
+        $response = $this->__soapCall('getPassword', ['params' => [
+            'UserId' => config('services.bsestarmf.userId'),
+            'MemberId' => config('services.bsestarmf.memberId'),
+            'Password' => config('services.bsestarmf.password'),
+            'PassKey' => $key = str_limit(md5(str_random(10)), 10, ''),
+        ]]);
+
+        if ($response[0] != '100') {
+            throw new BseServicesException($response[1]);
+        }
+        return $response[1];
     }
 
     public function __call($name, $arguments)
     {
-        return $this->__soapCall($name, ['params' => $arguments[0]]);
+        if (!($flag = $this->getMethodFlag($name))) {
+            throw new BseServicesException("Method '{$name}' is not available on this service");
+        }
+        $response = $this->__soapCall('MFAPI', ['params' => [
+            'Flag' => $flag,
+            'UserId' => config('services.bsestarmf.userId'),
+            'EncryptedPassword' => $this->getPassword(),
+            'param' => implode('|', $arguments[0]),
+        ]]);
+        if ($response[0] != '100') {
+            throw new BseServicesException($response[1]);
+        }
+        return $response[1];
     }
 
-    public function __soapCall($name, $arguments, $options = null, $input_headers = null, &$output_headers = null)
+    private function getMethodFlag($method)
     {
-        $this->__setSoapHeaders($this->wsaHeaders($name));
-        $response = parent::__soapCall($name, $arguments, $options, $input_headers, $output_headers);
-        return explode('|', $response->{$name . 'Result'});
+        if (!array_key_exists($method, $this->methodsFlag())) {
+            return false;
+        }
+        return $this->methodsFlag()[$method];
     }
 
-    private function wsaHeaders($method)
+    private function methodsFlag()
     {
-        $action = $this->action . $method;
-
         return [
-            new \SoapHeader(
-                'http://www.w3.org/2005/08/addressing',
-                'Action',
-                $action,
-                $mustUnderstand = true
-            ),
-            new \SoapHeader(
-                'http://www.w3.org/2005/08/addressing',
-                'To',
-                $this->toBasic,
-                $mustUnderstand
-            ),
+            'fatcaUpload' => '01',
+            'createClient' => '02',
+            'paymentGateway' => '03',
+            'changePassword' => '04',
+            'createMfiClient' => '05',
+            'mandateRegistration' => '06',
+            'stpRegistration' => '07',
+            'swpRegistration' => '08',
+            'orderPaymentStatus' => '11',
+            'redemptionSMSAuthentication' => '12',
+            'ckycUpload' => '13',
+            'mandateStatus' => '14',
+            'systematicPlanAuthentication' => '15',
         ];
     }
 }

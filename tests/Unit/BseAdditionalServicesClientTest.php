@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\BseStar\AdditionalServicesClient;
+use App\Exceptions\BseServicesException;
 
 class BseAdditionalServicesClientTest extends TestCase
 {
@@ -11,51 +12,43 @@ class BseAdditionalServicesClientTest extends TestCase
     public function use_additional_service_getPassword_method()
     {
         $client = new AdditionalServicesClient();
-        $response = $client->getPassword([
-            'UserId' => '1821101',
-            'MemberId' => '18211',
-            'Password' => '123456',
-            'PassKey' => $pass = str_random(7),
-        ]);
-        $this->assertEquals(100, $response[0], $response[1]);
+        try {
+            $password = $client->getPassword();
+            $this->assertNotNull($password);
+        } catch (BseServicesException $e) {
+            $this->fail("getPassword Service failed! Received Error: {$e->getMessage()}");
+        }
     }
 
     /** @test */
-    public function use_create_client_ucc_mfd_02_service()
+    public function use_create_client_mfd_service()
     {
         $client = new AdditionalServicesClient();
-        $encryptedPassword = $client->getPassword([
-            'UserId' => '1821101',
-            'MemberId' => '18211',
-            'Password' => '123456',
-            'PassKey' => $pass = str_random(7),
-        ])[1];
-
         $param = [
-            'CLIENTCODE' => 'SW2',
+            'CLIENTCODE' => 'TEST1',
             'MODE' => 'SI',
             'TAXSTATUS' => '01',
             'OCCUPATIONCODE' => '07',
-            'NAME1' => 'RUMAN',
+            'NAME1' => 'TEST CLIENT',
             'NAME2' => '',
             'NAME3' => '',
-            'DOB' => '11/12/1995',
+            'DOB' => '11/11/1993',
             'GENDER' => 'M',
-            'FATHERHUSB' => 'Saleem',
-            'PAN' => 'XYZUV1234W',
+            'FATHERHUSB' => 'TEST Father',
+            'PAN' => 'TESTP0000N',
             'NOMINEE(O)' => '',
             'NOMINEEREL(O)' => '',
             'GUARDIANPAN(O)' => '',
             'CLIENTTYPE(P/D)' => 'D',
             'DEPOSITORY(NSDL-CDSL)' => 'CDSL',
-            'CDSLDPID' => '12345678',
+            'CDSLDPID' => '',
             'CDSLCLTID' => '1234567890123456',
             'NSDLDPID' => '',
             'NSDLCLTID' => '',
             'ACCTYPE 1(SB-CB-NE-NO)' => 'SB',
-            'ACCCNO 1' => '32747044805',
-            'MICRNO 1' => '123123124',
-            'NEFT/IFSCCODE 1' => 'SBIN0000702',
+            'ACCCNO 1' => '1234123412341234',
+            'MICRNO 1' => '',
+            'NEFT/IFSCCODE 1' => 'SBIN0000700',
             'DEFAULT 1 (Y/N)' => 'Y',
             'ACCTYPE 2(SB-CB-NE-NO)' => '',
             'ACCCNO 2' => '',
@@ -77,24 +70,24 @@ class BseAdditionalServicesClientTest extends TestCase
             'MICRNO 5' => '',
             'NEFT/IFSCCODE 5' => '',
             'DEFAULT 5 (Y/N)' => '',
-            'CHEQUENAME' => 'Ruman',
-            'ADDRESS1' => '164/2',
-            'ADDRESS2' => 'KALKAJI',
+            'CHEQUENAME' => '',
+            'ADDRESS1' => 'TEST H.NO',
+            'ADDRESS2' => 'TEST Street',
             'ADDRESS3' => '',
-            'CITY' => 'NEW DELHI',
+            'CITY' => 'TEST CITY',
             'STATE' => 'ND',
-            'PIN' => '110019',
+            'PIN' => '110006',
             'COUNTRY' => 'India',
             'RESIPHONE' => '',
             'RESIFAX' => '',
             'OFFPHONE' => '',
             'OFFFAX' => '',
-            'EMAIL' => 'ruman63@gmail.com',
+            'EMAIL' => 'test@example.com',
             'COMMODE - P/E ' => 'P',
             'DIVPAYMODE' => '01',
             'PAN2' => '',
             'PAN3' => '',
-            'MAPINNO' => '324',
+            'MAPINNO' => '1234',
             'CMFOR_ADDRESS1' => '',
             'CMFRO_ADDRESS2' => '',
             'CM_ADDRESS3' => '',
@@ -108,12 +101,11 @@ class BseAdditionalServicesClientTest extends TestCase
             'FOR_OFFFAx' => '',
             'CM_MOBILE(!)' => '9876543210',
         ];
-        $response = $client->MFAPI([
-            'Flag' => '02',
-            'UserId' => '1821101',
-            'EncryptedPassword' => $encryptedPassword,
-            'param' => implode('|', $param),
-        ]);
-        $this->assertEquals('100', $response[0], "Error: {$response[1]}");
+        try {
+            $response = $client->createClient($param);
+            $this->assertNotNull($response);
+        } catch (BseServicesException $e) {
+            $this->fail("createClient service failed with Error: {$e->getMessage()}");
+        }
     }
 }
