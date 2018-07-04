@@ -52,6 +52,15 @@ class Client extends Authenticatable
         return $this->belongsTo('App\BankAccount', 'default_bank_id');
     }
 
+    public function addBankAccount($parameters)
+    {
+        $data = array_only($parameters, [
+            'account_number', 'account_type_code', 'ifsc_code', 'micr',
+        ]);
+
+        return $this->bankAccounts()->create($data);
+    }
+
     public function updateDefaultBank($bankAccount)
     {
         if ($bankAccount->owner_id != $this->id) {

@@ -7,6 +7,8 @@ use App\Exceptions\MaximumBankAccountsReachedException;
 
 class BankAccount extends Model
 {
+    protected $guarded = [];
+
     protected static function boot()
     {
         parent::boot();

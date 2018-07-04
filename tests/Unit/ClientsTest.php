@@ -48,6 +48,43 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
+    public function add_bank_account_adds_and_returns_bank_acoount()
+    {
+        $client = create('App\Client');
+
+        $this->assertCount(0, $client->fresh()->bankAccounts);
+
+        $account = $client->addBankAccount([
+            'account_number' => '1234567890',
+            'account_type_code' => 'SB',
+            'ifsc_code' => 'SBIN0010201',
+            'micr' => '',
+        ]);
+
+        $this->assertCount(1, $client->fresh()->bankAccounts);
+        $this->assertInstanceOf(BankAccount::class, $account);
+        $this->assertEquals('1234567890', $account->account_number);
+    }
+
+    /** @test */
+    public function client_can_add_a_bank_account_ingnores_extra_parameter()
+    {
+        $client = create('App\Client');
+
+        $this->assertCount(0, $client->fresh()->bankAccounts);
+
+        $client->addBankAccount([
+            'account_number' => '1234567890',
+            'account_type_code' => 'SB',
+            'ifsc_code' => 'SBIN0010201',
+            'micr' => '',
+            'extra_data' => 'foobar',
+        ]);
+
+        $this->assertCount(1, $client->fresh()->bankAccounts);
+    }
+
+    /** @test */
     public function client_has_guardian()
     {
         $client = create(Client::class, [

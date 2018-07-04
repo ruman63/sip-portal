@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/change-password', 'Auth\\ClientPasswordController@edit')->name('password.edit');
     Route::post('/address', 'AddressController@store')->name('address.store');
     Route::patch('/address', 'AddressController@update')->name('address.update');
+    Route::post('/bank-account', 'BankAccountController@store')->name('bank-account.store');
+    Route::patch('/bank-account/{bankAccount}', 'BankAccountController@update')->name('bank-account.update');
 });
 
 Route::get('/schemes', 'SchemeController@index')->name('schemes.index')->middleware('auth:web,cpanel');
