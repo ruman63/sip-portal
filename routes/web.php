@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::patch('/address', 'AddressController@update')->name('address.update');
     Route::post('/bank-account', 'BankAccountController@store')->name('bank-account.store');
     Route::patch('/bank-account/{bankAccount}', 'BankAccountController@update')->name('bank-account.update');
+    Route::delete('/bank-account/{bankAccount}', 'BankAccountController@destroy')->name('bank-account.destroy');
 });
 
 Route::get('/schemes', 'SchemeController@index')->name('schemes.index')->middleware('auth:web,cpanel');

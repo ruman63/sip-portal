@@ -40,4 +40,18 @@ class BankAccountController extends Controller
             'data' => $bankAccount->fresh(),
         ];
     }
+
+    public function destroy(BankAccount $bankAccount)
+    {
+        if ($bankAccount->isDefault) {
+            return response()->json(['You cannot delete default bank account. Please Modify it!'], 400);
+        }
+
+        $bankAccount->delete();
+
+        return response()->json([
+            'message' => 'Success!',
+            'data' => $bankAccount,
+        ]);
+    }
 }
