@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Parsers\BSEParser;
 
 class SchemesSeeder extends Seeder
 {
@@ -11,6 +12,6 @@ class SchemesSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Scheme', 100)->create();
+        (new BSEParser())->parse()->save(100);
     }
 }
