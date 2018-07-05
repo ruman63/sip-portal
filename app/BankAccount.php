@@ -35,4 +35,9 @@ class BankAccount extends Model
     {
         return $this->owner->updateDefaultBank($this);
     }
+
+    public function getIsDefaultAttribute()
+    {
+        return $this->id == $this->owner()->first()->default_bank_id;
+    }
 }

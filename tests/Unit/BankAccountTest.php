@@ -116,4 +116,16 @@ class BankAccountTest extends TestCase
 
         $this->assertTrue($client->fresh()->defaultBankAccount->is($defaultBankAccount));
     }
+
+    /** @test */
+    public function is_default_tells_if_it_is_owners_default_bank_account()
+    {
+        $client = create(Client::class);
+        $defaultBankAccount = create(BankAccount::class, ['owner_id' => $client->id]);
+        $defaultBankAccount->setAsDefault();
+        $otherBankAccount = create(BankAccount::class, ['owner_id' => $client->id]);
+
+        $this->assertTrue($defaultBankAccount->isDefault);
+        $this->assertFalse($otherBankAccount->isDefault);
+    }
 }
