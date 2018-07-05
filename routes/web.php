@@ -16,6 +16,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/profile', 'ProfileController@show')->name('profile.show');
     Route::get('/transactions', 'TransactionsController@index')->name('transactions.index');
     Route::get('/allocations', 'AllocationController@index')->name('allocations.index');
     Route::get('/portfolio', 'PortfolioController@index')->name('portfolios.index');

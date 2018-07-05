@@ -60,7 +60,7 @@
                         </span>
                     </template>
                     <template slot="menu">
-                        <li class="py-1"><a href="#">Profile</a></li>
+                        <li class="py-1"><a href="{{ route('profile.show') }}">Profile</a></li>
                         <li class="py-1"><a href="{{ route('password.edit') }}">Change Password</a></li>
                         @if(auth()->guard('cpanel')->guest())
                             <li class="py-1">
