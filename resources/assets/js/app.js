@@ -8,8 +8,12 @@
 require('./bootstrap');
 
 import VModal from 'vue-js-modal';
-window.Vue = require('vue');
-window.Vue.use(VModal);
+import Vuex from 'vuex';
+
+import Vue from 'vue';
+Vue.use(Vuex);
+Vue.use(VModal);
+
 window.Events = new Vue({});
 
 
@@ -48,8 +52,9 @@ Vue.filter('fixed', function(number) {
 Vue.component('transactions-page', require('./pages/TransactionsPage.vue'));
 Vue.component('manage-sip-page', require('./pages/ManageSipPage.vue'));
 Vue.component('schemes-view', require('./pages/SchemesView.vue'));
-Vue.component('import-csv-data', require('./components/ImportCsvData.vue'));
+Vue.component('client-profile-view', require('./pages/ClientProfileView.vue'));
 
+Vue.component('import-csv-data', require('./components/ImportCsvData.vue'));
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
