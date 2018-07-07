@@ -20,7 +20,7 @@ window.Events = new Vue({});
 
 String.prototype.currency = function(){
     return this.replace(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g, '$1,');
-}
+};
 
 Array.prototype.groupBy = function (callback) {
     var grouped = {};
@@ -29,21 +29,21 @@ Array.prototype.groupBy = function (callback) {
         if(grouped.hasOwnProperty(key)) {
             grouped[key].push(item);
         } else {
-            grouped[key] = [item]
+            grouped[key] = [item];
         }
     });
     return grouped;
-}
+};
 
 Vue.filter('currency', function(number) {
-    if(typeof(number) !== 'String') {
+    if(typeof(number) !== 'string') {
         number = number.toString();
     }
     return number.currency();
 });
 
 Vue.filter('fixed', function(number) {
-    if(typeof(number) != 'Number') {
+    if(typeof(number) != 'number') {
         number = parseFloat(number);
     }
     return number.toFixed(2);
@@ -65,16 +65,18 @@ Vue.component('clock', require('./components/Clock.vue'));
 Vue.component('chart', require('./components/Chart.vue'));
 Vue.component('flash', require('./components/Flash.vue'));
 
-window.flash = (message, level="success", important=false) => {
-    Events.$emit('flash', {
+window.flash = (message, level='success', important=false) => {
+    window.Events.$emit('flash', {
         id: Math.floor(Math.random()*10),
         message, level, important
     });
+};
+
 window.filterObject = (obj, allowed) => Object.keys(obj)
     .filter(key => allowed.includes(key))
     .reduce((newObj, key) => ({...newObj, ...{[key]: obj[key]}}), {} );
 
-const app = new Vue({
+new Vue({
     el: '#app',
     methods: {
         flash: window.flash
