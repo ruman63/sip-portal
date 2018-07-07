@@ -13,4 +13,21 @@ class ProfileController extends Controller
             ->firstOrFail();
         return view('profile.show', compact('client'));
     }
+
+    public function update()
+    {
+        $client = auth()->guard('web')->user();
+
+        $client->update(
+            $data = request()->only([
+                'first_name', 'last_name', 'dob', 'gender', 'email', 'pan', 'mobile',
+                'guardian', 'guardian_pan', 'nominee', 'nominee_relation',
+            ])
+        );
+
+        return [
+            'message' => 'Updated successfully!',
+            'data' => $data,
+        ];
+    }
 }

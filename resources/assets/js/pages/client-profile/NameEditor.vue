@@ -23,31 +23,39 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["data-name"],
-  data() {
-    return {
-      form: { first_name: "", last_name: "" },
-      isEditing: false,
-    };
-  },
-  methods: {
-    edit() {
-      this.isEditing = true;
-      this.$refs["Input__first_name"];
-      return false;
+    props: ["data-name"],
+    data() {
+        return {
+            form: { first_name: "", last_name: "" },
+            isEditing: false,
+        };
     },
-    cancel() {
-      this.isEditing = false;
+    methods: {
+        edit() {
+            this.isEditing = true;
+            this.$refs["Input__first_name"];
+            return false;
+        },
+        cancel() {
+            this.isEditing = false;
+        },
+        update() {
+            axios.patch('/profile', this.form)
+                .then(({data}) => {
+                flash('Name Updated!');
+                this.updateName(data.data);
+                this.isEditing = false;
+                });
+        },
+        updateName(patchData) {
+            this.$store.state.client = {...this.$store.state.client, ...patchData}
+        }
     },
-    update() {
-      flash("mocking the update");
+    computed: {
+        ...mapGetters(["name"])
+    },
+    created() {
+        this.form = this.dataName;
     }
-  },
-  computed: {
-    ...mapGetters(["name"])
-  },
-  created() {
-    this.form = this.dataName;
-  }
 };
 </script>

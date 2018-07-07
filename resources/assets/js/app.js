@@ -70,7 +70,9 @@ window.flash = (message, level="success", important=false) => {
         id: Math.floor(Math.random()*10),
         message, level, important
     });
-}
+window.filterObject = (obj, allowed) => Object.keys(obj)
+    .filter(key => allowed.includes(key))
+    .reduce((newObj, key) => ({...newObj, ...{[key]: obj[key]}}), {} );
 
 const app = new Vue({
     el: '#app',

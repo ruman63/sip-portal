@@ -18,18 +18,18 @@
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Pan Number</div>
-            <input v-if="isEditing" type="text" class="border p-1 rounded" v-model="client.pan">
+            <input v-if="isEditing" type="text" class="border p-1 rounded" v-model="form.pan">
             <div v-else class="px-1">{{ client.pan }}</div>
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Date of Birth</div>
-            <input v-if="isEditing" type="date" class="border p-1 rounded" v-model="client.dob">
+            <input v-if="isEditing" type="date" class="border p-1 rounded" v-model="form.dob">
             <div v-else class="px-1">{{ client.dob }}</div>
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Gender</div>
             <div v-if="isEditing" class="select-wrapper">
-                <select class="select-wrapper bg-white border p-1 rounded">
+                <select class="select-wrapper bg-white border p-1 rounded" v-model="form.gender">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                 </select>
@@ -38,23 +38,34 @@
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Father / Husband / Guardian</div>
-            <input v-if="isEditing" type="text" v-model="client.guardian" class="border p-1 rounded">
+            <input v-if="isEditing" type="text" v-model="form.guardian" class="border p-1 rounded">
             <div v-else class="px-1">{{ client.guardian }}</div>
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Guardian Pan</div>
-            <input v-if="isEditing" type="text" v-model="client.guardian_pan" class="border p-1 rounded">
+            <input v-if="isEditing" type="text" v-model="form.guardian_pan" class="border p-1 rounded">
             <div v-else class="px-1">{{ client.guardian_pan }}</div>
+        </div>
+
+        <div class="md:flex md:items-center py-1 border-b">
+            <div class="md:w-1/6 font-bold px-1">Nominee</div>
+            <input v-if="isEditing" type="text" v-model="form.nominee" class="border p-1 rounded">
+            <div v-else class="px-1">{{ client.nominee }}</div>
+        </div>
+        <div class="md:flex md:items-center py-1 border-b">
+            <div class="md:w-1/6 font-bold px-1">Nominee Relation</div>
+            <input v-if="isEditing" type="text" v-model="form.nominee_relation" class="border p-1 rounded">
+            <div v-else class="px-1">{{ client.nominee_relation }}</div>
         </div>
         
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Email</div>
-            <input v-if="isEditing" type="email" v-model="client.email" class="border p-1 rounded">
+            <input v-if="isEditing" type="email" v-model="form.email" class="border p-1 rounded">
             <div v-else class="px-1">{{ client.email }}</div>
         </div>
         <div class="md:flex md:items-center py-1 border-b">
             <div class="md:w-1/6 font-bold px-1">Mobile</div>
-            <input v-if="isEditing" type="number" v-model="client.mobile" class="border p-1 rounded">
+            <input v-if="isEditing" type="number" v-model="form.mobile" class="border p-1 rounded">
             <div v-else class="px-1">{{ client.mobile }}</div>
         </div>
     </section>
@@ -73,16 +84,31 @@ export default {
             this.isEditing = true;
         },
         cancel() {
-            this.isEditing = false;
+            this.reset();
         },
         update() {
-            flash('Write its code');
+            axios.patch('/profile', this.form)
+            .then(({data}) => {
+                this.updateProfile(data.data);
+                flash('Information Updated!')
+                this.reset();
+            })
+        },
+        updateProfile(patch) {
+            console.log(patch);
+            this.$store.state.client = { ...this.client, ...patch };
+        },
+        reset() {
+            this.form = filterObject(this.client, ['pan', 'dob', 'gender', 'guardian', 'guardian_pan', 'email', 'mobile']);
             this.isEditing = false;
         }
     },
     computed: {
         ...mapState(['client']),
         ...mapGetters(['name', 'gender'])
+    },
+    created() {
+        this.reset();
     }
 }
 </script>
