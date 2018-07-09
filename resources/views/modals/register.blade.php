@@ -50,8 +50,8 @@
                 <label for="gender" class="control">Gender</label>
                 <select name="gender" id="gender" class="control" required>
                     <option disabled {{ old('gender') == null ? 'selected' : '' }}> Gender </option>
-                    <option {{ old('gender') == 'm' ? 'selected' : '' }} value="m"> Male </option>
-                    <option {{ old('gender') == 'f' ? 'selected' : '' }} value="f"> Female </option>
+                    <option {{ old('gender') == 'M' ? 'selected' : '' }} value="M"> Male </option>
+                    <option {{ old('gender') == 'F' ? 'selected' : '' }} value="F"> Female </option>
                 </select>
                 <span class="text-red text-xs mt-1">{{ $errors->first('gender') }}</span>
             </div>
