@@ -27,6 +27,14 @@ class Client extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::created(function ($client) {
+            $client->address()->create();
+        });
+    }
+
     public function transactions()
     {
         return $this->hasMany('App\Transaction');

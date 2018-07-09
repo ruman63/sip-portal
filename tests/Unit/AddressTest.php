@@ -32,7 +32,7 @@ class AddressTest extends TestCase
     }
 
     /** @test */
-    public function addressHaveNullrableAttributes()
+    public function addressHaveAllOtherNecessaryAttributes()
     {
         $address = create(Address::class, [
             'second_line' => 'Opp Some Landmark',
@@ -72,5 +72,14 @@ class AddressTest extends TestCase
         create(Address::class, ['client_id' => 1]);
 
         $this->assertEquals(1, Address::count());
+    }
+
+    /** @test */
+    public function an_empty_address_can_be_created_for_a_client_with_default_country_India()
+    {
+        $client = create('App\Client');
+        $address = Address::create(['client_id' => $client->id]);
+        $this->assertTrue($address->exists());
+        $this->assertEquals('India', $address->country);
     }
 }

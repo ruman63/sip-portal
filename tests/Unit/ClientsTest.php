@@ -125,16 +125,17 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
-    public function clients_have_an_address()
+    public function clients_have_an_empty_address_when_created()
     {
         $client = create(Client::class);
-        $this->assertNull($client->address);
 
-        create(Address::class, [
-            'client_id' => $client->id,
-        ]);
-
-        $this->assertInstanceOf(Address::class, $client->fresh()->address);
+        $this->assertNotNull($client->address);
+        $this->assertInstanceOf(Address::class, $client->address);
+        $this->assertNull($client->address->first_line);
+        $this->assertNull($client->address->pincode);
+        $this->assertNull($client->address->city);
+        $this->assertNull($client->address->state);
+        $this->assertEquals('India', $client->address->country);
     }
 
     /** @test */
