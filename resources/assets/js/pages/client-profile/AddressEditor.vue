@@ -91,23 +91,29 @@ export default {
         },
         cancel() {
             this.isEditing = false;
+            this.form = Object.assign({}, this.address);
         },
         update() {
             axios.patch('/address', this.form)
                 .then(({data}) => {
                     flash(data.message)
                     this.address = data.data
+                    this.isEditing = false;
                 });
-            this.isEditing = false;
         }
     },
     computed: {
-        ...mapState({
-            address: state => state.client.address
-        })
+        address: {
+            get() {
+                return this.$store.state.client.address;
+            },
+            set(value) {
+                this.$store.state.client.address = value;
+            }
+        }
     },
     created() {
-        this.form =  this.address;
+        Object.assign(this.form, this.address);
     }
 }
 </script>
