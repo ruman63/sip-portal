@@ -34,11 +34,14 @@ input, select, textarea {
 }
 
 .select-wrapper {
-    @apply .relative ;
+    @apply .relative;
     &:after {
         @apply .flex .justify-center .items-center .absolute .pin-y .pin-r .text-base .leading-none .w-8 .z-10 ;
         pointer-events: none;
         font-family: "FontAwesome";
         content: '\f0d7';
+    }
+    > select {
+        @apply .pr-8 ;
     }
 }

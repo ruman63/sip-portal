@@ -8,15 +8,19 @@
 require('./bootstrap');
 
 import VModal from 'vue-js-modal';
-window.Vue = require('vue');
-window.Vue.use(VModal);
+import Vuex from 'vuex';
+
+import Vue from 'vue';
+Vue.use(Vuex);
+Vue.use(VModal);
+
 window.Events = new Vue({});
 
 
 
 String.prototype.currency = function(){
     return this.replace(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g, '$1,');
-}
+};
 
 Array.prototype.groupBy = function (callback) {
     var grouped = {};
@@ -25,21 +29,21 @@ Array.prototype.groupBy = function (callback) {
         if(grouped.hasOwnProperty(key)) {
             grouped[key].push(item);
         } else {
-            grouped[key] = [item]
+            grouped[key] = [item];
         }
     });
     return grouped;
-}
+};
 
 Vue.filter('currency', function(number) {
-    if(typeof(number) !== 'String') {
+    if(typeof(number) !== 'string') {
         number = number.toString();
     }
     return number.currency();
 });
 
 Vue.filter('fixed', function(number) {
-    if(typeof(number) != 'Number') {
+    if(typeof(number) != 'number') {
         number = parseFloat(number);
     }
     return number.toFixed(2);
@@ -48,8 +52,9 @@ Vue.filter('fixed', function(number) {
 Vue.component('transactions-page', require('./pages/TransactionsPage.vue'));
 Vue.component('manage-sip-page', require('./pages/ManageSipPage.vue'));
 Vue.component('schemes-view', require('./pages/SchemesView.vue'));
-Vue.component('import-csv-data', require('./components/ImportCsvData.vue'));
+Vue.component('client-profile-view', require('./pages/ClientProfileView.vue'));
 
+Vue.component('import-csv-data', require('./components/ImportCsvData.vue'));
 Vue.component('dropdown', require('./components/Dropdown.vue'));
 Vue.component('expandable-list-item', require('./components/ExpandableListItem.vue'));
 Vue.component('v-data-table', require('./components/VueDataTable.vue'));
@@ -60,14 +65,18 @@ Vue.component('clock', require('./components/Clock.vue'));
 Vue.component('chart', require('./components/Chart.vue'));
 Vue.component('flash', require('./components/Flash.vue'));
 
-window.flash = (message, level="success", important=false) => {
-    Events.$emit('flash', {
+window.flash = (message, level='success', important=false) => {
+    window.Events.$emit('flash', {
         id: Math.floor(Math.random()*10),
         message, level, important
     });
-}
+};
 
-const app = new Vue({
+window.filterObject = (obj, allowed) => Object.keys(obj)
+    .filter(key => allowed.includes(key))
+    .reduce((newObj, key) => ({...newObj, ...{[key]: obj[key]}}), {} );
+
+new Vue({
     el: '#app',
     methods: {
         flash: window.flash

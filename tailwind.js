@@ -862,7 +862,7 @@ module.exports = {
     svgStroke: [],
     textAlign: ['responsive'],
     textColors: ['responsive', 'hover'],
-    textSizes: ['responsive'],
+    textSizes: ['responsive', 'hover'],
     textStyle: ['responsive', 'hover'],
     tracking: ['responsive'],
     userSelect: ['responsive'],
